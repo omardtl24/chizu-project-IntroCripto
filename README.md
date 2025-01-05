@@ -1,104 +1,50 @@
-# UwUteca e-commerce
-Una tienda de manga en Español :3
+# Chizu
 
-### Desarrollo
-
-1. Clonar repositorio
-1. `npm run dev` o `yarn dev`
-1. Abra `http://localhost:3000` para abrir la aplicación en el navegador.
+Chizu es un aplicativo web para la compra, venta y promoción de videojuegos. Los usuarios jugadores tendrán la posibilidad de comprar y descargar los videojuegos que hayan sido subidos por otros usuarios desarrolladores o empresas y valorar dichos juegos a través de opiniones y reseñas. Los desarrolladores podrán generar campañas para la recolección de fondos necesarios para la creación de sus juegos, mediante un sistema de suscripción por niveles a los que dicho desarrollador puede asociar diversas recompensas incrementales, a su vez, los jugadores que deseen apoyar a un desarrollador de su interés, podrán aportar reportes sobre errores o posibles mejoras que se puedan realizar en los juegos. Chizu busca ser una  plataforma no solo para la compra y venta de videojuegos, sino potenciar la labor de los desarrolladores independientes.
 
 
-## Estructura de carpetas `src`
+## Equipo.
 
-### Collections (Modelo)
-
-- #### Users
-
-   Los usuarios son administradores y clientes según el valor de su campo `role`. Solo los usuarios **admin** pueden acceder al panel de administración para actualizar, eliminar o agregar información de la tienda. **client** puede acceder al menú de la tienda, al carrito y al panel de perfil.
-
-
-- #### Products
-
-   Los productos están vinculados a Stripe y se actualizan en el Panel de Admin.
-
-- #### Categories
-
-   Productos en funcion de determinado grupo.
-
-- #### Orders
-
-### Views
-
-- #### Pages
-
-   Diseños y componentes de React para aplicar en cada plantilla.
-
-- #### Media
-
-   Imágenes, vídeos, descargas y otros activos.
+| Nombre                         | Rol           | Experiencia y Habilidades                              |
+|--------------------------------|---------------|--------------------------------------------------------|
+| **Juan Pablo Gomez Rangel**        | Desarrollador | Back-end usando Next.js 13, Django                   |
+|                                | Scrum Master 1| Front-end usando React                               |
+|                                |               | Experiencia en MongoDB y Firebase                    |
+| **Julian David Osorio Carrillo**  | Desarrollador | Back-end usando Next.js 13 y Django                  |
+|                                | Scrum Master 4| Front-end usando React y Tailwind                    |
+|                                |               | Implementación pasarela de pagos en Stripe           |
+| **Juan Carlos Garavito Higuera**   | Desarrollador | Back-end usando Next.js 13, Django                   |
+|                                | Scrum Master 2| Front-end usando React y Tailwind                    |
+|                                |               | Conocimientos de C#                                  |
+| **Juan Pablo Garcia Otalora**      | Desarrollador | Back-end usando Django                               |
+|                                | Scrum Master 3| Mobile dev usando Flutter y Swift                    |
+|                                |               | Experiencia en uso de Firebase                       |
+|                                |               | Experiencia en GCP                                   |
 
 
-### Globals
+## Propósito.
+### Visión.
+Para el 2032, seremos reconocidos como una de las plataformas más influyentes en América Latina para la venta de videojuegos, junto a la financiación colaborativa y promoción de videojuegos independientes, destacándonos por nuestra pasión por el aprendizaje continuo, nuestro compromiso con la innovación, y la constancia como base para construir relaciones sólidas y sostenibles entre desarrolladores y jugadores. 
 
-Encabezado y Pie de página que aparece en todas las vistas (Header, Footer).
+### Misión.
+Ofrecer una plataforma accesible en donde los desarrolladores puedan publicar y financiar sus proyectos, mientras los jugadores descubren, compran y disfrutan una amplia variedad de videojuegos, tanto independientes como convencionales. Conectamos día a día a creadores y jugadores, brindando herramientas claras y asegurando una experiencia confiable y enriquecedora, fomentando la visibilidad de Chizu entre nuevos jugadores. 
 
-
-## Funciones (carpeta App/(pages))
-
-### Carrito
-Los usuarios que hayan iniciado sesión pueden guardar sus carritos de compras en sus perfiles mientras compran.
-> Nota: Podemos crear un campo `cart` en el modelo `user` para evitar un modelo adicional.
-
-
-### Pasarela de Pagos
-Payload ofrece un punto final personalizado `POST /api/create-paid-intent` que inicia el proceso de pago. Este punto final suma el total del carrito y crea una [Intención de pago de Stripe](https://stripe.com/docs/paids/paid-intents). El precio total se vuelve a calcular en el servidor para garantizar la precisión y la seguridad. Una vez que el pago se haya realizado correctamente, se creará un pedido en Payload con un `stripePaymentIntentID` unica. Cada producto comprado se registrará en el perfil del usuario y el carrito del usuario se borrará automáticamente.
-
-#### Stripe
-El marco Payload no gestiona los pagos por sí mismo; entonces, para procesar pagos de forma segura, se implementa [Stripe](https://stripe.com) en la aplicación; luego establezca la conexión con cada producto y Stripe.
-
-> Nota: Acontinucacion anexo algunas referencias de utilidad en el Sprint 3; donde se implementara la pasarela de pagos.
-
-* Stripe a Payload usando [Stripe Webhooks](https://stripe.com/docs/webhooks):
-    - `product.create`
-    - `product.update`
-    - 
-* Payload a Stripe usando [Hooks de carga útil](https://payloadcms.com/docs/hooks/overview):
-    - `user.create`
-
-Para más detalles: [Complemento Payload Stripe](https://github.com/payloadcms/plugin-stripe).
+### Modelo de Negocio.
+![ModeloCanvas](https://github.com/user-attachments/assets/1f2333b3-4c22-4e08-954c-8a0f82992694)
 
 
-1. Cree una cuenta [Stripe](https://stripe.com).
-1. Recupere las [claves API de Stripe](https://dashboard.stripe.com/test/apikeys) y péguelas en el `env`:
+## Requerimientos.
+### Funcionales.
+1. Tienda de juegos publicados: Permitir al usuario subir un juego o comprarlo y descargarlo dentro de la tienda.
+2. Reseñas usuarios y Reportes de Bugs: Permitir que los usuarios dejen reseñas y calificaciones de los juegos comprados, ayudando a otros usuarios a tomar decisiones de compra informadas. Adicionalmente, permitir que los usuarios puedan reportar fallos que quieran ver corregidos en los juegos que han adquirido.
+3. Creacion de campañas de recaudación: Los usuarios que estén desarrollando un juego podrán crear campañas para recibir apoyo en el desarrollo de dicho juego, esto mediante la creación de niveles de suscripción con diferentes recompensas incrementales. Los demás usuarios de la plataforma que deseen apoyar a los desarrolladores podrán pagar por estas suscripciones.
+4. Facilitar diferentes tipos de Recompensas: Permitir a los usuarios desarrolladores ofrecer arte, acceso adelantado a videojuegos, entre otros tipos de recompensas las cuales puedan asociar a sus niveles de subscripción con la cual captar la atención de otros posibles usuarios que deseen apoyarlos.
+5. Autenticación con Google: Permitir a los usuarios registrarse e iniciar sesión usando su cuenta de google por conveniencia y facilidad.
+6. Biblioteca de juegos: Ofrecer una biblioteca en la que los usuarios puedan acceder a todos los juegos que han adquirido.
+7. Panel de Perfil de Usuario: Ofrecer al usuario un panel donde pueda editar y actualizar su información personal.
 
-    ```ts
-    STRIPE_SECRET_KEY=
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-    ```
-1. En otra terminal, escuche los webhooks (opcional):
-    ```ts
-    stripe login # follow the prompts
-    yarn stripe:webhooks
-    ```
-1. Pegue el secreto de firma del webhook proporcionado en el `env`:
-    ```ts
-    STRIPE_WEBHOOKS_SIGNING_SECRET=
-    ```
-1. Reinicie Payload para asegurarse de que Stripe se conecte y los webhooks estén registrados.
-
-> En esencia estamos creando una 'instancia' única de Stripe en el ambiente de Payload, similar a lo que se haría para conectar una base de datos en Mongo por medio de llaves.
-
-
-
-## Implementación
-> Nota: Anexo algunas recomendaciones importantes directamente de la documentación de Payload Framework.
-Para ejecutar Payload en producción, debe crear y ofrecer el panel de administración. Para hacerlo, siga estos pasos:
-
-1. Invoque el script `payload build` ejecutando `yarn build` o `npm run build` en la raíz del proyecto. Esto crea un directorio `./build` con un paquete de administración listo para producción.
-1. Ejecute `yarnserve` o `npm run save` para ejecutar Node en producción y servir la carga útil desde el directorio `./build`.
-
-
-> Nota: Anexo algunas consideraciones adicionales para hacer deploy con Stripe una vez lo implementemos; De resto, debemos seguir la guía de Vecel.
-1. Cambie [Stripe live mode](https://stripe.com/docs/test-mode) y actualice las [claves API de Stripe](https://dashboard.stripe.com/test/apikeys). Consulte [Connect Stripe](#connect-stripe) para obtener más detalles.
-
-1. Implemente la aplicación manualmente para evitar tarifas de la nube; consulte la [documentación de implementación](https://payloadcms.com/docs/production/deployment) para obtener más detalles.
+### No Funcionales.
+1. Diseño responsivo: La plataforma será responsiva para dispositivos móviles, asegurando una experiencia de usuario de alta calidad en smartphones y tablets, así como en computadoras de escritorio.
+2. Seguridad en el proceso de Pagos: Usando un administrador de pagos avalado por la normativa PCI DSS para la seguridad de pagos con tarjeta de débito y crédito. 
+3. Rapidez: Tiempo de respuesta a peticiones menor a 5 segundos con una conexión de mínimo 80MB/s.
+4. Compatibilidad: Funcional en las últimas versiones de Chrome, Opera y Microsoft Edge a la fecha; 123.0.6312.28, 114.0.5282.102, 132.0.1, respectivamente.
