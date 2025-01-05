@@ -110,13 +110,13 @@ export const stripeWebhookHandler = async (
                 host: 'smtp.gmail.com', //secure : true,
                 port: 587,
                 auth: {
-                    user: 'oilstockmanager@gmail.com',
+                    user: 'chizugamessocial@gmail.com',
                     pass: process.env.EMAIL_KEY,
                 },
             });
 
             let mailOptions = {
-                from: 'UwUteca',
+                from: 'Chizu',
                 to: user.email,
                 subject: 'Gracias por tu Compra :3',
                 html: ReceiptEmailHtml({

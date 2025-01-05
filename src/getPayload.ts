@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
   host : 'smtp.gmail.com', //secure : true,
   port : 587,
   auth: {
-    user : 'oilstockmanager@gmail.com', 
+    user : 'chizugamessocial@gmail.com', 
     pass : process.env.EMAIL_KEY,
   },
   
@@ -34,7 +34,7 @@ interface Args { initOptions?: Partial<InitOptions> }
 export const getPayloadClient = async ({ initOptions, }: Args = {}): Promise<Payload> => {
 
     if (!process.env.PAYLOAD_SECRET) {
-      throw new Error('UwUsecret no identificado')
+      throw new Error('ChizuSecret no identificado')
     }
     if (cached.client) { return cached.client }
     
@@ -42,7 +42,7 @@ export const getPayloadClient = async ({ initOptions, }: Args = {}): Promise<Pay
     if (!cached.promise) {
       cached.promise = payload.init({
         // aca irian las credenciales del correo tambien
-        email : { transport: transporter, fromAddress: 'oilstockmanager@gmail.com', fromName: 'UwUteca' },
+        email : { transport: transporter, fromAddress: 'chizugamessocial@gmail.com', fromName: 'Chizu' },
 
         secret: process.env.PAYLOAD_SECRET,
         local: initOptions?.express ? false : true,
