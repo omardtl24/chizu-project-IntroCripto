@@ -6,6 +6,11 @@ import MaxWidthWrapper from './MaxWidthWrapper'
 import { CircleDollarSign, TextSearch } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Typography, IconButton } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXTwitter, faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faCompass } from '@fortawesome/free-solid-svg-icons'
+
 
 
 const Footer = () => {
@@ -23,17 +28,17 @@ const Footer = () => {
                     {pathsToMinimize.includes(pathname) ? null : (
                         <div className='pb-8 pt-8'>
                             <div className='flex justify-center'>
-                                <img src='/logo.png' width={115} height={45} alt="logo" />
+                                <img src='/logos/logo_chizu.svg' width={115} height={45} alt="logo" />
                             </div>
                         </div>
                     )}
 
                 </div>
 
-                <div className='py-5 md:flex md:items-center md:justify-between'>
+                <div className="py-5 flex flex-col md:flex-row md:items-center">
 
-                    <div className='text-center md:text-left'>
-                        <div className='flex space-x-8'>
+                    <div className="text-center md:text-left flex-grow">
+                        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
                             <Dialog>
 
                                 <DialogTrigger asChild>
@@ -143,10 +148,53 @@ const Footer = () => {
                                 </DialogContent>
 
                             </Dialog>
+
+                            <Button
+                                variant="ghost"
+                                className="gap-1.5 justify-end text-gray-600"
+                                onClick={() => (window.location.href = "/landing")}
+                            >
+                            <FontAwesomeIcon icon={faCompass} size="sm" className="text-gray-500" />
+                                Descubre más sobre Chizu
+                            </Button>
                         </div>
                     </div>
 
-                    <div className='mt-0 flex items-center justify-center md:mt-0'>
+                    
+                    {/* Iconos de redes sociales */}
+                    <div className="flex justify-center items-center gap-0 md:mr-4 md:flex-grow-0">
+                        <IconButton
+                            size="sm"
+                            color="gray"
+                            variant="text"
+                            className="flex items-center justify-center"
+                            onClick={() => window.open("https://x.com/ChizuGames", "_blank")}
+                        >
+                            <FontAwesomeIcon icon={faXTwitter} size="lg" />
+                        </IconButton>
+                        <IconButton
+                            size="sm"
+                            color="gray"
+                            variant="text"
+                            className="flex items-center justify-center"
+                            onClick={() => window.open("https://www.instagram.com/chizu_games/", "_blank")}
+                        >
+                            <FontAwesomeIcon icon={faInstagram} size="lg" />
+                        </IconButton>
+                        <IconButton
+                            size="sm"
+                            color="gray"
+                            variant="text"
+                            className="flex items-center justify-center"
+                            onClick={() => window.open("https://github.com/Juosorioca420/chizu-project", "_blank")}
+                        >
+                            <FontAwesomeIcon icon={faGithub} size="lg" />
+                        </IconButton>
+                    </div>
+
+
+
+                    <div className='mt-4 md:mt-0 text-center md:text-right md:ml-4'>
                         <p className='text-sm text-gray-600'>
                             &copy; {new Date().getFullYear()} All Rights Reserved
                         </p>
