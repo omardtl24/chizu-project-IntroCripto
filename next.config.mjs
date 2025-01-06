@@ -10,6 +10,14 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "uwuteca-production.up.railway.app",
 			},
+			{
+				protocol: "https",
+				hostname: "chizu.games",
+			},
+			{
+				protocol: "https",
+				hostname: "chizu-project-production.up.railway.app",
+			},
 		],
 	},
 };

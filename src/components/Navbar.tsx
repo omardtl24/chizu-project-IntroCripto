@@ -18,7 +18,7 @@ const Navbar = async () => {
     return (
         <div className='bg-white sticky z-50 top-0 inset-x-0 h-20'>
 
-            <header className='relative bg-white'>
+            <header className='relative bg-[#FCFCFC]'>
 
                 <div className='xl:mx-28 lg:mx-24 md:mx-20 sm:mx-4'>
                     {/* border-b border-gray-300 */}

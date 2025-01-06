@@ -78,7 +78,7 @@ function App() {
 
     return (
         <ThemeProvider>
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-800 transition-colors duration-300">
+            <div className="min-h-screen bg-[#FCFCFC] dark:bg-gray-800 transition-colors duration-300">
                 {/* <Navbar /> */}
                 <div className="pt-16"> {/* Add padding top to account for fixed navbar */}
                     <GameDetails game={mockGame} onAddToCart={handleAddToCart} />

@@ -37,7 +37,7 @@ export const GameDetails: React.FC<GameDetailsProps> = ({ game, onAddToCart }) =
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="bg-[#FCFCFC] max-w-7xl mx-auto px-4 py-8">
             <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">{game.title}</h1>
 
             {/* Layout: Carousel and Side Info */}

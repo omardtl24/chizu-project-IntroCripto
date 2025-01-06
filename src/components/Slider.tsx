@@ -43,7 +43,8 @@ const Slider = (props : Props) => {
       }, [swiper, urls] )
 
     return (
-        <div className='group relative bg-zinc-100 aspect-square overflow-hidden rounded-xl w-3/4 h-3/4'>
+        // <div className='group relative bg-zinc-100 aspect-square overflow-hidden rounded-xl w-3/4 h-3/4'>
+        <div className='group relative bg-zinc-100 aspect-square overflow-hidden rounded-xl'>
 
         <div className='absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition'>
           
