@@ -58,7 +58,7 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
           {href ? (
             <Link
               href={href}
-              className="hidden text-sm font-medium text-blue-600 hover:text-blue-500 md:block"
+              className="hidden text-sm font-medium text-[#30AEB6] hover:text-[#37C8D1] md:block"
             >
               Explorar {query.category} <span aria-hidden="true">&rarr;</span>
             </Link>
