@@ -44,7 +44,7 @@ export const Navbar: React.FC = () => {
                     {/* Account Options */}
                     <div className="flex items-center space-x-8 flex-1 justify-end">
                         {/* Botón Cuenta */}
-                        <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-gray-400 transition-colors flex items-center space-x-2">
+                        <a href="#" className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-gray-400 transition-colors flex items-left space-x-2">
                             <CircleUser className="h-5 w-5 text-gray-700 dark:text-gray-200 transform rotate-0 transition-transform duration-500" />
                             <span>Cuenta</span>
                         </a>
