@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Typography, IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter, faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faCompass } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -147,15 +148,26 @@ const Footer = () => {
                                 </DialogContent>
 
                             </Dialog>
+
+                            <Button
+                                variant="ghost"
+                                className="gap-1.5 justify-end text-gray-600"
+                                onClick={() => (window.location.href = "/landing")}
+                            >
+                            <FontAwesomeIcon icon={faCompass} size="sm" className="text-gray-500" />
+                                Descubre más sobre Chizu
+                            </Button>
                         </div>
                     </div>
 
+                    
                     {/* Iconos de redes sociales */}
                     <div className="flex justify-center items-center gap-0 md:mr-4 md:flex-grow-0">
                         <IconButton
                             size="sm"
                             color="gray"
                             variant="text"
+                            className="flex items-center justify-center"
                             onClick={() => window.open("https://x.com/ChizuGames", "_blank")}
                         >
                             <FontAwesomeIcon icon={faXTwitter} size="lg" />
@@ -164,6 +176,7 @@ const Footer = () => {
                             size="sm"
                             color="gray"
                             variant="text"
+                            className="flex items-center justify-center"
                             onClick={() => window.open("https://www.instagram.com/chizu_games/", "_blank")}
                         >
                             <FontAwesomeIcon icon={faInstagram} size="lg" />
@@ -172,6 +185,7 @@ const Footer = () => {
                             size="sm"
                             color="gray"
                             variant="text"
+                            className="flex items-center justify-center"
                             onClick={() => window.open("https://github.com/Juosorioca420/chizu-project", "_blank")}
                         >
                             <FontAwesomeIcon icon={faGithub} size="lg" />
