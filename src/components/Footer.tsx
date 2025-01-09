@@ -3,13 +3,10 @@
 import { usePathname } from 'next/navigation'
 import MaxWidthWrapper from './MaxWidthWrapper'
 
-import { CircleDollarSign, TextSearch } from "lucide-react"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { CircleDollarSign, TextSearch, Compass } from "lucide-react"
+import { Button} from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Typography, IconButton } from "@material-tailwind/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXTwitter, faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faCompass } from '@fortawesome/free-solid-svg-icons'
+import { Instagram, Twitter, Github } from 'lucide-react';
 
 
 
@@ -154,7 +151,7 @@ const Footer = () => {
                                 className="gap-1.5 justify-end text-gray-600"
                                 onClick={() => (window.location.href = "/landing")}
                             >
-                            <FontAwesomeIcon icon={faCompass} size="sm" className="text-gray-500" />
+                            <Compass className="h-5 w-5" />
                                 Descubre más sobre Chizu
                             </Button>
                         </div>
@@ -162,36 +159,29 @@ const Footer = () => {
 
                     
                     {/* Iconos de redes sociales */}
-                    <div className="flex justify-center items-center gap-0 md:mr-4 md:flex-grow-0">
-                        <IconButton
-                            size="sm"
-                            color="gray"
-                            variant="text"
-                            className="flex items-center justify-center"
-                            onClick={() => window.open("https://x.com/ChizuGames", "_blank")}
+                    <div className="flex justify-center md:justify-end items-center">
+                        <Button
+                            variant="ghost"
+                            className="text-gray-600"
+                            onClick={() => window.open('https://instagram.com/chizu_games', '_blank')}
                         >
-                            <FontAwesomeIcon icon={faXTwitter} size="lg" />
-                        </IconButton>
-                        <IconButton
-                            size="sm"
-                            color="gray"
-                            variant="text"
-                            className="flex items-center justify-center"
-                            onClick={() => window.open("https://www.instagram.com/chizu_games/", "_blank")}
+                        <Instagram className="h-5 w-5" />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            className="text-gray-600"
+                            onClick={() => window.open('https://twitter.com/ChizuGames', '_blank')}
                         >
-                            <FontAwesomeIcon icon={faInstagram} size="lg" />
-                        </IconButton>
-                        <IconButton
-                            size="sm"
-                            color="gray"
-                            variant="text"
-                            className="flex items-center justify-center"
-                            onClick={() => window.open("https://github.com/Juosorioca420/chizu-project", "_blank")}
+                        <Twitter className="h-5 w-5" />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            className="text-gray-600"
+                            onClick={() => window.open('https://github.com/Juosorioca420/chizu-project', '_blank')}
                         >
-                            <FontAwesomeIcon icon={faGithub} size="lg" />
-                        </IconButton>
+                        <Github className="h-5 w-5" />
+                        </Button>
                     </div>
-
 
 
                     <div className='mt-4 md:mt-0 text-center md:text-right md:ml-4'>
