@@ -78,9 +78,9 @@ const Page = () => {
       <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
         <Image
             fill
-            src='/sign-in2.jpg'
+            src='/sign-in2.webp'
             className='h-full w-full object-cover object-center'
-            alt='sign-in'
+            alt='sign-in-cover'
         />
       </div>
 
@@ -90,8 +90,8 @@ const Page = () => {
 
 
 
-              <div className='flex flex-col items-center space-y-2 text-center'>
-                <img src='/logo.png' width={115} height={45} alt="logo"/>
+              <div className='flex flex-col items-center space-y-3 text-center mt-10'>
+                <img src='/logo.png' width={115} height={50} alt="logo"/>
                 <h1 className='text-2xl font-semibold tracking-tight'>
                   Iniciar Sesion
                 </h1>

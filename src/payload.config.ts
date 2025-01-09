@@ -30,15 +30,15 @@ export default buildConfig({
         user: 'users', // Users slug
         bundler: webpackBundler(),
         meta: {
-        titleSuffix: '- UwUteca',
+        titleSuffix: '- Chizu',
         favicon: '/favicon.ico',
         // ogImage: '/thumbnail.jpg',
         },
 
         components : {
             graphics : { 
-                Logo: () => React.createElement('img', { src: '/logo.png', alt: 'Logo', style: { width: '200px', height: '200px' } }),
-                Icon: () => React.createElement('img', { src: '/logo.png', alt: 'icon', style: { width: '30px', height: '30px' } }),
+                Logo: () => React.createElement('img', { src: '/logo.png', alt: 'Logo', style: { width: '177.6px', height: '152.4px' } }),
+                Icon: () => React.createElement('img', { src: '/logo.png', alt: 'icon', style: { width: '26.1px', height: '22.4px' } }),
             },
         },
     },
