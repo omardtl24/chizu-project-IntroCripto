@@ -29,12 +29,7 @@ export interface User {
   username: string;
   ordenes?: number | null;
   ordenes_hist?: (string | Order)[] | null;
-  loginDates?:
-    | {
-        loginDate?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  lastLogin?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;

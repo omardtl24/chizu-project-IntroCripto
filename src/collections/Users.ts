@@ -764,16 +764,9 @@ export const Users : CollectionConfig = {
         },
 
         {
-            name: 'loginDates',
-            label: 'Login Dates',
-            type: 'array',
-            fields: [
-                {
-                    type: 'date',
-                    name: 'loginDate',
-                    label: 'Login Date',
-                },
-            ],
+            name: 'lastLogin',
+            label: 'Ultimo Login',
+            type: 'date',
             access: {
                 create: () => false,
                 read: ({req}) => req.user.role === 'admin',
@@ -781,7 +774,7 @@ export const Users : CollectionConfig = {
             },
             admin : {
               readOnly: true, 
-              description : 'Historial de Inicios de Sesion a la fecha.',
+              // description : 'Historial de Inicios de Sesion a la fecha.',
             },
         },      
     ],
