@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 const Footer = () => {
     const pathname = usePathname()
     const pathsToMinimize = [
-        // '/verify-email',
+        '/verify-email',
         '/sign-up',
         '/sign-in',
         '/pswd-forgot',
