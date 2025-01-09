@@ -75,10 +75,17 @@ const Page = () => {
     <main className='lg:min-h-full'>
       <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
         <Image
+<<<<<<< HEAD
           fill
           src='/sign-in2.jpg'
           className='h-full w-full object-cover object-center'
           alt='sign-in'
+=======
+            fill
+            src='/sign-in2.webp'
+            className='h-full w-full object-cover object-center'
+            alt='sign-in-cover'
+>>>>>>> 4afa6d11cb0d1a4f0f2e2a8246802c3b05522323
         />
       </div>
 
@@ -115,11 +122,91 @@ const Page = () => {
                       placeholder='nombre@example.com'
                     />
 
+<<<<<<< HEAD
                     {errors?.email && (
                       <p className='text-sm text-red-500'>
                         {errors.email.message}
                       </p>
                     )}
+=======
+              <div className='flex flex-col items-center space-y-3 text-center mt-10'>
+                <img src='/logo.png' width={115} height={50} alt="logo"/>
+                <h1 className='text-2xl font-semibold tracking-tight'>
+                  Iniciar Sesion
+                </h1>
+    
+                <Link
+                  className={buttonVariants({
+                    variant: 'link',
+                    className: 'gap-1',
+                  })}
+                  href='/sign-up'>
+                  No tienes Cuenta?  Registrate
+                  <ArrowRight className='h-4 w-4' />
+                </Link>
+              </div>
+    
+              <div className='grid gap-6'>
+
+                <form onSubmit={handleSubmit(onSubmit)}>
+
+                  <div className='grid gap-2'>
+
+                    <div className='grid gap-1 py-2'>
+                      <Label htmlFor='email'>E-mail</Label>
+                      <Input
+                        {...register('email')}
+                        className={cn({
+                          'focus-visible:ring-red-500':
+                            errors.email,
+                        })}
+                        placeholder='nombre@example.com'
+                      />
+
+                      {errors?.email && (
+                        <p className='text-sm text-red-500'>
+                          {errors.email.message}
+                        </p>
+                      )}
+
+                    </div>
+
+    
+                    <div className='grid gap-1 py-2'>
+
+                      <Label htmlFor='password'>Contraseña</Label>
+                      <Input
+                        {...register('password')}
+                        type='password'
+                        className={cn({
+                          'focus-visible:ring-red-500':
+                            errors.password,
+                        })}
+                        placeholder='contraseña'
+
+                      />
+                      {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
+                      {errors?.password && (
+                        <p className='text-sm text-red-500'>
+                          {errors.password.message}
+                        </p>
+                      )}
+
+
+                    </div>
+                      
+                    <Link   className= 'text-right text-sm text-semibold text-gray-600 flex items-end gap-1.5 justify-end' href='/pswd-forgot'>
+                        Recuperar Contraseña 
+                        <KeyRound className='h-3.5 w-3.5' />
+                    </Link>
+
+                    <hr className="border-t-5 border-white"></hr>
+                    <hr className="border-t-5 border-white"></hr>
+                    <hr className="border-t-1 border-gray-400"></hr>
+
+                    <Button>Iniciar Sesion</Button>
+
+>>>>>>> 4afa6d11cb0d1a4f0f2e2a8246802c3b05522323
                   </div>
 
                   <div className='grid gap-1 py-2'>

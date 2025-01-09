@@ -68,7 +68,7 @@ const Page = () => {
       <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
         <Image
             fill
-            src='/sign-up.png'
+            src='/sign-up.webp'
             className='h-full w-full object-cover object-center'
             alt='sign-in'
         />
@@ -79,7 +79,7 @@ const Page = () => {
           <div className='lg:col-start-2'>
 
 
-              <div className='flex flex-col items-center space-y-2 text-center'>
+              <div className='flex flex-col items-center space-y-2 text-center mt-10'>
                 <img src='/logo.png' width={115} height={45} alt="logo"/>
                 <h1 className='text-2xl font-semibold tracking-tight'>
                   Registrar Cuenta
@@ -193,7 +193,7 @@ const Page = () => {
                     <Dialog>
 
                       <DialogTrigger asChild>
-                        <Button variant="ghost" className='gap-1.5 justify-end text-blue-700'>
+                        <Button variant="ghost" className='gap-1.5 justify-end text-teal-700'>
                           <CircleDollarSign className='h-4 w-4' />
                           Politica de Pagos
                         </Button>
@@ -242,7 +242,7 @@ const Page = () => {
                     <Dialog>
 
                       <DialogTrigger asChild>
-                        <Button variant="ghost" className='gap-1.5 justify-end text-blue-700'>
+                        <Button variant="ghost" className='gap-1.5 justify-end text-teal-700'>
                           <TextSearch className='h-4 w-4' />
                           Politica de Privacidad
                         </Button>
