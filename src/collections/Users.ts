@@ -176,7 +176,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 50px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <div class="v-font-size" style="font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
-                    <p style="font-size: 14px; line-height: 140%;">Te damos la bienvenida a la <strong>UwUteca</strong></p>
+                    <p style="font-size: 14px; line-height: 140%;">Te damos la bienvenida a <strong>Chizu</strong></p>
                   </div>
                 
                       </td>
@@ -213,7 +213,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <div class="v-font-size" style="font-family: 'Montserrat',sans-serif; font-size: 35px; font-weight: 700; color: #3398c3; line-height: 130%; text-align: center; word-wrap: break-word;">
-                    <p style="line-height: 130%;">UwU </p>
+                    <p style="line-height: 130%;">Chizu</p>
                   </div>
                 
                       </td>
@@ -306,7 +306,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 20px 0px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <div class="v-font-size" style="font-size: 14px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word;">
-                    <p style="font-size: 14px; line-height: 140%;"><strong>UwUteca - 2024</strong></p>
+                    <p style="font-size: 14px; line-height: 140%;"><strong>Chizu - 2025</strong></p>
                   </div>
                 
                       </td>
@@ -522,7 +522,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <div class="v-font-size" style="font-family: 'Montserrat',sans-serif; font-size: 35px; font-weight: 700; color: #3398c3; line-height: 130%; text-align: center; word-wrap: break-word;">
-                    <p style="line-height: 130%;">UwU </p>
+                    <p style="line-height: 130%;">Chizu</p>
                   </div>
                 
                       </td>
@@ -615,7 +615,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 20px 0px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <div class="v-font-size" style="font-size: 14px; color: #000000; line-height: 140%; text-align: center; word-wrap: break-word;">
-                    <p style="font-size: 14px; line-height: 140%;"><strong>UwUteca - 2024</strong></p>
+                    <p style="font-size: 14px; line-height: 140%;"><strong>Chizu - 2025</strong></p>
                   </div>
                 
                       </td>
@@ -764,16 +764,9 @@ export const Users : CollectionConfig = {
         },
 
         {
-            name: 'loginDates',
-            label: 'Login Dates',
-            type: 'array',
-            fields: [
-                {
-                    type: 'date',
-                    name: 'loginDate',
-                    label: 'Login Date',
-                },
-            ],
+            name: 'lastLogin',
+            label: 'Ultimo Login',
+            type: 'date',
             access: {
                 create: () => false,
                 read: ({req}) => req.user.role === 'admin',
@@ -781,7 +774,7 @@ export const Users : CollectionConfig = {
             },
             admin : {
               readOnly: true, 
-              description : 'Historial de Inicios de Sesion a la fecha.',
+              // description : 'Historial de Inicios de Sesion a la fecha.',
             },
         },      
     ],
