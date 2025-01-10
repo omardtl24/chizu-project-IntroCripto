@@ -14,8 +14,8 @@ const Navbar = async () => {
     const { user } = await getServerUser(cookie)
     
     return (
-        <div className='bg-white sticky z-50 top-0 inset-x-0 h-20'>
-            <header className='relative bg-[#FCFCFC]'>
+        <div className='bg-transparent sticky z-50 top-0 inset-x-0 h-20'>
+            <header className='relative bg-[#FCFCFC] backdrop-blur-sm bg-opacity-30'>
                 <div className='xl:mx-20 lg:mx-14 md:mx-10 sm:mx-4'>
                     <div className='flex h-20 items-center justify-between'>
                         <div className='flex items-center'>
