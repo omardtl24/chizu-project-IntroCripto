@@ -15,6 +15,7 @@ const Footer = () => {
         '/sign-up',
         '/sign-in',
         '/pswd-forgot',
+        '/pswd-reset',
     ]
 
     return (

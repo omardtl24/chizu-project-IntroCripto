@@ -62,51 +62,48 @@ const Page = () => {
     }
 
 
-    if (success){
-        return(
-            <>
+    // if (success){
+        // return(
+        //     <>
                   
-            <div className='flex h-full flex-col items-center justify-center space-y-1'>
+        //     <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-            <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
-              < Image 
-                  src='/verify/reset-success.png' alt='verificar-correo-img' 
-                  height={1280} width={1280}
-              />
-            </div>
+        //     <div className='relative mb-4 h-60 w-60 text-muted-foreground mt-16'>
+        //       < Image 
+        //           src='/verify/reset-success.png' alt='verificar-correo-img' 
+        //           height={1280} width={1280}
+        //       />
+        //     </div>
 
-            <br></br>
-            <br></br>
+        //     <Lock className='h-8 w-8 text-green-700'/>
 
-            <Lock className='h-8 w-8 text-green-700'/>
-
-            <h3 className='font-semibold text-2xl text-gray-900'>
-            Contraseña Restablecida Exitosamente
-            </h3>
+        //     <h3 className='font-semibold text-2xl text-gray-900'>
+        //     Contraseña Restablecida Exitosamente
+        //     </h3>
 
 
-              <p className='text-gray-600 text-center text-semibold'>
-                Su contraseña ha sido actulizada correctamente, ya es posible Iniciar Sesion.
-              </p>
+        //       <p className='text-gray-600 text-center text-semibold'>
+        //         Su contraseña ha sido actulizada correctamente, ya es posible Iniciar Sesion.
+        //       </p>
 
-              <Link
-                  className={buttonVariants({
-                    variant: 'link',
-                    className: 'gap-1.5',
-                  })}
-                  href='/sign-in'>
-                  <ArrowLeft className='h-4 w-4' />
-                  Volver
-            </Link>
+        //       <Link
+        //           className={buttonVariants({
+        //             variant: 'link',
+        //             className: 'gap-1.5',
+        //           })}
+        //           href='/sign-in'>
+        //           <ArrowLeft className='h-4 w-4' />
+        //           Volver
+        //     </Link>
 
 
-            </div>
+        //     </div>
 
-          </>
-        )
-    }
+        //   </>
+        // )
+    // }
 
-    else if (fail){
+    // else if (fail){
         return(
             <>
             <div className='container relative flex pt-12 flex-col items-center justify-center lg:px-0'>
@@ -118,8 +115,6 @@ const Page = () => {
                   height={1651} width={1800}
               />
             </div>
-
-            <br></br>
 
             <LockOpen className='h-8 w-8 text-red-700'/>
 
@@ -148,93 +143,93 @@ const Page = () => {
 
           </>
         )
-    }
+    // }
     
-    else{ 
-        return (
-          <>
-            <div className='container relative flex pt-12 flex-col items-center justify-center lg:px-0'>
-              <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
+    // else{ 
+    //     return (
+    //       <>
+    //         <div className='container relative flex pt-12 flex-col items-center justify-center lg:px-0'>
+    //           <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
 
-                <div className='flex flex-col items-center space-y-2 text-center'>
-                  <img src='/logo.png' width={115} height={45} alt="logo"/>
+    //             <div className='flex flex-col items-center space-y-2 text-center'>
+    //               <img src='/logo.png' width={115} height={45} alt="logo"/>
 
-                  <h1 className='text-2xl font-semibold tracking-tight'>
-                    Restablecer Contraseña
-                  </h1>
+    //               <h1 className='text-2xl font-semibold tracking-tight'>
+    //                 Restablecer Contraseña
+    //               </h1>
 
-                  <Link
-                    className={buttonVariants({
-                      variant: 'link',
-                      className: 'gap-1.5',
-                    })}
-                    href='/sign-in'>
-                    <ArrowLeft className='h-4 w-4' />
-                    Recordaste la contraseña? Inicia Sesion
-                  </Link>
-                </div>
+    //               <Link
+    //                 className={buttonVariants({
+    //                   variant: 'link',
+    //                   className: 'gap-1.5',
+    //                 })}
+    //                 href='/sign-in'>
+    //                 <ArrowLeft className='h-4 w-4' />
+    //                 Recordaste la contraseña? Inicia Sesion
+    //               </Link>
+    //             </div>
       
-                <div className='grid gap-6'>
+    //             <div className='grid gap-6'>
 
-                  <form onSubmit={handleSubmit(onSubmit)}>
+    //               <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <div className='grid gap-2'>
+    //                 <div className='grid gap-2'>
 
-                      <div className='grid gap-1 py-2'>
-                        <Label htmlFor='clave'>Contraseña</Label>
-                        <Input
-                          {...register('password')}
-                          type='password'
-                          className={cn({
-                            'focus-visible:ring-red-500':
-                              errors.password,
-                          })}
-                          placeholder='Ingresa la nueva contraseña'
-                        />
+    //                   <div className='grid gap-1 py-2'>
+    //                     <Label htmlFor='clave'>Contraseña</Label>
+    //                     <Input
+    //                       {...register('password')}
+    //                       type='password'
+    //                       className={cn({
+    //                         'focus-visible:ring-red-500':
+    //                           errors.password,
+    //                       })}
+    //                       placeholder='Ingresa la nueva contraseña'
+    //                     />
 
-                        {errors?.password && (
-                          <p className='text-sm text-red-500'>
-                            {errors.password.message}
-                          </p>
-                        )}
+    //                     {errors?.password && (
+    //                       <p className='text-sm text-red-500'>
+    //                         {errors.password.message}
+    //                       </p>
+    //                     )}
 
-                      </div>
+    //                   </div>
 
-                      <div className='grid gap-1 py-2'>
-                        <Label htmlFor='confirmacion'>Confirmacion</Label>
-                        <Input
-                          {...register('confirmPassword')}
-                          type='password'
-                          className={cn({
-                            'focus-visible:ring-red-500':
-                              errors.confirmPassword,
-                          })}
-                          placeholder='Confirma la nueva contraseña'
-                        />
+    //                   <div className='grid gap-1 py-2'>
+    //                     <Label htmlFor='confirmacion'>Confirmacion</Label>
+    //                     <Input
+    //                       {...register('confirmPassword')}
+    //                       type='password'
+    //                       className={cn({
+    //                         'focus-visible:ring-red-500':
+    //                           errors.confirmPassword,
+    //                       })}
+    //                       placeholder='Confirma la nueva contraseña'
+    //                     />
 
-                        {errors?.confirmPassword && (
-                          <p className='text-sm text-red-500'>
-                            {errors.confirmPassword.message}
-                          </p>
-                        )}
+    //                     {errors?.confirmPassword && (
+    //                       <p className='text-sm text-red-500'>
+    //                         {errors.confirmPassword.message}
+    //                       </p>
+    //                     )}
 
-                      </div>
+    //                   </div>
 
                         
-                      <hr className="border-t-5 border-white"></hr>
-                      <hr className="border-t-1 border-gray-400"></hr>
+    //                   <hr className="border-t-5 border-white"></hr>
+    //                   <hr className="border-t-1 border-gray-400"></hr>
 
-                      <Button>Recuperar</Button>
+    //                   <Button>Recuperar</Button>
 
-                    </div>
-                  </form>
-                </div>
+    //                 </div>
+    //               </form>
+    //             </div>
 
-              </div>
-            </div>
-          </>
-        )
-    }
+    //           </div>
+    //         </div>
+    //       </>
+    //     )
+    // }
 
 }
 

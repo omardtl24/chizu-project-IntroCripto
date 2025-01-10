@@ -1,17 +1,17 @@
 "use client"
 
-import {trpc} from '@/trpc/client'
+import { trpc } from '@/trpc/client'
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { ArrowRight, TextSearch, CircleDollarSign } from "lucide-react"
 import Link from "next/link"
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ZodError } from 'zod'
 import { useRouter } from 'next/navigation'
-import {toast} from 'sonner'
+import { toast } from 'sonner'
 import { SignUpValidator, TypeSignUpValidator } from '@/lib/validators/signup-credentials-validator'
 import Image from 'next/image'
 
@@ -20,57 +20,57 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 
 const Page = () => {
 
-    const { register, handleSubmit, formState: {errors}, } = useForm<TypeSignUpValidator>({
-        resolver: zodResolver(SignUpValidator),
-    })
+  const { register, handleSubmit, formState: { errors }, } = useForm<TypeSignUpValidator>({
+    resolver: zodResolver(SignUpValidator),
+  })
 
-    const router = useRouter()
+  const router = useRouter()
 
-    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({
-      
-      // manejar errores
-      onError: (err) => {
-        // error con el correo
-        if (err.data?.code === 'CONFLICT') {
-          toast.warning( 'Este correo ya se encuentra registrado.' )
-          return
-        }
+  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
 
-        // error con el user
-        if (err.data?.code === 'BAD_REQUEST') {
-          toast.warning( 'Nombre de usuario ya registrado.' )
-          return
-        }
+    // manejar errores
+    onError: (err) => {
+      // error con el correo
+      if (err.data?.code === 'CONFLICT') {
+        toast.warning('Este correo ya se encuentra registrado.')
+        return
+      }
 
-        // error con la pswd
-        if (err instanceof ZodError) {
-          toast.error(err.issues[0].message)
-          return
-        }
+      // error con el user
+      if (err.data?.code === 'BAD_REQUEST') {
+        toast.warning('Nombre de usuario ya registrado.')
+        return
+      }
 
-        // algun otro error con el servidor
-        toast.error( 'Hubo un error en el servidor, porfavor intente de nuevo.' )
-      },
+      // error con la pswd
+      if (err instanceof ZodError) {
+        toast.error(err.issues[0].message)
+        return
+      }
 
-      onSuccess: ({ sentToEmail }) => {
-        toast.success( `Porfavor verifique su cuenta en ${sentToEmail}.` )
-        router.push('/verify-email?to=' + sentToEmail)
-      },
+      // algun otro error con el servidor
+      toast.error('Hubo un error en el servidor, porfavor intente de nuevo.')
+    },
 
-    })
+    onSuccess: ({ sentToEmail }) => {
+      toast.success(`Porfavor verifique su cuenta en ${sentToEmail}.`)
+      router.push('/verify-email?to=' + sentToEmail)
+    },
 
-    const onSubmit = ({ username, email, password, confirmPassword }: TypeSignUpValidator) => {
-        mutate({username, email, password, confirmPassword})
-    }
+  })
 
-    return (
-      <main className='lg:min-h-full'>
+  const onSubmit = ({ username, email, password, confirmPassword }: TypeSignUpValidator) => {
+    mutate({ username, email, password, confirmPassword })
+  }
+
+  return (
+    <main className='lg:min-h-full'>
       <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
         <Image
-            fill
-            src='/sign-up.webp'
-            className='h-full w-full object-cover object-center'
-            alt='sign-in'
+          fill
+          src='/sign-up.webp'
+          className='h-full w-full object-cover object-center'
+          alt='sign-in'
         />
       </div>
 
@@ -79,239 +79,200 @@ const Page = () => {
           <div className='lg:col-start-2'>
 
 
-              <div className='flex flex-col items-center space-y-2 text-center mt-10'>
-                <img src='/logo.png' width={115} height={45} alt="logo"/>
-                <h1 className='text-2xl font-semibold tracking-tight'>
-                  Registrar Cuenta
-                </h1>
-    
-                <Link
-                  className={buttonVariants({
-                    variant: 'link',
-                    className: 'gap-1.5',
-                  })}
-                  href='/sign-in'>
-                  Ya estas registrado?  Inicia Sesion
-                  <ArrowRight className='h-4 w-4' />
-                </Link>
-              </div>
-    
-              <div className='grid gap-6'>
+            <div className='flex flex-col items-center space-y-2 text-center mt-10'>
+              <img src='/logo.png' width={115} height={45} alt="logo" />
+              <h1 className='text-2xl font-semibold tracking-tight'>
+                Registrar Cuenta
+              </h1>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+              <Link
+                className={buttonVariants({
+                  variant: 'link',
+                  className: 'gap-1.5',
+                })}
+                href='/sign-in'>
+                Ya estas registrado?  Inicia Sesion
+                <ArrowRight className='h-4 w-4' />
+              </Link>
+            </div>
 
-                  <div className='grid gap-1'>
+            <div className='grid gap-6'>
 
-                    <div className='grid gap-1 py-2'>
-                      <Label htmlFor='email'>E-mail</Label>
-                      <Input
-                        {...register('email')}
-                        className={cn({
-                          'focus-visible:ring-red-500':
-                            errors.email,
-                        })}
-                        placeholder='nombre@example.com'
-                      />
+              <form onSubmit={handleSubmit(onSubmit)}>
 
-                      {errors?.email && (
-                        <p className='text-sm text-red-500'>
-                          {errors.email.message}
-                        </p>
-                      )}
+                <div className='grid gap-1'>
 
-                    </div>
+                  <div className='grid gap-1 py-2'>
+                    <Label htmlFor='email'>E-mail</Label>
+                    <Input
+                      {...register('email')}
+                      className={cn({
+                        'focus-visible:ring-red-500':
+                          errors.email,
+                      })}
+                      placeholder='nombre@example.com'
+                    />
 
-                    <div className='grid gap-1 py-2'>
-                      <Label htmlFor='username'>Username</Label>
-                      <Input
-                        {...register('username')}
-                        className={cn({
-                          'focus-visible:ring-red-500':
-                            errors.username,
-                        })}
-                        placeholder='Ingresa tu nombre de usuario'
-                      />
-
-                      {errors?.username && (
-                        <p className='text-sm text-red-500'>
-                          {errors.username.message}
-                        </p>
-                      )}
-
-                    </div>
-    
-                    <div className='grid gap-1 py-2'>
-
-                      <Label htmlFor='password'>Contraseña</Label>
-                      <Input
-                        {...register('password')}
-                        type='password'
-                        className={cn({
-                          'focus-visible:ring-red-500':
-                            errors.password,
-                        })}
-                        placeholder='Ingresa tu contraseña'
-
-                      />
-                      {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
-                      {errors?.password && (
-                        <p className='text-sm text-red-500'>
-                          {errors.password.message}
-                        </p>
-                      )}
-
-                    </div>
-
-
-                    <div className='grid gap-1 py-2'>
-
-                      <Label htmlFor='confirmacion'>Confirmacion</Label>
-                      <Input
-                        {...register('confirmPassword')}
-                        type='password'
-                        className={cn({
-                          'focus-visible:ring-red-500':
-                            errors.confirmPassword,
-                        })}
-                        placeholder='Confirma tu contraseña'
-
-                      />
-                      {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
-                      {errors?.confirmPassword && (
-                        <p className='text-sm text-red-500'>
-                          {errors.confirmPassword.message}
-                        </p>
-                      )}
-
-                    </div>
-                      
-                    <hr className="border-t-8 border-white"></hr>
-                    <hr className="border-t-1 border-gray-400"></hr>
-
-                    <Button>Registrarse</Button>
-
-                    <Dialog>
-
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" className='gap-1.5 justify-end text-teal-700'>
-                          <CircleDollarSign className='h-4 w-4' />
-                          Politica de Pagos
-                        </Button>
-                      </DialogTrigger>
-
-
-                      <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
-
-                        <DialogHeader>
-                          <DialogTitle>Tratamiento de Pagos y Moneda</DialogTitle>
-                          <DialogDescription>
-                            Su seguridad y privacidad financiera es lo más importante para nosotros.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-1.5 py-1.5">
-
-                          <div>
-                            Todos los precios publicados en la UwUteca son en Pesos Colombianos [COP].
-                          </div>
-
-                          <div>
-                            Aceptamos como medio de pago tarjetas de crédito/débito.
-                            Todos los pagos se procesan a través de un proveedor de servicios de pago seguro (Stripe) bajo la normativa PCI DSS a la fecha, para garantizar la seguridad de sus datos financieros.
-                          </div>
-
-                          <div>
-                            Los pagos deben realizarse en su totalidad al momento de la compra. Una vez que se ha realizado el pago, comenzaremos a procesar su pedido. Por favor, tenga en cuenta que todos los precios están en Pesos Colombianos [COP] y que cualquier
-                            tasa por conversión de moneda o compras internacionales es responsabilidad de su banco.
-                          </div>
-
-                        </div>
-
-                        <hr className="border-t-1 border-gray-400"></hr>
-
-                        <DialogFooter>
-                          <div className='text-sm text-semibold text-gray-700'>
-                            Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
-                          </div>
-                        </DialogFooter>
-
-                      </DialogContent>
-
-                    </Dialog>
-
-
-                    <Dialog>
-
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" className='gap-1.5 justify-end text-teal-700'>
-                          <TextSearch className='h-4 w-4' />
-                          Politica de Privacidad
-                        </Button>
-                      </DialogTrigger>
-
-
-                      <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
-
-                        <DialogHeader>
-                          <DialogTitle>Recopilación de Información</DialogTitle>
-                          <DialogDescription>
-                            En la UwUteca, respetamos su privacidad y nos comprometemos a protegerla mediante el cumplimiento de esta política.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-1.5 py-1.5">
-
-                          <div>
-                            No compartimos su información personal con terceros,
-                            excepto en los casos en que sea necesario para cumplir con la ley y proteger nuestros derechos o propiedad.
-                          </div>
-
-                          <div>
-                            Podemos recopilar varios tipos de información acerca los usuarios de nuestro servicio, incluyendo:
-                            correo, contraseña, nombre de usuario, compras y fechas de creacion y modificacion de cuenta e inicios de sesion.
-                            Todas las contraseñas registradas son encirptadas y no se almacenan en texto plano.
-                          </div>
-
-                          <div>
-                            Usamos la información que recopilamos para mantener, proporcionar y mejorar nuestro servicio; que incluye y no se limita a : Presentar nuestro sitio web y su contenido.
-                            Proporcionar productos e información solicitada incluyendo facturación y cobro. Enviar correos de verificación y confirmacion.
-                          </div>
-
-                          <div>
-                            Puedes revisar y cambiar tu información personal iniciando sesión
-                            y visitando tu cuenta.
-                          </div>
-
-                          <div>
-                            Cualquier cambio que hagamos en nuestra política de privacidad en esta página.
-                            Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en: oilstockmanager@gmail.com
-                          </div>
-
-
-                        </div>
-
-                        <hr className="border-t-1 border-gray-400"></hr>
-
-                        <DialogFooter>
-                          <div className='text-sm text-semibold text-gray-700'>
-                            Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
-                          </div>
-                        </DialogFooter>
-
-                      </DialogContent>
-
-                    </Dialog>
+                    {errors?.email && (
+                      <p className='text-sm text-red-500'>
+                        {errors.email.message}
+                      </p>
+                    )}
 
                   </div>
-                
-                </form>
 
-              </div>
+                  <div className='grid gap-1 py-2'>
+                    <Label htmlFor='username'>Username</Label>
+                    <Input
+                      {...register('username')}
+                      className={cn({
+                        'focus-visible:ring-red-500':
+                          errors.username,
+                      })}
+                      placeholder='Ingresa tu nombre de usuario'
+                    />
+
+                    {errors?.username && (
+                      <p className='text-sm text-red-500'>
+                        {errors.username.message}
+                      </p>
+                    )}
+
+                  </div>
+
+                  <div className='grid gap-1 py-2'>
+
+                    <Label htmlFor='password'>Contraseña</Label>
+                    <Input
+                      {...register('password')}
+                      type='password'
+                      className={cn({
+                        'focus-visible:ring-red-500':
+                          errors.password,
+                      })}
+                      placeholder='Ingresa tu contraseña'
+
+                    />
+                    {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
+                    {errors?.password && (
+                      <p className='text-sm text-red-500'>
+                        {errors.password.message}
+                      </p>
+                    )}
+
+                  </div>
+
+
+                  <div className='grid gap-1 py-2'>
+
+                    <Label htmlFor='confirmacion'>Confirmacion</Label>
+                    <Input
+                      {...register('confirmPassword')}
+                      type='password'
+                      className={cn({
+                        'focus-visible:ring-red-500':
+                          errors.confirmPassword,
+                      })}
+                      placeholder='Confirma tu contraseña'
+
+                    />
+                    {/* <div className='text-sm text-gray-600'>La contraseña ha de ser de almenos 8 caracteres.</div> */}
+                    {errors?.confirmPassword && (
+                      <p className='text-sm text-red-500'>
+                        {errors.confirmPassword.message}
+                      </p>
+                    )}
+
+                  </div>
+
+                  <hr className="border-t-8 border-white"></hr>
+                  <hr className="border-t-1 border-gray-400"></hr>
+
+                  <Button>Registrarse</Button>
+
+                  <Dialog>
+
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" className='gap-1.5 justify-end text-teal-700'>
+                        <TextSearch className='h-4 w-4' />
+                        Terminos y Condiciones
+                      </Button>
+                    </DialogTrigger>
+
+
+                    <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px] max-h-[80vh] overflow-y-auto">
+
+                      <DialogHeader>
+                        <DialogTitle>Clausulas de Uso y Politicas</DialogTitle>
+                        <DialogDescription>
+                          En Chizu, respetamos su privacidad y nos comprometemos a protegerla mediante el cumplimiento de estas políticas.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-1.5 py-1.5 text-sm">
+
+                        <div>
+                          <strong>Política de Uso y Privacidad de Datos.</strong>
+                        </div>
+
+                        <div>
+                          En Chizu, respetamos su privacidad y nos comprometemos a protegerla mediante el cumplimiento de esta política.
+                          En Chizu seremos responsables del tratamiento de sus datos. En tal virtud, será posible recolectar, almacenar y usar dichos datos bajo los principios rectores estipulados en el Artículo 4°. Principios para el Tratamiento de datos personales de la Ley 1581 de 2012. Usamos la información que recopilamos para soportar, proporcionar y mejorar nuestro servicio; que incluye y no se limita a: Presentar nuestro sitio web y su contenido. Proporcionar productos e información solicitada incluyendo facturación y cobro. Enviar correos de verificación y confirmación. No compartimos su información personal con terceros, excepto en los casos en que sea necesario para cumplir con la ley y proteger nuestros derechos o propiedad. Podemos recopilar varios tipos de información acerca de los usuarios de nuestro servicio, incluyendo y no limitándose a: correo, contraseña, nombre de usuario, órdenes de compras y fechas de creación y modificación de cuenta. Todas sus contraseñas registradas están encriptadas y no se almacenan en texto plano. Como usuario registrado y titular de su información, puede revisar y cambiar sus datos personales iniciando sesión y visitando su cuenta. Sus derechos como titular de la información  son los previstos en el Artículo 8°. Derechos de los Titulares de la Ley 1581 de 2012, especialmente:
+                          Acceder en forma gratuita a sus datos personales que hayan sido objeto de Tratamiento;
+                          Conocer, actualizar y rectificar sus datos personales frente a los Responsables del Tratamiento o Encargados del Tratamiento. Este derecho se podrá ejercer, entre otros frente a datos parciales, inexactos, incompletos, fraccionados, que induzcan a error, o aquellos cuyo Tratamiento esté expresamente prohibido o no haya sido autorizado;
+                          Revocar la autorización y/o solicitar la supresión del dato cuando en el Tratamiento no se respeten los principios, derechos y garantías constitucionales y legales. La revocatoria y/o supresión procederá cuando la Superintendencia de Industria y Comercio haya determinado que en el Tratamiento el Responsable o Encargado han incurrido en conductas contrarias a esta ley y a la Constitución.
+                        </div>
+
+                        <div>
+                          <strong>Política de procesamiento de Pagos.</strong>
+                        </div>
+                        <div>
+                          Su seguridad y privacidad financiera es lo más importante para nosotros.
+                          Todos los precios publicados en Chizu son en Pesos Colombianos [COP]. Aceptamos como medio de pago tarjetas de crédito/débito. Todos los pagos se procesan a través de un proveedor de servicios de pago seguro (Stripe) bajo la normativa PCI DSS a la fecha, para garantizar la seguridad de sus datos financieros.
+                          Los pagos deben realizarse en su totalidad al momento de la compra. Una vez que se ha realizado el pago, comenzaremos a procesar su pedido. Por favor, tenga en cuenta que todos los precios están en Pesos Colombianos [COP] y que cualquier tasa por conversión de moneda o compras internacionales es responsabilidad de su banco.
+                        </div>
+
+                        <div>
+                          <strong>
+                            Cláusulas de uso.</strong>
+                        </div>
+                        <div>
+                          El usuario debe cumplir con todas las políticas, leyes y regulaciones aplicables al uso de Chizu. En caso que el usuario decida publicar un juego o campaña en Chizu, el usuario debe publicar exclusivamente contenidos de carácter legal y ético. Esto implica, y no se limita, a cumplir con leyes de protección de datos, propiedad intelectual y derechos de autor, no compartir contenido ilegal, ofensivo o cualquier otra normativa relevante. El usuario es responsable del contenido que publique a través de Chizu.
+                          El usuario debe respetar la privacidad de otros usuarios y no debe intentar infringir o aprovecharse de las medidas de seguridad implementadas por la plataforma. Es responsabilidad del usuario mantener seguras las credenciales de su cuenta, las cuales son únicas e intransferibles. Esto incluye no compartir dichas credenciales con terceros y tomar medidas para evitar accesos no autorizados a su cuenta.
+                          El usuario debe utilizar los recursos dispuestos por la plataforma de forma razonable y pertinente, evitando acciones que puedan sobrecargar los sistemas y recursos puestos a disposición, tales que se vulnere la integridad de los servicios ofrecidos por Chizu, afectando negativamente la experiencia de otros usuarios. Chizu se reserva el derecho de suspender o cancelar la cuenta a discreción de cualquier usuario que infringe las cláusulas de uso.
+                          Se ofrecerá un descuento del 25% en la Licencia de publicación de juegos en Chizu. Si los desarrolladores de videojuegos independientes logran recaudar $30 USD, se les devolverá el cobro inicial de $10 USD. Estos descuentos tienen una duración específica y pueden estar sujetos a cambios en cualquier momento a discreción de Chizu.
+                          El usuario debe leer y aceptar los términos y condiciones de uso acá expuestos. Debe cumplir con las políticas establecidas por la plataforma y abstenerse de realizar acciones que vulneren dichas políticas. Se le notificará por correo cualquier cambio que hagamos en nuestras políticas y se verá reflejado en esta misma página.
+                          Podrá ejercer todos sus derechos y consultas a través de los canales dispuestos por Chizu, como responsables del tratamiento de datos, para la atención al público, en particular el correo support.chizu@gmail.com; disponibles de lunes a viernes de 8:00 a.m. a 6:00 p.m., para la atención de requerimientos relacionados con el tratamiento de mis datos personales y otras inquietudes.
+                        </div>
+                        <div>
+                          Considerando todo lo anterior descrito, autorizo a Chizu para que trate mi información personal de acuerdo con la Política de Tratamiento de Datos Personales acá dispuesta. Manifiesto que la presente autorización me fue solicitada y descrita explícitamente antes de otorgar permiso para el uso de mis datos y que la concedo de forma libre y voluntaria una vez leída en su totalidad.
+                        </div>
+
+                      </div>
+
+                      <hr className="border-t-1 border-gray-400"></hr>
+
+                      <DialogFooter>
+                        <div className='text-sm text-semibold text-gray-700'>
+                          Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones.
+                        </div>
+                      </DialogFooter>
+
+                    </DialogContent>
+
+                  </Dialog>
+
+                </div>
+
+              </form>
 
             </div>
+
+          </div>
         </div>
       </div>
 
     </main>
-    )
+  )
 }
 
 export default Page
