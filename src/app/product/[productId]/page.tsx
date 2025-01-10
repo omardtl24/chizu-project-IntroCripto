@@ -1,33 +1,37 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper"
-import { getPayloadClient } from "@/getPayload"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import { formatPrice } from "@/lib/utils"
-import { Check, Shield, X } from "lucide-react"
-import Slider from "@/components/Slider"
-import ProductReel from "@/components/ProductReel"
-import AddCartButton from "@/components/AddToCartButton"
-import { Category } from "../../../payload-types"
-
-
-interface PageProps {
-  params: {
-    productId: string
-  }
-}
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { formatPrice } from "@/lib/utils";
+import { Check, Shield, X } from "lucide-react";
+import Slider from "@/components/Slider";
+import ProductReel from "@/components/ProductReel";
+import AddCartButton from "@/components/AddToCartButton";
+import { Product } from "@/payload-types"
+import {
+  ProductLocal,
+  APIResponse,
+  BadgeProps,
+  CardProps,
+  PageProps,
+  SystemRequirements
+} from "./product-types";
 
 const BREADCRUMBS = [
   { id: 1, name: 'Home', href: '/' },
   { id: 2, name: 'Catalogo', href: '/products' },
-]
+] as const;
 
-// Badge Component
-const Badge = ({ children, className = '', variant = 'default', ...props }) => {
+const Badge: React.FC<BadgeProps> = ({
+  children,
+  className = '',
+  variant = 'default',
+  ...props
+}) => {
   const baseStyles = "inline-flex items-center rounded-md px-2 py-1 text-sm text-black font-medium ring-1 ring-inset";
   const variants = {
     default: "bg-blue-500 text-white ring-blue-600",
     secondary: "bg-gray-700 text-black-200 ring-gray-600"
-  };
+  } as const;
 
   return (
     <span className={`${baseStyles} ${variants[variant]} ${className}`} {...props}>
@@ -36,236 +40,295 @@ const Badge = ({ children, className = '', variant = 'default', ...props }) => {
   );
 };
 
-// Card Component
-const Card = ({ children, className = '', ...props }) => {
+const Card: React.FC<CardProps> = ({
+  children,
+  className = '',
+  ...props
+}) => {
   return (
-    <div className={`rounded-lg  bg-card text-card-foreground shadow-xl ${className}`} {...props}>
+    <div className={`rounded-lg bg-card text-card-foreground shadow-xl ${className}`} {...props}>
       {children}
     </div>
   );
 };
 
-const Page = async ({ params }: PageProps) => {
-  const { productId } = params
-
-  const payload = await getPayloadClient()
-
-  const { docs: products } = await payload.find({
-    collection: 'products',
-    limit: 1,
-    where: {
-      id: {
-        equals: productId,
-      },
-      approvedForSale: {
-        equals: 'approved',
-      },
+const DEFAULT_PRODUCT: ProductLocal = {
+  id: "default-product",
+  name: "Producto No Encontrado",
+  description: "No se encontró la descripción del producto",
+  rating: 5,
+  categories: ["fps", "sci-fi"],
+  price: {
+    current: 45000,
+    original: 50000,
+    discount: 10
+  },
+  developer: "Sin desarrollador",
+  releaseDate: "Sin fecha",
+  // Para el carrusel
+  images: [{ url: "/logo.png", alt: "Default Image" }, { url: "/logo.png", alt: "Default Image2" }],
+  logo: {
+    url: "/logo.png",
+    alt: "Default Logo"
+  },
+  systemRequirements: {
+    minimum: {
+      os: "Windows 10",
+      processor: "Intel Core i3",
+      memory: "4 GB RAM",
+      graphics: "Intel HD Graphics",
+      directX: "Version 11",
+      storage: "50 GB"
     },
-  })
-
-
-  const [product] = products
-  if (!product) { return notFound() }
-
-  const [category] = product.category as Category[]
-  const label = [category.name]
-
-  product.reviews = product.reviews ?? [
-    {
-      username: 'PandaLunar12',
-      rating: 5,
-      comment: 'Excelente juego, me encantó. Muy recomendado.'
-    },
-    {
-      username: 'Monika0922',
-      rating: 4,
-      comment: 'Muy buen juego, pero le faltan algunas mejoras.'
+    recommended: {
+      os: "Windows 10",
+      processor: "Intel Core i5",
+      memory: "8 GB RAM",
+      graphics: "NVIDIA GTX 1060",
+      directX: "Version 12",
+      storage: "50 GB SSD"
     }
-  ]
+  },
+  reviews: {
+    average: 5,
+    total: 0,
+    items: [
+      {
+        id: "1",
+        username: "juan",
+        rating: 4,
+        comment: "juegazao",
+        date: "2024-09-01",
+      }
+    ]
+  },
+  relatedProducts: [
+    {
+      id: "1",
+      name: "halo 4",
+      price: {
+        current: 45,
+        original: 50,
+        discount: 10,
+      },
+      rating: 4.5,
+      mainImage: "https:halo 4.jpg",
+      categories: ["fps", "sci-fi"],
+    }
+  ],
+  metadata: {
+    approvedForSale: true,
+    platform: "PC",
+    features: []
+  },
+  //TODO: Quitar esto de cantidad, no tiene sentido que exista en el producto
+  qty: 12,
+  category: "casos",
+  //TODO: Quitar esto de product_files, no tiene sentido que exista en el producto, ya que se podria interceptar el enlace y obtener el archivo
+  product_files: "file",
+  updatedAt: "2024-09-01T00:00:00.000Z",
+  createdAt: "2021-09-01T00:00:00.000Z",
+};
 
-  const validUrls = product.images
-    .map(({ image }) =>
-      typeof image === 'string' ? image : image.url
-    )
-    .filter(Boolean) as string[]
+const SystemRequirementsSection: React.FC<{
+  title: string;
+  requirements: SystemRequirements;
+  className?: string;
+}> = ({ title, requirements, className = '' }) => (
+  <div className={className}>
+    <h3 className="font-bold mb-2 text-gray-900 dark:text-white">{title}</h3>
+    <ul className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
+      {(Object.entries(requirements) as [keyof SystemRequirements, string][]).map(([key, value]) => (
+        <li key={key}>
+          <span className="font-light">{key}<br /></span>
+          <span className="font-semibold">{value}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+const Page: React.FC<PageProps> = async ({ params }) => {
+  const { productId } = params;
+  let productData: ProductLocal;
+
+  try {
+    const response = await fetch(`/api/products/${productId}`);
+    const result = await response.json() as APIResponse;
+
+    if (result.status === "success") {
+      productData = result.data;
+    } else {
+      productData = DEFAULT_PRODUCT;
+    }
+  } catch (error) {
+    productData = DEFAULT_PRODUCT;
+  }
+
+  if (!productData || !productData.metadata.approvedForSale) {
+    return notFound();
+  }
+
+
+  // Función auxiliar para convertir ProductLocal a Product
+  const convertToProduct = (productLocal: ProductLocal): Product => {
+    return {
+      id: productLocal.id,
+      name: productLocal.name,
+      description: productLocal.description,
+      price: productLocal.price.current,
+      qty: productLocal.qty,
+      category: productLocal.categories,
+      product_files: productLocal.product_files,
+      images: productLocal.images.map((img) => ({
+        image: img.url,
+        id: null,
+      })),
+      updatedAt: productLocal.updatedAt,
+      createdAt: productLocal.createdAt,
+    };
+  };
+
+  const productDataCart: Product = convertToProduct(productData);
+
+  const validUrls = productData.images.map(img => img.url);
+  const categories = productData.categories;
 
   return (
-    <>
-      <div className='bg-[#FCFCFC]'>
-        {/* <ol className='flex items-center mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl' >
-          {BREADCRUMBS.map((breadcrumb, i) => (
-            <li key={breadcrumb.href}>
-              <div className='flex items-center text-sm'>
-                <Link
-                  href={breadcrumb.href}
-                  className='font-medium text-sm text-muted-foreground hover:text-gray-900'>
-                  {breadcrumb.name}
-                </Link>
-                {i !== BREADCRUMBS.length - 1 ? (
-                  <svg
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                    aria-hidden='true'
-                    className='ml-2 h-5 w-5 flex-shrink-0 text-gray-300'>
-                    <path d='M5.555 17.776l8-16 .894.448-8 16-.894-.448z' />
-                  </svg>
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ol> */}
-
-        <div className="min-h-screen bg-[#FCFCFC] xl:mx-20 lg:mx-14 md:mx-10 sm:mx-4">
-          {/* Header */}
-          <div className="w-full px-4 py-6">
-            <h1 className="text-4xl font-bold">{product.name}</h1>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-[#30AEB6] text-2xl pb-1">★</span>
-                ))}
-                <span className="ml-1 text-[#30AEB6]">{product.rating ?? 5}</span>
-              </div>
-              {label?.map((feature, index) => (
-                <Badge key={index} variant="secondary" className="bg-opacity-20">
-                  {feature}
-                </Badge>
+    <div className='bg-[#FCFCFC]'>
+      <div className="min-h-screen bg-[#FCFCFC] xl:mx-20 lg:mx-14 md:mx-10 sm:mx-4">
+        <div className="w-full px-4 py-6">
+          <h1 className="text-4xl font-bold">{productData.name}</h1>
+          <div className="flex items-center gap-2 mt-2">
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className="text-[#30AEB6] text-2xl pb-1">★</span>
               ))}
+              <span className="ml-1 text-[#30AEB6]">{productData.rating}</span>
             </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
-            {/* Left Column - Media */}
-            <div className="lg:col-span-2">
-              {/* Imagen del producto */}
-              <Slider urls={validUrls} />
-
-            </div>
-
-            {/* Right Column - Product Info */}
-            <div className="space-y-6 lg:row-span-2">
-              <img src="https://logowik.com/content/uploads/images/marvel-spider-man-miles-morales8114.logowik.com.webp" alt="miles morales" class="w-full 2xl:h-48 xl:h-40 lg:h-32 object-contain lg:block hidden" />
-
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  {product.price?.discount > 0 && (
-                    <Badge className="bg-blue-500">-{product.price.discount}%</Badge>
-                  )}
-                  <div className="text-right">
-                    {product.price?.original && (
-                      <div className="line-through text-gray-400">
-                        {formatPrice(product.price.original)}
-                      </div>
-                    )}
-
-                    {/* Esto es solo demostrativo */}
-                    {/*                     
-                    {product.price?.discount ?? 23 > 0 && (
-                    <Badge className="bg-blue-500">-{product.price.discount ?? 23}%</Badge>
-                  )}
-                  <div className="text-right">
-                    {product.price?.original ?? 1 && (
-                      <div className="line-through text-gray-400">
-                        {formatPrice(product.price.original ?? 1)}
-                      </div>
-                    )} */}
-                    <div className="text-2xl font-bold">
-                      {formatPrice(product.price.current ?? product.price)}
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="mt-6">
-                    <AddCartButton product={product} />
-                  </div>
-                  <div className="pt-4 border-t border-gray-700">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>Desarrollador</span>
-                      <span>{product.developer ?? "JuegosElPaquito"}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Fecha de lanzamiento</span>
-                      <span>{product.releaseDate ?? "2024/12/12"}</span>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
-            <div className="mt-4 space-y-6 lg:col-span-2">
-              <p className="text-base text-gray-700">
-                {product.description}
-              </p>
-            </div>
-            <div className="mt-4 lg:col-span-3">
-              {/* System Requirements */}
-              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Requisitos de Sistema</h2>
-              <div className="bg-zinc-100 dark:bg-gray-700 rounded-lg p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="md:border-r border-gray-600 pr-4 md:pr-4">
-                    <h3 className="font-bold mb-2 text-gray-900 dark:text-white">Mínimos</h3>
-                    <ul className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
-                      <li><span className="font-light">OS<br /> </span> <span className="font-semibold ">{product.minRequirements?.os ?? "windows 21"}</span></li>
-                      <li><span className="font-light">Processor<br /> </span> <span className="font-semibold ">{product.minRequirements?.processor ?? "intel i1"}</span></li>
-                      <li><span className="font-light">Memory<br /> </span> <span className="font-semibold ">{product.minRequirements?.memory ?? "no muxha"}</span></li>
-                      <li><span className="font-light">Graphics<br /> </span> <span className="font-semibold ">{product.minRequirements?.graphics ?? "humildes"}</span></li>
-                      <li><span className="font-light">DirectX<br /> </span> <span className="font-semibold ">{product.minRequirements?.directX ?? "directo de kick"}</span></li>
-                      <li><span className="font-light">Storage<br /> </span> <span className="font-semibold">{product.minRequirements?.storage ?? "una papa"}</span></li>
-                    </ul>
-                  </div>
-                  <div className="border-gray-600 pl-0 md:pl-4 border-t sm:border-t-0">
-                    <h3 className="font-bold mb-2 text-gray-900 dark:text-white pt-4 lg:pt-0">Recomendados</h3>
-                    <ul className="space-y-2 text-sm text-gray-800 dark:text-gray-200">
-                      <li><span className="font-light">OS<br /> </span> <span className="font-semibold ">{product.recommendedRequirements?.os ?? "windows 21"}</span></li>
-                      <li><span className="font-light">Processor<br /> </span> <span className="font-semibold ">{product.recommendedRequirements?.processor ?? "intel i99"}</span></li>
-                      <li><span className="font-light">Memory<br /> </span> <span className="font-semibold ">{product.recommendedRequirements?.memory ?? "muxha"}</span></li>
-                      <li><span className="font-light">Graphics<br /> </span> <span className="font-semibold ">{product.recommendedRequirements?.graphics ?? "masimos"}</span></li>
-                      <li><span className="font-light">DirectX<br /> </span> <span className="font-semibold ">{product.recommendedRequirements?.directX ?? "directo de twitch"}</span></li>
-                      <li><span className="font-light">Storage<br /> </span> <span className="font-semibold">{product.recommendedRequirements?.storage ?? "una papa pro"}</span></li>
-                    </ul>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div className="mt-4 lg:col-span-3">
-                <div className="dark:bg-gray-900 rounded-lg">
-                  <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Últimas Reseñas</h2>
-                  <div className="rounded-lg bg-zinc-100 space-y-4 px-6">
-                    {product.reviews.map((review, index) => (
-                      <div key={index} className="border-b last:border-b-0 pb-4 first:pt-4 border-gray-200 dark:border-gray-700">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium text-gray-900 dark:text-white">{review.username}</span>
-                          <div className="flex items-center">
-                            {[...Array(review.rating)].map((_, i) => (
-                              <span key={i} className="text-[#30AEB6] text-2xl pb-1">★</span>
-                            ))}
-                            <span className="ml-1">{review.rating}</span>
-                          </div>
-                        </div>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm">{review.comment}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            <div className="py-6 space-y-6 lg:col-span-3">
-              <ProductReel href="/products"
-                query={{ category: [category.name], limit: 4 }}
-                classNamesSlider="bg-zinc-100 px-6 rounded-lg py-4"
-                title={`${label} Similares`}
-                subtitle={`Productos similares a ${product.name} para explorar.`
-              }
-              />
-            </div>
+            {categories.map((category, index) => (
+              <Badge key={index} variant="secondary" className="bg-opacity-20">
+                {category}
+              </Badge>
+            ))}
           </div>
         </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
+          <div className="lg:col-span-2">
+            <Slider urls={validUrls} />
+          </div>
 
+          <div className="space-y-6 lg:row-span-2">
+            <img
+              src={productData.logo.url}
+              alt={productData.logo.alt}
+              className="w-full 2xl:h-48 xl:h-40 lg:h-32 object-contain lg:block hidden"
+            />
 
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                {productData.price.discount > 0 && (
+                  <Badge className="bg-blue-500">-{productData.price.discount}%</Badge>
+                )}
+                <div className="text-right">
+                  {productData.price.original > productData.price.current && (
+                    <div className="line-through text-gray-400">
+                      {formatPrice(productData.price.original)}
+                    </div>
+                  )}
+                  <div className="text-2xl font-bold">
+                    {formatPrice(productData.price.current)}
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="mt-6">
+                  <AddCartButton product={
+                    productDataCart
+                  } />
+                </div>
+                <div className="pt-4 border-t border-gray-700">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span>Desarrollador</span>
+                    <span>{productData.developer}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Fecha de lanzamiento</span>
+                    <span>{productData.releaseDate}</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
 
+          <div className="mt-4 space-y-6 lg:col-span-2">
+            <p className="text-base text-gray-700">
+              {productData.description}
+            </p>
+          </div>
+
+          <div className="mt-4 lg:col-span-3">
+            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+              Requisitos de Sistema
+            </h2>
+            <div className="bg-zinc-100 dark:bg-gray-700 rounded-lg p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <SystemRequirementsSection
+                  title="Mínimos"
+                  requirements={productData.systemRequirements.minimum}
+                  className="md:border-r border-gray-600 pr-4 md:pr-4"
+                />
+                <SystemRequirementsSection
+                  title="Recomendados"
+                  requirements={productData.systemRequirements.recommended}
+                  className="border-gray-600 pl-0 md:pl-4 border-t sm:border-t-0"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 lg:col-span-3">
+            <div className="dark:bg-gray-900 rounded-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                Últimas Reseñas ({productData.reviews.total})
+              </h2>
+              <div className="rounded-lg bg-zinc-100 space-y-4 px-6">
+                {productData.reviews.items.map((review) => (
+                  <div key={review.id} className="border-b last:border-b-0 pb-4 first:pt-4 border-gray-200 dark:border-gray-700">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {review.username}
+                      </span>
+                      <div className="flex items-center">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <span key={i} className="text-[#30AEB6] text-2xl pb-1">★</span>
+                        ))}
+                        <span className="ml-1">{review.rating}</span>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      {review.comment}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="py-6 space-y-6 lg:col-span-3">
+            <ProductReel
+              href="/products"
+              query={{ category: categories, limit: 4 }}
+              classNamesSlider="bg-zinc-100 px-6 rounded-lg py-4"
+              title={`${categories.join(", ")} Similares`}
+              subtitle={`Productos similares a ${productData.name} para explorar.`}
+            />
+          </div>
+        </div>
       </div>
-    </>
-  )
-}
-export default Page
+    </div>
+  );
+};
+
+export default Page;
