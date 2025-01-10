@@ -54,8 +54,8 @@ const Card: React.FC<CardProps> = ({
 
 const DEFAULT_PRODUCT: ProductLocal = {
   id: "default-product",
-  name: "Producto No Encontrado",
-  description: "No se encontró la descripción del producto",
+  name: "Marvel's Spider-Man: Miles Morales",
+  description: "Tras los acontecimientos de Marvel's Spider-Man Remasterizado, el adolescente Miles Morales se adapta a su nuevo barrio al tiempo que sigue los pasos de Peter Parker, su mentor, para convertirse en un nuevo Spider-Man. Pero cuando una feroz lucha de poderes amenaza con destruir su nuevo hogar, el aspirante a héroe se da cuenta de que un gran poder conlleva una gran responsabilidad. Para salvar la Nueva York de Marvel, Miles debe tomar el relevo de Spider-Man y estar a la altura.",
   rating: 5,
   categories: ["fps", "sci-fi"],
   price: {
@@ -66,9 +66,9 @@ const DEFAULT_PRODUCT: ProductLocal = {
   developer: "Sin desarrollador",
   releaseDate: "Sin fecha",
   // Para el carrusel
-  images: [{ url: "/logo.png", alt: "Default Image" }, { url: "/logo.png", alt: "Default Image2" }],
+  images: [{ url: "/spidergetta.webp", alt: "Default Image" }, { url: "/logo.png", alt: "Default Image2" }],
   logo: {
-    url: "/logo.png",
+    url: "/spidegettaLogo.png",
     alt: "Default Logo"
   },
   systemRequirements: {
@@ -91,13 +91,20 @@ const DEFAULT_PRODUCT: ProductLocal = {
   },
   reviews: {
     average: 5,
-    total: 0,
+    total: 1,
     items: [
       {
         id: "1",
-        username: "juan",
+        username: "JuanNaCl",
         rating: 4,
-        comment: "juegazao",
+        comment: "tremenda basura que el game este tan mal optimizado parece que lo hicieron con los pies parece que no les pagaron centavo para hacer la version de pc", 
+        date: "2024-09-01",
+      },
+      {
+        id: "2",
+        username: "FlopaMaster",
+        rating: 4,
+        comment: "Si estas pensando en comprarlo hay unas cosas a tener en cuenta.1. El online de multijugador si esta vivo, pero solo un modo de juego y es duelo por equipos, el resto de modos esta muerto e intentar buscar partida en esos modos es esperar por lo menos 3 a 4 horas a que encuentres un alma en pena en una sala tambien vacia y juntos esperar por el resto de la eternidad2. Zombies esta vivo, pero tampoco todos los mapas(los tres primeros mapas antes del dlc y zombies chronicles estan vivos excluyendo al pobre de zetsubou no shima y el resto de mapas de jungla :v), siendo honesto yo compre este juego por zombies y puedo decir que valen la pena desde mi punto de vista, aunque recomiendo tener el ultimo dlc de los mapas de zombies chronicles, de todas maneras no es necesario comprarlo ya que este juego posee algo muy bueno que son los custom maps que te permiten traer mapas como nuketown zombien o hasta mob of the dead sin tener que pagar nada en lo absoluto, ademas de mods creados por la comunidad de entre los que destaco poner mas jugadores en sala, huds de otros juegos y armas como cold war, etc. (hay un monton es cuestion de buscar un poco ;) 3. Requisitos: Este juego aunque ya es antiguo requiere de un pc medianamente decente asi que por lo menos agenciate una buena tarjeta grafica y unas 8gb de ram. De lo contrario tendras demasiado stutter al jugar ya que este juego esta mal optimizado.", 
         date: "2024-09-01",
       }
     ]
@@ -319,9 +326,9 @@ const Page: React.FC<PageProps> = async ({ params }) => {
           <div className="py-6 space-y-6 lg:col-span-3">
             <ProductReel
               href="/products"
-              query={{ category: categories, limit: 4 }}
+              query={{ category: [categories[0]], limit: 4 }}
               classNamesSlider="bg-zinc-100 px-6 rounded-lg py-4"
-              title={`${categories.join(", ")} Similares`}
+              title={`${categories[0]} Similares`}
               subtitle={`Productos similares a ${productData.name} para explorar.`}
             />
           </div>
