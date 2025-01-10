@@ -5,7 +5,7 @@ import { Typography, Accordion, AccordionHeader, AccordionBody } from "@material
 import { AboutCard } from "@/components";
 import { EventContentCard } from "@/components";
 import Image from "next/image";
-
+import DeleteAccountButton from "@/components/DeleteAccountButton"; // ELIMINAR DESPUES
 // HERO
 function Hero() {
   return (
@@ -288,6 +288,7 @@ export default function Page() {
   return (
     <>
       <Hero />
+      <DeleteAccountButton />
       <AboutEvent />
       <OurStats />
       <EventContent />
