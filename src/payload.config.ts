@@ -35,6 +35,8 @@ export default buildConfig({
         // ogImage: '/thumbnail.jpg',
         },
 
+        css: path.resolve(__dirname, 'admin.css'),
+
         components : {
             graphics : { 
                 Logo: () => React.createElement('img', { src: '/logo.png', alt: 'Logo', style: { width: '177.6px', height: '152.4px' } }),

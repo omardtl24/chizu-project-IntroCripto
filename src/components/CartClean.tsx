@@ -17,7 +17,7 @@ const CartClean = () => {
     }
 
     return (
-        <p className='text-sm font-medium text-blue-600'>
+        <p className='text-sm font-medium text-teal-700'>
             Orden Completada
         </p>
     )
