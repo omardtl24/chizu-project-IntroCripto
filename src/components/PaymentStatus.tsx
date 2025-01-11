@@ -36,7 +36,7 @@ const PaymentStatus = ({orderEmail, orderId, isPaid}: PaymentStatusProps) => {
                 Estado de la Orden:
             </p>
             <p className={isPaid ? 'text-green-600' : ''}>
-                {isPaid ? "Pago Exitoso." : "Pendiente de Pago."}
+                {isPaid ? "Pago Exitoso" : "Pendiente de Pago"}
             </p>
          </div>
     </div>

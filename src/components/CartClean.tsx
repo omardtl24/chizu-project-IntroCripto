@@ -2,14 +2,6 @@
 
 import { useEffect } from "react"
 import { useCart } from "../hooks/use-cart"
-
-// import { trpc } from '@/trpc/client'
-// const { mutate: updateQty } = trpc.auth.updateQty.useMutation({
-//     onSuccess: () => { }
-// })
-        // items.forEach(item => {
-        //     updateQty({ id: item.product.id.toString(), new_qty: -1 * (item?.qty ?? 1) });
-        // })
         
 const CartClean = () => {
     const { items, clearCart } = useCart()

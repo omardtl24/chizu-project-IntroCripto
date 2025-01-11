@@ -34,9 +34,9 @@ export const Users: CollectionConfig = {
 
 
   auth: {
-    maxLoginAttempts: 15,
-    lockTime: 1000 * 60 * 60,
-    tokenExpiration: 7200 * 3,
+    maxLoginAttempts: 5,
+    tokenExpiration: 3600 * 6, // en segundos
+    lockTime: 1000 * 60 * 60 * 2, // en milisegundos
 
     verify: {
       generateEmailHTML: ({ token }) => {

@@ -161,10 +161,14 @@ const Page = () => {
 
                   </div>
 
-                  <Link className='text-right text-sm text-semibold text-gray-600 flex items-end gap-1.5 justify-end' href='/pswd-forgot'>
-                    Recuperar Contraseña
-                    <KeyRound className='h-3.5 w-3.5' />
-                  </Link>
+                  <div className='text-right -mb-1'>
+                    <Button variant='ghost' className='text-sm text-semibold text-gray-600'>
+                      <Link className='text-sm text-semibold text-gray-600 flex items-center gap-1.5' href='/pswd-forgot'>
+                        Recuperar Contraseña
+                        <KeyRound className='h-3.5 w-3.5' />
+                      </Link>
+                    </Button>
+                  </div>
 
                   <hr className="border-t-5 border-white"></hr>
                   <hr className="border-t-5 border-white"></hr>
