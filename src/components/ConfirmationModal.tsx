@@ -1,32 +1,31 @@
-"use client"
+"use client";
 
-import { FC } from "react"
-import { Button } from "./ui/button"
+import { FC } from "react";
+import { Button } from "./ui/button";
 
 interface ConfirmationModalProps {
-  show: boolean
-  title?: string
-  onConfirm: () => void
-  onCancel: () => void
+  show: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  title?: string;
+  description?: string;
 }
-
-
-// * Este componente muestra un modal de confirmación con un fondo semitransparente y opciones de continuar o cancelar.
 
 const ConfirmationModal: FC<ConfirmationModalProps> = ({
   show,
-  title = "¿Está seguro que quiere eliminar su cuenta?",
   onConfirm,
   onCancel,
+  title = "¿Está seguro que quiere eliminar su cuenta?",
+  description = "Esta acción no se puede deshacer.",
 }) => {
-  // Si no se debe mostrar, retornamos null para no renderizar nada
-  if (!show) return null
+  if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-md max-w-sm w-full mx-4">
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
-        <div className="flex gap-4 justify-end">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 !m-0 p-0">
+      <div className="bg-white p-6 rounded-md shadow-lg max-w-sm w-full mx-4">
+        <h2 className="text-xl font-semibold mb-2">{title}</h2>
+        <p className="mb-4 text-gray-700">{description}</p>
+        <div className="flex justify-end gap-4">
           <Button variant="outline" onClick={onCancel}>
             Cancelar
           </Button>
@@ -36,7 +35,7 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ConfirmationModal
+export default ConfirmationModal;
