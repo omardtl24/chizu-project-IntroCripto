@@ -1,0 +1,3 @@
+button.btn.btn--style-secondary.btn--icon-style-without-border:not(#change-password) {
+    display: none !important;
+}

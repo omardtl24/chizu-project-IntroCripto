@@ -117,15 +117,14 @@ export const stripeWebhookHandler = async (
 
             let mailOptions = {
                 from: 'Chizu',
-                to: user.email,
+                to: user.email as string,
                 subject: 'Gracias por tu Compra :3',
                 html: ReceiptEmailHtml({
                     date: new Date(),
-                    email: user.email,
+                    email: user.email as string,
                     orderId: session.metadata.orderId,
                     products: order.products as Product[],
-                    quantities: order.quantities ?? [],
-                    Total: order.total
+                    Total: order.total as number,
                 }),
             };
 

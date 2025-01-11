@@ -3,11 +3,11 @@ import { Access, CollectionConfig } from "payload/types";
 import { number } from "zod";
 
 const adminAndUser: Access = ({ req: { user } }) => {
-    if (user.role === 'admin') return true
-  
-    return {
-      id: { equals: user.id, },
-    }
+  if (user.role === 'admin') return true
+
+  return {
+    id: { equals: user.id, },
+  }
 }
 
 const onlyUser: Access = ({ req: { user } }) => {
@@ -22,27 +22,27 @@ class SpecialError extends APIError {
   }
 }
 
-export const Users : CollectionConfig = {
-    slug : 'users',
-    labels: {singular: 'Usuario', plural: 'Usuarios'},
-    admin : {
-        useAsTitle : 'username',
-        description : 'Registro de todos los usuarios del sistema.',
-        hidden : ({user}) => user.role !== 'admin',
-        hideAPIURL: true,
-    },
+export const Users: CollectionConfig = {
+  slug: 'users',
+  labels: { singular: 'Usuario', plural: 'Usuarios' },
+  admin: {
+    useAsTitle: 'username',
+    description: 'Registro de todos los usuarios del sistema.',
+    hidden: ({ user }) => user.role !== 'admin',
+    hideAPIURL: true,
+  },
 
 
-    auth : {
-        maxLoginAttempts : 15,
-        lockTime : 1000 * 60 * 60,
-        tokenExpiration : 7200 * 3,
+  auth: {
+    maxLoginAttempts: 15,
+    lockTime: 1000 * 60 * 60,
+    tokenExpiration: 7200 * 3,
 
-        verify : { 
-            generateEmailHTML : ({token}) => { 
-                const verifyURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`
+    verify: {
+      generateEmailHTML: ({ token }) => {
+        const verifyURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`
 
-                return `
+        return `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
                 <head>
@@ -337,21 +337,21 @@ export const Users : CollectionConfig = {
                 </html>
                 
                 `
-            },
-            generateEmailSubject : () => {
-                return `Verifica tu Cuenta` 
-            }
-         },
-        
-        forgotPassword : { 
-            generateEmailSubject : () => {
-                return `Recuperacion de Contraseña` 
-            },
-            generateEmailHTML: (params) => {
-                // Use the token provided to allow your user to reset their password
-                const resetPasswordURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/pswd-reset?token=${params?.token}`
-        
-                return `
+      },
+      generateEmailSubject: () => {
+        return `Verifica tu Cuenta`
+      }
+    },
+
+    forgotPassword: {
+      generateEmailSubject: () => {
+        return `Recuperacion de Contraseña`
+      },
+      generateEmailHTML: (params) => {
+        // Use the token provided to allow your user to reset their password
+        const resetPasswordURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/pswd-reset?token=${params?.token}`
+
+        return `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
                 <head>
@@ -646,137 +646,101 @@ export const Users : CollectionConfig = {
                 </html>
                 
                 `
-            },
-         },
+      },
+    },
+  },
+
+  access: {
+    read: adminAndUser,
+    create: ({ req }) => req.user.role === 'admin',
+    delete: ({ req }) => req.user.role === 'admin',
+    unlock: ({ req }) => req.user.role === 'admin',
+    update: onlyUser,
+  },
+
+  fields: [
+
+    {
+      name: 'role',
+      defaultValue: 'user',
+      required: true,
+      type: 'select',
+      options: [{ label: 'Admin', value: 'admin' }, { label: 'User', value: 'user' }],
+      access: {
+        read: ({ req }) => req.user.role === 'admin',
+        update: ({ req }) => req.user.role === 'admin',
+      },
     },
 
-    access : {
-        read : adminAndUser,
-        create: ({ req }) => req.user.role === 'admin',
-        delete: ({ req }) => req.user.role === 'admin',
-        unlock: ({ req }) => req.user.role === 'admin',
-        update: onlyUser,
+    {
+      name: 'username',
+      label: 'Username',
+      type: 'text',
+      required: true,
+      validate: (value) => {
+        if (typeof value !== 'string') {
+          return 'Ingrese una cadena de texto por favor.';
+        }
+        if (value.length < 1) {
+          return 'El nombre de usuario debe tener al menos 1 caracter';
+        }
+        if (value.length > 20) {
+          return 'El nombre de usuario debe tener como maximo 20 caracteres';
+        }
 
+        return true;
+      },
+      access: {
+        update: ({ req: { user }, doc }) => user && doc && user.id === doc.id,
+      },
     },
 
-    // hooks: {
-    //   beforeChange: [
+    {
+      name: 'ordenes',
+      label: 'Ordenes',
+      type: 'number',
+      defaultValue: 0,
+      required: false,
+      access: {
+        create: () => false,
+        update: () => false,
+        read: ({ req }) => req.user.role === 'admin',
+      },
+      admin: {
+        description: 'Total de Ordenes realizadas.',
+      }
+    },
 
-    //     ({ req: { user, method }, data, originalDoc, operation }) => {
+    {
+      name: 'ordenes_hist',
+      label: 'Historial de Ordenes',
+      type: 'relationship',
+      relationTo: 'orders',
+      hasMany: true,
+      required: false,
+      access: {
+        create: () => false,
+        update: () => false,
+        read: ({ req }) => req.user.role === 'admin',
+      },
+      admin: {
+        description: 'Registro de Ordenes realizadas a la fecha.',
+      }
+    },
 
-    //       if (operation === 'update' && data.email !== undefined && 'email' in data ) {    
-    //         if (data.email !== originalDoc.email) {
-    //           data.email = originalDoc.email;
-    //           throw new SpecialError('No se puede cambiar el correo.');
-    //         }
-    //       }
-
-    //     },
-
-    //     async ({ req, originalDoc, operation, data }) => {
-
-    //       if (operation === 'update' && data.username !== undefined && 'username' in data){
-    //         const {docs:existingUser} = await req.payload.find( {
-    //           collection : 'users',
-    //           where : {
-    //               username : {equals : data.username,},
-    //           },
-    //         })
-            
-    //         if (existingUser !== undefined && existingUser.length !== 0){
-    //           throw new SpecialError('El nombre de usuario ya está en uso');
-    //         }
-    //       }
-
-    //     },
-
-    //   ],
-    // },
-
-    fields : [
-
-        { 
-            name : 'role', 
-            defaultValue : 'user', 
-            required : true,
-            type : 'select', 
-            options : [ {label: 'Admin', value : 'admin'}, {label : 'User', value : 'user'} ],
-            access: {
-                read: ({req}) => req.user.role === 'admin',
-                update: () => false,
-            },
-        }, 
-
-        { 
-            name : 'username', 
-            label : 'Username',
-            type : 'text',
-            required : true,
-            validate: (value) => {
-                if (typeof value !== 'string') {
-                    return 'Ingrese una cadena de texto por favor.';
-                }
-                if (value.length < 1) {
-                    return 'El nombre de usuario debe tener al menos 1 caracter';
-                }
-                if (value.length > 20) {
-                    return 'El nombre de usuario debe tener como maximo 20 caracteres';
-                }
-
-                return true;
-            },
-            access: {
-              update: ({ req: { user }, doc }) => user && doc && user.id === doc.id,
-            },
-        }, 
-
-        {
-          name : 'ordenes',
-          label: 'Ordenes',
-          type : 'number',
-          defaultValue : 0,
-          required : false,
-          access : {
-            create: () => false,
-            update: () => false,
-            read: ({req}) => req.user.role === 'admin',
-          },
-          admin : {
-            description : 'Total de Ordenes realizadas.',
-          }
-        },
-
-        {
-          name : 'ordenes_hist',
-          label: 'Orders Record',
-          type : 'relationship',
-          relationTo : 'orders',
-          hasMany : true,
-          required : false,
-          access : {
-            create: () => false,
-            update: () => false,
-            read: ({req}) => req.user.role === 'admin',
-          },
-          admin : {
-            description : 'Registro de Ordenes realizadas a la fecha.',
-          }
-        },
-
-        {
-            name: 'lastLogin',
-            label: 'Ultimo Login',
-            type: 'date',
-            access: {
-                create: () => false,
-                read: ({req}) => req.user.role === 'admin',
-                update: () => false,
-            },
-            admin : {
-              readOnly: true, 
-              // description : 'Historial de Inicios de Sesion a la fecha.',
-            },
-        },      
-    ],
+    {
+      name: 'lastLogin',
+      label: 'Ultimo Login',
+      type: 'date',
+      access: {
+        create: () => false,
+        read: ({ req }) => req.user.role === 'admin',
+        update: () => false,
+      },
+      admin: {
+        readOnly: true,
+      },
+    },
+  ],
 
 }

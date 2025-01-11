@@ -14,7 +14,7 @@ const adquiridos: Access = async ({ req }) => {
   if (!user){ return false }
 
   const { docs: products } = await req.payload.find({
-    collection: 'products', // añadir a payload.config y correr yarn generate:types
+    collection: 'products',
     depth: 0,
     where: {
       user: { equals: user.id, },
@@ -57,7 +57,7 @@ export const ProductFiles: CollectionConfig = {
   labels: {singular: 'Archivo', plural: 'Archivos'},
 
   admin: {
-    hidden: ({ user }) => user.role !== 'admin',
+    // hidden: ({ user }) => user.role !== 'admin',
     hideAPIURL: true,
     description: 'Adelantos de los Mangas para ser descargados por los Usuarios, una vez han adquirido un Manga.',
   },

@@ -16,6 +16,8 @@ const Footer = () => {
         '/verify-email',
         '/sign-up',
         '/sign-in',
+        '/pswd-forgot',
+        '/pswd-reset',
     ]
 
     return (
@@ -34,127 +36,120 @@ const Footer = () => {
 
                 <div className="py-5 flex flex-col md:flex-row md:items-center">
 
-                    <div className="text-center md:text-left flex-grow">
-                        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-                            <Dialog>
+                    <div className='text-center md:text-left'>
+                        {pathsToMinimize.includes(pathname) ? null : (
+                            <div className='flex space-x-8'>
+                                <Dialog>
 
-                                <DialogTrigger asChild>
-                                    <Button variant="ghost" className='gap-1.5 justify-end text-gray-600'>
-                                        <TextSearch className='h-4 w-4' />
-                                        Politica de Privacidad
-                                    </Button>
-                                </DialogTrigger>
+                                    <DialogTrigger asChild>
+                                        <Button variant="ghost" className='gap-1.5 justify-end text-gray-600'>
+                                            <TextSearch className='h-4 w-4' />
+                                            Politica de Privacidad
+                                        </Button>
+                                    </DialogTrigger>
 
 
-                                <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
+                                    <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
 
-                                    <DialogHeader>
-                                        <DialogTitle>Recopilación de Información</DialogTitle>
-                                        <DialogDescription>
-                                            En la UwUteca, respetamos su privacidad y nos comprometemos a protegerla mediante el cumplimiento de esta política.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="grid gap-1.5 py-1.5">
+                                        <DialogHeader>
+                                            <DialogTitle>Recopilación de Información</DialogTitle>
+                                            <DialogDescription>
+                                                En la UwUteca, respetamos su privacidad y nos comprometemos a protegerla mediante el cumplimiento de esta política.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-1.5 py-1.5">
 
-                                        <div>
-                                            No compartimos su información personal con terceros,
-                                            excepto en los casos en que sea necesario para cumplir con la ley y proteger nuestros derechos o propiedad.
+                                            <div>
+                                                No compartimos su información personal con terceros,
+                                                excepto en los casos en que sea necesario para cumplir con la ley y proteger nuestros derechos o propiedad.
+                                            </div>
+
+                                            <div>
+                                                Podemos recopilar varios tipos de información acerca los usuarios de nuestro servicio, incluyendo:
+                                                correo, contraseña, nombre de usuario, compras y fechas de creacion y modificacion de cuenta e inicios de sesion.
+                                                Todas las contraseñas registradas son encirptadas y no se almacenan en texto plano.
+                                            </div>
+
+                                            <div>
+                                                Usamos la información que recopilamos para mantener, proporcionar y mejorar nuestro servicio; que incluye y no se limita a : Presentar nuestro sitio web y su contenido.
+                                                Proporcionar productos e información solicitada incluyendo facturación y cobro. Enviar correos de verificación y confirmacion.
+                                            </div>
+
+                                            <div>
+                                                Puedes revisar y cambiar tu información personal iniciando sesión
+                                                y visitando tu cuenta.
+                                            </div>
+
+                                            <div>
+                                                Cualquier cambio que hagamos en nuestra política de privacidad en esta página.
+                                                Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en: oilstockmanager@gmail.com
+                                            </div>
+
+
                                         </div>
 
-                                        <div>
-                                            Podemos recopilar varios tipos de información acerca los usuarios de nuestro servicio, incluyendo:
-                                            correo, contraseña, nombre de usuario, compras y fechas de creacion y modificacion de cuenta e inicios de sesion.
-                                            Todas las contraseñas registradas son encirptadas y no se almacenan en texto plano.
+                                        <hr className="border-t-1 border-gray-400"></hr>
+
+                                        <DialogFooter>
+                                            <div className='text-sm text-semibold text-gray-700'>
+                                                Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
+                                            </div>
+                                        </DialogFooter>
+
+                                    </DialogContent>
+
+                                </Dialog>
+
+
+                                <Dialog>
+
+                                    <DialogTrigger asChild>
+                                        <Button variant="ghost" className='gap-1.5 justify-end text-gray-600'>
+                                            <CircleDollarSign className='h-4 w-4' />
+                                            Politica de Pagos
+                                        </Button>
+                                    </DialogTrigger>
+
+
+                                    <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
+
+                                        <DialogHeader>
+                                            <DialogTitle>Tratamiento de Pagos y Moneda</DialogTitle>
+                                            <DialogDescription>
+                                                Su seguridad y privacidad financiera es lo más importante para nosotros.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-1.5 py-1.5">
+
+                                            <div>
+                                                Todos los precios publicados en la UwUteca son en Pesos Colombianos [COP].
+                                            </div>
+
+                                            <div>
+                                                Aceptamos como medio de pago tarjetas de crédito/débito.
+                                                Todos los pagos se procesan a través de un proveedor de servicios de pago seguro (Stripe) bajo la normativa PCI DSS a la fecha, para garantizar la seguridad de sus datos financieros.
+                                            </div>
+
+                                            <div>
+                                                Los pagos deben realizarse en su totalidad al momento de la compra. Una vez que se ha realizado el pago, comenzaremos a procesar su pedido. Por favor, tenga en cuenta que todos los precios están en Pesos Colombianos [COP] y que cualquier
+                                                tasa por conversión de moneda o compras internacionales es responsabilidad de su banco.
+                                            </div>
+
                                         </div>
 
-                                        <div>
-                                            Usamos la información que recopilamos para mantener, proporcionar y mejorar nuestro servicio; que incluye y no se limita a : Presentar nuestro sitio web y su contenido.
-                                            Proporcionar productos e información solicitada incluyendo facturación y cobro. Enviar correos de verificación y confirmacion.
-                                        </div>
+                                        <hr className="border-t-1 border-gray-400"></hr>
 
-                                        <div>
-                                            Puedes revisar y cambiar tu información personal iniciando sesión
-                                            y visitando tu cuenta.
-                                        </div>
+                                        <DialogFooter>
+                                            <div className='text-sm text-semibold text-gray-700'>
+                                                Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
+                                            </div>
+                                        </DialogFooter>
 
-                                        <div>
-                                            Cualquier cambio que hagamos en nuestra política de privacidad en esta página.
-                                            Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en: oilstockmanager@gmail.com
-                                        </div>
+                                    </DialogContent>
 
-
-                                    </div>
-
-                                    <hr className="border-t-1 border-gray-400"></hr>
-
-                                    <DialogFooter>
-                                        <div className='text-sm text-semibold text-gray-700'>
-                                            Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
-                                        </div>
-                                    </DialogFooter>
-
-                                </DialogContent>
-
-                            </Dialog>
-
-
-                            <Dialog>
-
-                                <DialogTrigger asChild>
-                                    <Button variant="ghost" className='gap-1.5 justify-end text-gray-600'>
-                                        <CircleDollarSign className='h-4 w-4' />
-                                        Politica de Pagos
-                                    </Button>
-                                </DialogTrigger>
-
-
-                                <DialogContent className="lg:max-w-[1000px] sm:max-w-[650px]">
-
-                                    <DialogHeader>
-                                        <DialogTitle>Tratamiento de Pagos y Moneda</DialogTitle>
-                                        <DialogDescription>
-                                            Su seguridad y privacidad financiera es lo más importante para nosotros.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="grid gap-1.5 py-1.5">
-
-                                        <div>
-                                            Todos los precios publicados en la UwUteca son en Pesos Colombianos [COP].
-                                        </div>
-
-                                        <div>
-                                            Aceptamos como medio de pago tarjetas de crédito/débito. 
-                                            Todos los pagos se procesan a través de un proveedor de servicios de pago seguro (Stripe) bajo la normativa PCI DSS a la fecha, para garantizar la seguridad de sus datos financieros.
-                                        </div>
-
-                                        <div>
-                                            Los pagos deben realizarse en su totalidad al momento de la compra. Una vez que se ha realizado el pago, comenzaremos a procesar su pedido. Por favor, tenga en cuenta que todos los precios están en Pesos Colombianos [COP] y que cualquier
-                                            tasa por conversión de moneda o compras internacionales es responsabilidad de su banco.
-                                        </div>
-
-                                    </div>
-
-                                    <hr className="border-t-1 border-gray-400"></hr>
-
-                                    <DialogFooter>
-                                        <div className='text-sm text-semibold text-gray-700'>
-                                            Al registrar una nueva cuenta, usted acepta nuestros terminos y condiciones para el tratamiento de datos.
-                                        </div>
-                                    </DialogFooter>
-
-                                </DialogContent>
-
-                            </Dialog>
-
-                            <Button
-                                variant="ghost"
-                                className="gap-1.5 justify-end text-gray-600"
-                                onClick={() => (window.location.href = "/landing")}
-                            >
-                            <Compass className="h-5 w-5" />
-                                Descubre más sobre Chizu
-                            </Button>
-                        </div>
+                                </Dialog>
+                            </div>
+                        )}
                     </div>
 
                     

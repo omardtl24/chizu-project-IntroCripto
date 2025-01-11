@@ -201,7 +201,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                   name="search"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Busca tu Manga  :)"
+                  placeholder="Busca tu Juego  :)"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
                 <div className='absolute -left-8 top-0 mt-2 mr-4'>
