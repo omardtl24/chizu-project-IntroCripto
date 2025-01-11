@@ -12,7 +12,6 @@ import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
 import { useRouter  } from 'next/navigation'
 import { toast } from "sonner"
-import QuantityController from "../../components/QtyController"
 
 
 const Page = () => {
@@ -49,7 +48,7 @@ const Page = () => {
                             isMounted && items.length === 0,
                     })}>
                         <h2 className='sr-only'>
-                            Mangas en tu carrito
+                            Juegos en tu carrito
                         </h2>
 
                         {isMounted && items.length === 0 ? (
@@ -58,15 +57,15 @@ const Page = () => {
                                     aria-hidden="true"
                                     className='relative mb-4 h-40 w-40 text-muted-foreground'>
                                     <Image
-                                        src='/cart/rimuru2.png'
+                                        src='/cart/empty-cart-slider.png'
                                         fill
                                         loading='eager'
                                         alt='Rimuru-triste'
                                     />
                                 </div>
-                                <h3 className='font-semibold text-2xl'>Rimuru sigue dormido.</h3>
+                                <h3 className='font-semibold text-2xl'>Pickachu sigue dormido.</h3>
                                 <p className='text-muted-foreground text-center'>
-                                    Coloca algo aquí para despertar a Rimuru.
+                                    Coloca algo aquí para despertar a Pickachu.
                                 </p>
 
                                 <Link
@@ -128,7 +127,7 @@ const Page = () => {
                                                         </Link>
                                                     ) : null}
                                                 </div>
-                                                <QuantityController item={item} />
+                                                {/* <QuantityController item={item} /> */}
                                             </div>
 
                                             <div className='ml-4 flex flex-1 flex-col justify-between sm:ml-6'>
@@ -204,18 +203,7 @@ const Page = () => {
                                     )}
                                 </p>
                             </div>
-                            <div className='flex items-center justify-between border-t border-gray-300 pt-4'>
-                                <div className='flex item-center text-muted-foreground text-sm'>
-                                    <span>Envio</span>
-                                </div>
-                                <div className='text-sm font-medium text-gray-900'>
-                                    {isMounted ? (
-                                        <div className='text-sm font-medium text-gray-900'>Gratis</div>
-                                    ) : (
-                                        <Loader2 className='h-4 w-4 animate-spin text-muted-foreground' />
-                                    )}
-                                </div>
-                            </div>
+
                             <div className='flex items-center justify-between border-t border-gray-400 pt-4'>
                                 <div className='text-base font-medium text-gray-900'>
                                     Total de la Orden

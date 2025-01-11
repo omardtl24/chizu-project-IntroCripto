@@ -83,17 +83,6 @@ const Cart = () => {
 
                     <div className='space-y-1.5 text-sm'>
 
-                        <div className='flex'>
-                            <span className='flex-1'>Productos</span>
-                            <span>{formatPrice(cartTotal)}</span>
-                        </div>
-
-                        <div className='flex'>
-                            <span className='flex-1'>
-                                Envio
-                            </span>
-                            <span>Gratis</span>
-                        </div>
 
                         <br></br>
 
@@ -126,12 +115,12 @@ const Cart = () => {
 
                     <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-                    <div aria-hidden='true'className='relative mb-4 h-60 w-60 text-muted-foreground'>
-                      <Image src='/cart/rimuru.png' fill alt='empty shopping cart hippo'/>
+                    <div aria-hidden='true'className='relative mb-4 h-40 w-40 text-muted-foreground'>
+                      <Image src='/cart/empty-cart-slider.png' fill alt='empty shopping cart hippo'/>
                     </div>
 
                     <div className='text-center text-l font-semibold text-gray-700'>
-                      Rimuru esta dormido. <br/>
+                      Pickachu esta dormido. <br/>
                       Regresa cuanto el Carrito este lleno.
                     </div>
 

@@ -36,18 +36,11 @@ export const paymentRouter = router({
             collection: 'orders',
             data: {
               _isPaid: false,
-              products: valid_products.map((p) => p.id),
+              products: valid_products.map((p) => p.id as string),
               user: user.id,
 
-              quantities : valid_products.map( (product) => ({
-                product_name: product.name,
-                quantity: products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1,
-                acc: product.price * ( products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1 ),
-              })),
-
               total: valid_products.reduce( (acc, product) => {
-                const qty = products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1;
-                return acc + ( product.price * qty );
+                return acc + ( product.price as number);
               }, 0 ),
 
             },
@@ -67,16 +60,16 @@ export const paymentRouter = router({
         });
 
         valid_products.forEach( async (product) => {
-            const qty = products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1
+            // const qty = products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1
             line_items.push({
-                price: product.priceId!,
-                quantity: qty,
+                price: product.priceId as string,
+                quantity: 1,
             });
 
             await payload.update({
                 collection: 'products',
                 id: product.id,
-                data: { compras: (product.compras ?? 0) + qty },
+                data: { compras: (typeof product.compras === 'number' ? product.compras : 0) + 1 },
             });
         })
 

@@ -68,15 +68,12 @@ const Page = () => {
                   
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-            <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+            <div className='relative mb-4 h-60 w-60 text-muted-foreground mt-16'>
               < Image 
                   src='/verify/reset-success.png' alt='verificar-correo-img' 
                   height={1280} width={1280}
               />
             </div>
-
-            <br></br>
-            <br></br>
 
             <Lock className='h-8 w-8 text-green-700'/>
 
@@ -118,8 +115,6 @@ const Page = () => {
                   height={1651} width={1800}
               />
             </div>
-
-            <br></br>
 
             <LockOpen className='h-8 w-8 text-red-700'/>
 
