@@ -29,14 +29,13 @@ export default buildConfig({
 
     admin: {
         user: 'users', // Users slug
+        css: path.resolve(__dirname, '../style.css'),
         bundler: webpackBundler(),
         meta: {
         titleSuffix: '- Chizu',
         favicon: '/favicon.ico',
         // ogImage: '/thumbnail.jpg',
         },
-
-        css: path.resolve(__dirname, 'admin.css'),
 
         components : {
             graphics : { 
