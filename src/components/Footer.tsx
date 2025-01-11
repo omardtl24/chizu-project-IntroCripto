@@ -2,10 +2,9 @@
 
 import { usePathname } from 'next/navigation'
 
-import { CircleDollarSign, TextSearch } from "lucide-react"
+import { CircleDollarSign, Compass, TextSearch, Instagram, Twitter, Github } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-
 
 const Footer = () => {
     const pathname = usePathname()
@@ -41,7 +40,7 @@ const Footer = () => {
                                 <Dialog>
 
                                     <DialogTrigger asChild>
-                                        <Button variant="ghost" className='gap-1.5 justify-end text-teal-800'>
+                                        <Button variant="ghost" className='gap-1.5 justify-end text-gray-700'>
                                             <TextSearch className='h-4 w-4' />
                                             Terminos y Condiciones
                                         </Button>
@@ -108,6 +107,40 @@ const Footer = () => {
                                     </DialogContent>
 
                                 </Dialog>
+                                <Button
+                                    variant="ghost"
+                                    className="gap-1.5 justify-end text-gray-600"
+                                    onClick={() => (window.location.href = "/landing")}
+                                >
+                                <Compass className="h-5 w-5 text-gray-700" />
+                                    <div className='text-gray-700'>
+                                        Descubre más sobre Chizu
+                                    </div>
+                                </Button>
+                                {/* Iconos de redes sociales */}
+                            <div className="flex justify-center md:justify-end items-center">
+                                <Button
+                                    variant="ghost"
+                                    className="text-gray-600"
+                                    onClick={() => window.open('https://instagram.com/chizu_games', '_blank')}
+                                >
+                                <Instagram className="h-5 w-5" />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="text-gray-600"
+                                    onClick={() => window.open('https://twitter.com/ChizuGames', '_blank')}
+                                >
+                                <Twitter className="h-5 w-5" />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="text-gray-600"
+                                    onClick={() => window.open('https://github.com/Juosorioca420/chizu-project', '_blank')}
+                                >
+                                <Github className="h-5 w-5" />
+                                </Button>
+                            </div>
                             </div>
                         )}
                     </div>
