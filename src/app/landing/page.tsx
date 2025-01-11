@@ -5,7 +5,6 @@ import { Typography, Accordion, AccordionHeader, AccordionBody } from "@material
 import { AboutCard } from "@/components";
 import { EventContentCard } from "@/components";
 import Image from "next/image";
-
 // HERO
 function Hero() {
   return (
