@@ -10,7 +10,6 @@ interface ReceiptEmailProps {
   date: Date
   orderId: string
   products: Product[]
-  quantities: { product_name?: string | null; quantity?: number | null; id?: string | null; }[] | null;
   Total: number
 }
 
@@ -19,7 +18,6 @@ export const ReceiptEmail = ({
   date,
   orderId,
   products,
-  quantities,
   Total,
 }: ReceiptEmailProps) => {
 
@@ -29,7 +27,7 @@ export const ReceiptEmail = ({
   return (
     <Html>
       <Head />
-      <Preview>Tu Recibo de la UwUteca</Preview>
+      <Preview>Tu Recibo de Chizu</Preview>
 
       <Body style={main}>
         <Container style={container}>
@@ -39,12 +37,12 @@ export const ReceiptEmail = ({
                 src={`${process.env.NEXT_PUBLIC_SERVER_URL}/logo.png`}
                 width='100'
                 height='100'
-                alt='UwUteca'
+                alt='Chizu'
               />
             </Column>
 
             <Column align='right' style={tableCell}>
-              <Text style={heading}>Receipt</Text>
+              <Text style={heading}>Orden</Text>
             </Column>
           </Section>
           <Section style={informationTable}>
@@ -88,7 +86,6 @@ export const ReceiptEmail = ({
           </Section>
           {products.map((product) => {
             const { image } = product.images[0]
-            const quantity = quantities?.find( q => q.product_name === product.name )?.quantity ?? 1
 
             return (
               <Section key={product.id}>
@@ -106,7 +103,7 @@ export const ReceiptEmail = ({
                 </Column>
                 <Column style={{ paddingLeft: '22px' }}>
                   <Text style={productTitle}>
-                    {product.name} x{quantity}
+                    {product.name}
                   </Text>
                   {product.description ? (
                     <Text style={productDescription}>
@@ -129,7 +126,7 @@ export const ReceiptEmail = ({
                   style={productPriceWrapper}
                   align='right'>
                   <Text style={productPrice}>
-                    {formatPrice( product.price * quantity )}
+                    {formatPrice( product.price )}
                   </Text>
                 </Column>
               </Section>
@@ -177,7 +174,7 @@ export const ReceiptEmail = ({
             <Link href='#'>Privacy Policy </Link>
           </Text> */}
           <Text style={footerCopyright}>
-            Copyright © 2024 UwUteca Inc. <br />{' '}
+            Copyright © 2025 Chizu Inc. <br />{' '}
             <Link href='#'>Todos los Derechos Reservados.</Link>
           </Text>
         </Container>
@@ -289,7 +286,7 @@ const productDescription = {
 
 const productLink = {
   fontSize: '12px',
-  color: 'rgb(0,112,201)',
+  color: 'rgb(4,120,87)',
   textDecoration: 'none',
 }
 

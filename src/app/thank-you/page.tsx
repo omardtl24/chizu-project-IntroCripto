@@ -39,13 +39,13 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
     const orderUserId =
         typeof order.user === 'string'
             ? order.user
-            : order.user.id
+            : (order.user as User).id
 
     if (orderUserId !== user?.id) {   //no autorizado
         return redirect(`/sign-in?origin=thank-you?orderId=${order.id}`)
     }
 
-    const orderTotal = order.total
+    const orderTotal = order.total as number
 
     return (
         <main className="relative lg:min-h-full">
@@ -68,7 +68,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         Su orden ha sido exitosa y puede descargar el adelanto de su manga. Le enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
                         <span className='font-medium text-gray-900'>
-                            {order.user.email}
+                            {(order.user as User).email}
                         </span>
                         ) : null}
                         .
@@ -88,7 +88,6 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                             {(order.products as Product[]).map((product) => {
                                 const [category] = product.category as Category[]
                                 const label = category.name //label del producto
-                                const qty = order.quantities?.find( q => q.product_name === product.name )
 
                                 const downloadUrl = (product.product_files as ProductFile).url as string
                                 const { image } = product.images[0]
@@ -106,7 +105,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                                         <div className='space-y-1'>
                                             <h3 className='text-gray-900'>
                                                 {/* nombre */}
-                                                {product.name} x{qty?.quantity ?? 1}
+                                                {product.name}
                                             </h3>
 
                                             <p className='my-1'>
@@ -117,13 +116,13 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                                         {order._isPaid ? (
                                             <a href={downloadUrl}
                                                 download={product.name}
-                                                className='text-blue-600 hover:underline-offset-2'>
+                                                className='text-teal-600 hover:underline-offset-2'>
                                                 Descargar Adelanto.
                                             </a>
                                         ) : null}
                                     </div>
                                     <p className='flex-none font-medium text-gray-900'>
-                                        {formatPrice(qty?.acc ?? product.price)}
+                                        {formatPrice(product.price)}
                                     </p>
                                 </li>
                                 )
@@ -131,30 +130,25 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         </ul>
 
                         <div className='space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-muted-foreground'>
-                            <div className='flex justify-between'>
-                                <p>Subtotal</p>
+                            {/* <div className='flex justify-between'>
+                                <p>Descuentos</p>
                                 <p className='text-gray-900'>{formatPrice(orderTotal)}</p>
-                            </div>
+                            </div> */}
 
-                            <div className='flex justify-between'>
-                                <p>Envio</p>
-                                <p className='text-gray-900'>Gratis</p>
-                            </div>
-
-                            <div className='flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900'>
+                            <div className='flex items-center justify-between pt-4 text-gray-900'> {/*border-t border-gray-200 */}
                                 <p className='text-base'>Total</p>
                                 <p className='text-base'> {formatPrice(orderTotal)}</p>
                             </div>
                         </div>
 
                         <PaymentStatus
-                            isPaid={order._isPaid}
+                            isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
-                            orderId={order.id} 
+                            orderId={String(order.id)} 
                         />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>
-                            <Link href='/products' className='text-sm font-medium text-blue-600 hover:text-blue-500'>
+                            <Link href='/products' className='text-sm font-medium text-teal-600 hover:text-teal-400'>
                                 Continuar comprando &rarr;
                             </Link>
                         </div>

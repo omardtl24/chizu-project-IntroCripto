@@ -12,7 +12,6 @@ import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
 import { useRouter  } from 'next/navigation'
 import { toast } from "sonner"
-import QuantityController from "../../components/QtyController"
 
 
 const Page = () => {
