@@ -1,7 +1,6 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import MaxWidthWrapper from './MaxWidthWrapper'
 
 import { CircleDollarSign, TextSearch } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -23,6 +22,7 @@ const Footer = () => {
         <footer className='bg-white flex-grow-0'>
             <div className="lg:mx-24 md:mx-20 sm:mx-4">
                 <div className='border-t border-gray-200'>
+
                     {pathsToMinimize.includes(pathname) ? null : (
                         <div className='pb-8 pt-8'>
                             <div className='flex justify-center'>

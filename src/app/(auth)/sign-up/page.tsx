@@ -185,14 +185,14 @@ const Page = () => {
 
                   </div>
 
-                  {/* <div className='text-right -mb-1'>
+                  <div className='text-right -mb-1'>
                     <Button variant='ghost' className='text-sm text-semibold text-gray-600'>
                       <Link className='text-sm text-semibold text-gray-600 flex items-center gap-1.5' href='/activate-user'>
                         Reactivar Cuenta
                         <BookOpenCheck className='h-3.5 w-3.5' />
                       </Link>
                     </Button>
-                  </div> */}
+                  </div>
 
                   <hr className="border-t-8 border-white"></hr>
                   <hr className="border-t-1 border-gray-400"></hr>
