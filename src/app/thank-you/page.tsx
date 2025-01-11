@@ -52,7 +52,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
 
             <div className="hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
                 <Image fill
-                    src='/thank-you.png'
+                    src='/thank-you.webp'
                     className='h-full w-full object-cover object-center'
                     alt='Thank you for your Order :)' />
             </div>
@@ -65,13 +65,13 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         Gracias por su Compra :3
                     </h1>
                     {order._isPaid ? <p className='mt-2 text-base text-muted-foreground'>
-                        Su orden ha sido exitosa y puede descargar el adelanto de su manga. Le enviamos un correo con los detalles a {' '}
+                        Su orden ha sido exitosa y ya puede descargar su Juego. Le hemos enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
                         <span className='font-medium text-gray-900'>
                             {(order.user as User).email}
                         </span>
                         ) : null}
-                        .
+                        
                     </p> : (<p className='mt-2 text-base text-muted-foreground'>
                         Estamos procesando su orden en este momento. Le enviaremos una confirmacion en breve.
                     </p>
@@ -116,8 +116,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                                         {order._isPaid ? (
                                             <a href={downloadUrl}
                                                 download={product.name}
-                                                className='text-teal-600 hover:underline-offset-2'>
-                                                Descargar Adelanto.
+                                                className='text-teal-700 hover:underline-offset-2'>
+                                                Descargar Juego
                                             </a>
                                         ) : null}
                                     </div>
@@ -148,7 +148,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>
-                            <Link href='/products' className='text-sm font-medium text-teal-600 hover:text-teal-400'>
+                            <Link href='/products' className='text-sm font-medium text-teal-700 hover:text-teal-600'>
                                 Continuar comprando &rarr;
                             </Link>
                         </div>
