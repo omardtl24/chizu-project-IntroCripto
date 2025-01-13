@@ -29,12 +29,7 @@ export interface User {
   username: string;
   ordenes?: number | null;
   ordenes_hist?: (string | Order)[] | null;
-  loginDates?:
-    | {
-        loginDate?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  lastLogin?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -58,14 +53,6 @@ export interface Order {
   _isPaid: boolean;
   user: string | User;
   products: (string | Product)[];
-  quantities?:
-    | {
-        product_name?: string | null;
-        quantity?: number | null;
-        acc?: number | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -166,6 +153,17 @@ export interface Media {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
+
+export interface Comentario {
+  id: string;
+  comentario?: string | null;
+  rating: number;
+  user?: (string | null) | User;
+  product?: (string | null) | Product;
+  updatedAt: string;
+  createdAt: string;
+}
+
 export interface PayloadPreference {
   id: string;
   user: {

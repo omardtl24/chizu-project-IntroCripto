@@ -1,4 +1,7 @@
+
 import React from 'react'
+import React, { useEffect, useState } from 'react'
+import MaxWidthWrapper from './MaxWidthWrapper'
 import Link from 'next/link'
 import Image from 'next/image'
 import NavItems from './NavItems'
@@ -22,7 +25,7 @@ const Navbar = async () => {
                             <Link href='/'>
                                 <Image src='/head-icon.png' alt='logo' width={155} height={45} />
                             </Link>
-                            
+                           
                             <div className='hidden lg:block ml-8 self-stretch'>
                                 <NavItems />
                             </div>

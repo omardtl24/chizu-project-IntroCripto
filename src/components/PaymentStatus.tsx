@@ -16,7 +16,7 @@ const PaymentStatus = ({orderEmail, orderId, isPaid}: PaymentStatusProps) => {
 
     const {data} = trpc.payment.pollOrderStatus.useQuery({orderId}, {
         enabled: isPaid === false,
-        refetchInterval: (data) => (data?.isPaid ? false: 1000)
+        refetchInterval: (data) => (data?.isPaid ? false: 1500)
     })
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const PaymentStatus = ({orderEmail, orderId, isPaid}: PaymentStatusProps) => {
                 Estado de la Orden:
             </p>
             <p className={isPaid ? 'text-green-600' : ''}>
-                {isPaid ? "Pago Exitoso." : "Pendiente de Pago."}
+                {isPaid ? "Pago Exitoso" : "Pendiente de Pago"}
             </p>
          </div>
     </div>
