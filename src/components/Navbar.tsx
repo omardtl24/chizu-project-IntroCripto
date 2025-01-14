@@ -1,5 +1,3 @@
-
-import React from 'react'
 import React, { useEffect, useState } from 'react'
 import MaxWidthWrapper from './MaxWidthWrapper'
 import Link from 'next/link'
