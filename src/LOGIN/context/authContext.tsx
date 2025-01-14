@@ -1,12 +1,10 @@
-"use client";
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signInWithPopup, signOut, User } from "firebase/auth";
 import { auth, provider } from "../firebaseConfig";
 
 interface AuthContextType {
     user: User | null;
-    login: () => Promise<void>;
+    login: () => Promise<{ email: string | null, username: string | null }>;
     logout: () => Promise<void>;
 }
 
@@ -30,10 +28,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return () => unsubscribe();
     }, []);
 
-    const login = async () => {
+    const login = async (): Promise<{ email: string | null, username: string | null }> => {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-
+    
         if (user) {
             const userInfo = {
                 email: user.email,
@@ -41,21 +39,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 photoURL: user.photoURL
             };
             console.log('Información del usuario:', userInfo);
-            try {
-                // Aquí se envía la petición al backend con la información del usuario
-                await fetch('https://us-central1-chizu-444720.cloudfunctions.net/createUserInDbByGoogleAuth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userInfo)
-                });
-                console.log('Información del usuario enviada correctamente');
-            } catch (error) {
-                console.error('Error al enviar la información del usuario:', error);
-            }
+            // Esto es un ejemplo de cómo enviar la información del usuario a una función google cloud
+            // try {
+            //     await fetch('https://us-central1-chizu-444720.cloudfunctions.net/createUserInDbByGoogleAuth', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify(userInfo)
+            //     });
+            //     console.log('Información del usuario enviada correctamente');
+            // } catch (error) {
+            //     console.error('Error al enviar la información del usuario:', error);
+            // }
+            return { email: user.email, username: user.displayName }; // Retornamos el correo y el nombre de usuario
         }
+        return { email: null, username: null };
     };
+    
 
     const logout = async () => {
         await signOut(auth);
