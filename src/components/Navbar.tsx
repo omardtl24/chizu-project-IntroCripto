@@ -21,9 +21,8 @@ const Navbar = async () => {
                     <div className='flex h-20 items-center justify-between'>
                         <div className='flex items-center'>
                             <Link href='/'>
-                                <Image src='/head-icon.png' alt='logo' width={65} height={45} />
+                                <img src='/head-icon.png' alt='logo' width={55.5} height={47.6} />
                             </Link>
-                           
                             <div className='hidden lg:block ml-8 self-stretch'>
                                 <NavItems />
                             </div>
