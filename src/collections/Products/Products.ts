@@ -1,24 +1,38 @@
 import { Product } from "../../payload-types"
 import { BeforeChangeHook } from "payload/dist/globals/config/types"
-import { CollectionConfig } from "payload/types"
+import { Access, CollectionConfig } from "payload/types"
 import { stripe } from '../../lib/stripe'
 
+const adminAndUser: Access = ({ req: { user } }) => {
+  if (user.role === 'admin') return true
+
+  return {
+    id: { equals: user.id, },
+  }
+}
+
+const onlyUser: Access = ({ req: { user } }) => {
+  return {
+    id: { equals: user.id, },
+  }
+}
 
 export const Products: CollectionConfig = {
     slug: 'products',
-    labels: { singular: 'Producto', plural: 'Productos' },
+    labels: { singular: 'Juego', plural: 'Juegos' },
 
     admin: {
         useAsTitle: 'name',
-        hidden: ({ user }) => user.role !== 'admin',
-        description: 'Lista de todos los Productos registrados, en publicación o no.',
+        // hidden: ({ user }) => user.role !== 'admin',
+        description: 'Lista de todos los Juegos subidos.',
         hideAPIURL: true,
     },
 
     access: {
-        create: ({ req }) => req.user.role === 'admin',
-        delete: ({ req }) => req.user.role === 'admin',
-        update: ({ req }) => req.user.role === 'admin',
+        create: adminAndUser,
+        delete: adminAndUser,
+        update: adminAndUser,
+        read: adminAndUser,
     },
 
     hooks: {
@@ -83,10 +97,12 @@ export const Products: CollectionConfig = {
             hasMany: false,
             access : {
                 update: () => false,
-                read: () => true,
+                // read: ({req}) => req.user.role === 'admin',
                 create: () => false,
             },
-            admin: { hidden : true, },
+            admin: { 
+                condition: () => false,
+            },
         },
 
         {
@@ -101,6 +117,8 @@ export const Products: CollectionConfig = {
             label: 'Descripcion',
             type: 'textarea',
         },
+
+
 
         {
             name: 'price',
@@ -122,6 +140,7 @@ export const Products: CollectionConfig = {
             name: 'qty',
             label: 'Cantidad',
             type: 'number',
+            defaultValue:1,
             required: true,
             validate: (value) => {
                 if (value < 0) {
@@ -132,6 +151,12 @@ export const Products: CollectionConfig = {
                 }
                 return true
             },
+            access: {
+                read: () => false,
+                update: () => false,
+                create: () => true,
+            },
+            admin : {hidden : true, },
         },
 
         {

@@ -47,7 +47,7 @@ const CartItem = ({product}: {product: Product}) => {
                             {label}
                         </span>
 
-                        <QuantityController item={item} />
+                        {/* <QuantityController item={item} /> */}
 
                         <div className="mt-4 text-xs text-muted-foreground">
                             <button

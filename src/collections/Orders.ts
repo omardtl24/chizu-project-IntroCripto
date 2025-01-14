@@ -13,14 +13,14 @@ export const Orders : CollectionConfig = {
     labels: { singular: 'Orden', plural: 'Ordenes' },
     admin: {
       useAsTitle: 'id',
-      description: 'Registro de todas las ordenes realizadas hasta el momento.',
+      description: 'Registro de todas las ordenes realizadas hasta el momento. Los ejecutables adquiridos estan disponibles en la Sección de Archivos.',
       hideAPIURL: true,
     },
 
     access: {
         read: yourOwn,
         update: ({ req }) => req.user.role === 'admin',
-        delete: () => false,
+        delete: ({ req }) => req.user.role === 'admin',
         create: () => false,
     },
 
@@ -74,38 +74,6 @@ export const Orders : CollectionConfig = {
             update: ({req}) => req.user.role === 'admin',
           },
         },
-
-        {
-          name: 'quantities',
-          label: 'Resumen',
-          type: 'array',
-          fields: [
-              {
-                  type: 'text',
-                  name: 'product_name',
-                  label: 'Producto',
-              },
-              {
-                  type: 'number',
-                  name : 'quantity',
-                  label : 'Cantidad',
-              },
-              {
-                  type: 'number',
-                  name : 'acc',
-                  label : 'Acumulado',
-              },
-          ],
-          access: {
-              create: () => false,
-              read: () => true,
-              update: ({req}) => req.user.role === 'admin',
-          },
-          admin : {
-            description : 'Resumen de los Productos adquiridos.',
-          },
-      },  
-
     ],
 
 }

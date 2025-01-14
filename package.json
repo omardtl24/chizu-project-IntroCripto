@@ -25,7 +25,7 @@
     "@headlessui/react": "^2.0.3",
     "@heroicons/react": "2.0.18",
     "@hookform/resolvers": "^3.3.4",
-    "@material-tailwind/react": "^2.1.2",
+    "@material-tailwind/react": "^2.1.10",
     "@payloadcms/bundler-webpack": "^1.0.6",
     "@payloadcms/db-mongodb": "^1.4.4",
     "@payloadcms/db-postgres": "^0.8.10",

@@ -24,15 +24,13 @@ const VerifyEmailPage = ( {searchParams} : PageProps ) => {
 
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-              <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+              <div className='relative mb-4 h-60 w-60 text-muted-foreground mt-10'>
                 < Image 
-                    src='/verify/verify-mail.png' alt='verificar-correo-img' 
-                    layout="responsive" height={500} width={680}
+                    src='/verify/verify-mail.webp' alt='verificar-correo-img' 
+                    layout="responsive" height={768} width={768}
                 />
               </div>
 
-              <br></br>
-              <br></br>
   
               <h3 className='font-semibold text-2xl text-gray-900'>
                 Verifica tu Cuenta

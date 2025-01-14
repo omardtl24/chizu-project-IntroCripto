@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowRight, MailPlus, Minus } from "lucide-react"
+import { ArrowLeft, MailPlus, Minus } from "lucide-react"
 import Link from "next/link"
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -72,7 +72,7 @@ const Page = ( {searchParams} : PageProps ) => {
                 <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
                   <Image
                       fill
-                      src='/forgot.jpg'
+                      src='/forgot.webp'
                       className='h-full w-full object-cover object-center'
                       alt='forgot'
                   />
@@ -82,7 +82,7 @@ const Page = ( {searchParams} : PageProps ) => {
                   <div className='mx-auto max-w-2xl px-6 py-4 sm:px-6 sm:py-4 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-19 lg:py-4 xl:gap-x-24'>
                 <div className='lg:col-start-2'>
                 
-                <div className='flex flex-col items-center space-y-2 text-center'>
+                <div className='flex flex-col items-center space-y-2 text-center mt-10'>
                   <img src='/logo.png' width={115} height={45} alt="logo"/>
 
                   <h1 className='text-2xl font-semibold tracking-tight'>
@@ -95,8 +95,8 @@ const Page = ( {searchParams} : PageProps ) => {
                       className: 'gap-1.5',
                     })}
                     href='/sign-in'>
+                    <ArrowLeft className='h-4 w-4' />
                     Recordaste la contraseña? Inicia Sesion
-                    <ArrowRight className='h-4 w-4' />
                   </Link>
                 </div>
       
@@ -133,6 +133,7 @@ const Page = ( {searchParams} : PageProps ) => {
 
                     </div>
                   </form>
+
                 </div>
             
                 </div>
@@ -149,10 +150,10 @@ const Page = ( {searchParams} : PageProps ) => {
                   
                   <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-                  <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+                  <div className='relative mb-3 h-30 w-30 text-muted-foreground'>
                     < Image 
-                        src='/verify/forget.png' alt='verificar-correo-img' 
-                        height={1280} width={1280}
+                        src='/verify/forget.webp' alt='verificar-correo-img' 
+                        height={320} width={160}
                     />
                   </div>
 
@@ -170,7 +171,7 @@ const Page = ( {searchParams} : PageProps ) => {
                     <Minus className='h-4 w-8 text-blue-700'/>
 
                     <p className='text-gray-600 text-center text-sm'>
-                      A lo largo del Cielo y en la Tierra, soy yo el unico que recuerda sus contraseñas.
+                      Lo siento Mario, tu contraseña esta en otro castillo.
                     </p>
 
 

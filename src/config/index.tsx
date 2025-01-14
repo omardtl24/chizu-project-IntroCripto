@@ -9,7 +9,7 @@ export const PRODUCT_CATEGORIES = [
               imageSrc: '/nav/picks/img1.jpg',
           },
           {
-              name: 'UwU Selection',
+              name: 'Chizu Selection',
               href: '/products?category=UwU Selection',
               imageSrc: '/nav/picks/img2.jpg',
           },

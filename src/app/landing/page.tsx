@@ -79,6 +79,7 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ children, className, 
   );
 };
 
+
 // HERO
 const Hero: React.FC = () => {
   return (
@@ -171,6 +172,7 @@ const STATS: StatInfo[] = [
   },
 ];
 
+
 export const OurStats: React.FC = () => {
   return (
     <section id="advantages" className="container mx-auto px-8 py-20 grid gap-8">
@@ -188,6 +190,7 @@ export const OurStats: React.FC = () => {
           </Typography>
         </div>
       </ScrollAnimation>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {STATS.map((props, key) => (
