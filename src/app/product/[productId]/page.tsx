@@ -57,11 +57,11 @@ const DEFAULT_PRODUCT: ProductLocal = {
   name: "Marvel's Spider-Man: Miles Morales",
   description: "Tras los acontecimientos de Marvel's Spider-Man Remasterizado, el adolescente Miles Morales se adapta a su nuevo barrio al tiempo que sigue los pasos de Peter Parker, su mentor, para convertirse en un nuevo Spider-Man. Pero cuando una feroz lucha de poderes amenaza con destruir su nuevo hogar, el aspirante a héroe se da cuenta de que un gran poder conlleva una gran responsabilidad. Para salvar la Nueva York de Marvel, Miles debe tomar el relevo de Spider-Man y estar a la altura.",
   rating: 5,
-  categories: ["fps", "sci-fi"],
+  categories: ["FPS", "sci-fi"],
   price: {
-    current: 45000,
+    current: 50000,
     original: 50000,
-    discount: 10
+    discount: 0
   },
   developer: "Sin desarrollador",
   releaseDate: "Sin fecha",
@@ -207,14 +207,14 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         <div className="w-full px-4 py-6">
           <h1 className="text-4xl font-bold">{productData.name}</h1>
           <div className="flex items-center gap-2 mt-2">
-            <div className="flex items-center">
+            <div className="flex items-center pr-2 border-r border-gray-600">
               {[...Array(5)].map((_, i) => (
                 <span key={i} className="text-[#30AEB6] text-2xl pb-1">★</span>
               ))}
               <span className="ml-1 text-[#30AEB6]">{productData.rating}</span>
             </div>
             {categories.map((category, index) => (
-              <Badge key={index} variant="secondary" className="bg-opacity-20">
+              <Badge key={index} variant="secondary" className="bg-transparent text-gray-400">
                 {category}
               </Badge>
             ))}
@@ -327,7 +327,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
             <ProductReel
               href="/products"
               query={{ category: [categories[0]], limit: 4 }}
-              classNamesSlider="bg-zinc-100 px-6 rounded-lg py-4"
+              classNamesSlider=""
               title={`${categories[0]} Similares`}
               subtitle={`Productos similares a ${productData.name} para explorar.`}
             />
