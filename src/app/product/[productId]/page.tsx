@@ -1,4 +1,3 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatPrice } from "@/lib/utils";

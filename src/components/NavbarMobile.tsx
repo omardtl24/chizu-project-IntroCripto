@@ -6,8 +6,13 @@ import { buttonVariants } from './ui/button'
 import Link from 'next/link'
 import NavItems from './NavItems'
 import UserNav from './UserNav'
+import { User } from "../payload-types"
 
-const MobileMenu = ({ user }) => {
+interface MobileMenuProps {
+    user: User | null;
+}
+
+const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
