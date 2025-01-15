@@ -14,7 +14,7 @@ export const authRouter = router({
         .mutation(async ({ input }) => {
             const email = input.email
             const username = input.username
-            const password = (input.password === "LaTripleHptaM0toQueTeP4ri0") ? process.env.PALABRA_MAGICA + email : input.password;
+            const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068") ? process.env.PALABRA_MAGICA + email : input.password;
             console.log(password)
             const payload = await getPayloadClient()
 
@@ -110,7 +110,7 @@ export const authRouter = router({
     signIn: publicProcedure.input(AuthCredentialsValidator).mutation(async ({ input, ctx }) => {
 
         const email = input.email
-        const password = (input.password === "LaTripleHptaM0toQueTeP4ri0") ? process.env.PALABRA_MAGICA + email : input.password;
+        const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068") ? process.env.PALABRA_MAGICA + email : input.password;
         console.log(password)
         const payload = await getPayloadClient()
         const { res } = ctx
