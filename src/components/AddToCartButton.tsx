@@ -48,7 +48,7 @@ const AddCartButton = ({product}: {product: Product}) => {
                 className='w-full'
                 disabled={product.qty <= 0}
             >
-            {isSuccess ? "¡Añadido!" : "Añadir al carrito"}
+            {isSuccess ? "¡Añadido!" : "Añadir al Carrito"}
         </Button>
     )
 }
