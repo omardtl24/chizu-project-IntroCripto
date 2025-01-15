@@ -8,15 +8,29 @@ import { SignUpValidator } from '../lib/validators/signup-credentials-validator'
 import { Product, User } from '../payload-types'
 import crypto from 'crypto';
 
-
 export const authRouter = router({
     createPayloadUser: publicProcedure.input(SignUpValidator)
         .mutation(async ({ input }) => {
+            
             const email = input.email;
             let username = input.username;
-            const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068") ? process.env.PALABRA_MAGICA + email : input.password;
-            console.log(password);
+            const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") ? process.env.PALABRA_MAGICA + email + "A" : input.password;
+            
+            // Aquí se imprime la contraseña en el lado del servidor 
+            console.log("Password:", password);
+            
             const payload = await getPayloadClient();
+
+            // verificar que el correo no este ya registrado
+            const { docs: users } = await payload.find({
+                collection: 'users',
+                where: {
+                    email: { equals: email },
+                },
+            });
+            if (users.length !== 0) {
+                throw new TRPCError({ code: 'CONFLICT' });
+            }
 
             // Función para generar un string aleatorio con al menos una letra mayúscula
             function generarStringConMayuscula() {
@@ -120,7 +134,7 @@ export const authRouter = router({
     signIn: publicProcedure.input(AuthCredentialsValidator).mutation(async ({ input, ctx }) => {
 
         const email = input.email
-        const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068") ? process.env.PALABRA_MAGICA + email : input.password;
+        const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") ? process.env.PALABRA_MAGICA + email + "A" : input.password;
         console.log(password)
         const payload = await getPayloadClient()
         const { res } = ctx

@@ -65,7 +65,7 @@ const Page = () => {
 
   const handleLogin = async () => {
       const email = (await login()).email;
-      const password = "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068"
+      const password = "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A"
       console.log(password);
       if (email) {
           onSubmit({ email, password });
