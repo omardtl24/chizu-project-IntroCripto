@@ -115,13 +115,13 @@ const Cart = () => {
 
                     <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-                    <div aria-hidden='true'className='relative mb-4 h-40 w-40 text-muted-foreground'>
-                      <Image src='/cart/empty-cart-slider.png' fill alt='empty shopping cart hippo'/>
+                    <div aria-hidden='true'className='relative -mb-2 h-60 w-60 text-muted-foreground'>
+                      <Image src='/cart/empty-cart.webp' fill alt='empty shopping cart meow'/>
                     </div>
 
                     <div className='text-center text-l font-semibold text-gray-700'>
-                      Pikachu esta dormido. <br/>
-                      Regresa cuando el Carrito este lleno.
+                      Meow esta dormido. <br/>
+                      Regresa cuando el Carrito este lleno
                     </div>
 
                     <SheetTrigger asChild>
