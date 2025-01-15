@@ -12,31 +12,41 @@ import crypto from 'crypto';
 export const authRouter = router({
     createPayloadUser: publicProcedure.input(SignUpValidator)
         .mutation(async ({ input }) => {
-            const email = input.email
-            const username = input.username
+            const email = input.email;
+            let username = input.username;
             const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068") ? process.env.PALABRA_MAGICA + email : input.password;
-            console.log(password)
-            const payload = await getPayloadClient()
+            console.log(password);
+            const payload = await getPayloadClient();
 
-            // verificar que el correo no este ya rejustrado
-            const { docs: users } = await payload.find({
+            // Función para generar un string aleatorio con al menos una letra mayúscula
+            function generarStringConMayuscula() {
+                let randomString = '';
+                do {
+                    randomString = crypto.randomBytes(10).toString('hex');
+                } while (!/[A-Z]/.test(randomString));
+                return randomString;
+            }
+
+            // Verificar y generar un nombre de usuario único
+            let user_name = await payload.find({
                 collection: 'users',
                 where: {
-                    email: { equals: email, },
+                    username: { equals: username },
                 },
-            })
-            if (users.length !== 0) { throw new TRPCError({ code: 'CONFLICT' }) }
+            });
 
-            const { docs: user_name } = await payload.find({
-                collection: 'users',
-                where: {
-                    username: { equals: username, },
-                },
-            })
-            if (user_name.length !== 0) { throw new TRPCError({ code: 'BAD_REQUEST' }) }
+            while (user_name.docs.length !== 0 || !/[A-Z]/.test(username)) {
+                username = generarStringConMayuscula();
+                user_name = await payload.find({
+                    collection: 'users',
+                    where: {
+                        username: { equals: username },
+                    },
+                });
+            }
 
-            await payload.create({ collection: 'users', data: { email, password, username, role: 'user' }, })
-            return { success: true, sentToEmail: email }
+            await payload.create({ collection: 'users', data: { email, password, username, role: 'user' } });
+            return { success: true, sentToEmail: email };
 
         }),
 

@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 name: user.displayName,
                 photoURL: user.photoURL
             };
-            console.log('Información del usuario:', userInfo);
+            console.log('Información del usuario:', user);
             // Esto es un ejemplo de cómo enviar la información del usuario a una función google cloud
             // try {
             //     await fetch('https://us-central1-chizu-444720.cloudfunctions.net/createUserInDbByGoogleAuth', {
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // } catch (error) {
             //     console.error('Error al enviar la información del usuario:', error);
             // }
-            return { email: user.email, username: user.displayName }; // Retornamos el correo y el nombre de usuario
+            return { email: user.email, username: user.displayName?.slice(0,20) ?? "chizu-user" }; // Retornamos el correo y el nombre de usuario
         }
         return { email: null, username: null };
     };
