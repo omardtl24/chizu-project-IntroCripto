@@ -367,16 +367,16 @@ export const Faq: React.FC = () => {
 };
 
 export const Slider: React.FC = () => {
-  return       <ScrollAnimation animation="fadeIn">
-  <div className="container mx-auto flex flex-col items-center px-4 py-10 scroll-mt-10">
-    <ProductReel
-      key={1}
-      title={'Un'}
-      subtitle={'Juegos disponibles'}
-      href={`/products?category=FPS`}
-      query={{ sort: 'desc', limit: 4, category: ["FPS"] }} />
-  </div>
-</ScrollAnimation>
+  return <ScrollAnimation animation="fadeIn">
+    <div className="container mx-auto flex flex-col items-center px-4 py-10 scroll-mt-10">
+      <ProductReel
+        key={1}
+        title={'Un'}
+        subtitle={'Juegos disponibles'}
+        href={`/products?category=FPS`}
+        query={{ sort: 'desc', limit: 4, category: ["FPS"] }} />
+    </div>
+  </ScrollAnimation>
 };
 
 const Page: React.FC = () => {

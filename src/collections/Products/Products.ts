@@ -101,8 +101,9 @@ export const Products: CollectionConfig = {
                 create: () => false,
             },
             admin: { 
-                condition: () => false,
-            },
+                condition: ({ id }) => !!id, // Mostrar el campo solo si el producto ya existe (tiene ID).
+                readOnly: true, // Hacer el campo de solo lectura en el panel de administración.
+              },
         },
 
         {
@@ -117,8 +118,6 @@ export const Products: CollectionConfig = {
             label: 'Descripcion',
             type: 'textarea',
         },
-
-
 
         {
             name: 'price',
@@ -156,7 +155,9 @@ export const Products: CollectionConfig = {
                 update: () => false,
                 create: () => true,
             },
-            admin : {hidden : true, },
+            admin : {
+                hidden : true, 
+            },
         },
 
         {
@@ -169,35 +170,112 @@ export const Products: CollectionConfig = {
         },
 
         {
-            name : 'compras',
-            label: 'Compras',
-            type : 'number',
-            defaultValue : 0,
-            required : false,
-            access : {
-              create: () => false,
-              update: () => true,
-              read: ({req}) => req.user.role === 'admin',
-            },
-            admin : {
-            //   readOnly : true,
-              description : 'Total de Compras realizadas a este Producto.',
-            },
-            validate: (value) => {
-                if (value < 0) {
-                    return 'El valor no puede ser negativo.'
-                }
-                return true
-            },
-        },
-
-        {
             name: 'product_files',
             label: 'Archivo',
             type: 'relationship',
             relationTo: 'product_files',
             hasMany: false,
             required: true,
+        },
+
+        {
+            name: 'requirements_min',
+            label: 'Requerimientos Minimos de Sistema',
+            type: 'group',
+            fields: [
+                {
+                    name: 'os',
+                    label: 'Sistema Operativo',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Windows 7',
+                },
+                {
+                    name: 'cpu',
+                    label: 'CPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Ryzen 3',
+                },
+                {
+                    name: 'ram',
+                    label: 'RAM [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 4,
+                },
+                {
+                    name: 'gpu',
+                    label: 'GPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'NVIDIA GTX 1050 Ti',
+                },
+                {
+                    name: 'directX',
+                    label: 'directX',
+                    type: 'number',
+                    required: false,
+                    defaultValue: '11',
+                },
+                {
+                    name: 'storage',
+                    label: 'Almacenamiento [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 5,
+                },
+            ],
+        },
+
+        {
+            name: 'requirements_recomended',
+            label: 'Requerimientos Recomendados de Sistema',
+            type: 'group',
+            fields: [
+                {
+                    name: 'os',
+                    label: 'Sistema Operativo',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Windows 10',
+                },
+                {
+                    name: 'cpu',
+                    label: 'CPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Ryzen 5',
+                },
+                {
+                    name: 'ram',
+                    label: 'RAM [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 8,
+                },
+                {
+                    name: 'gpu',
+                    label: 'GPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'AMD RX 5600 XT',
+                },
+                {
+                    name: 'directX',
+                    label: 'directX',
+                    type: 'number',
+                    required: false,
+                    defaultValue: '12',
+                },
+                {
+                    name: 'storage',
+                    label: 'Almacenamiento [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 5,
+                },
+            ],
         },
 
         {
@@ -243,8 +321,8 @@ export const Products: CollectionConfig = {
 
         {
             name: 'images',
+            label: 'Imagenes del Producto',
             type: 'array',
-            label: 'Imagen',
             minRows: 1,
             maxRows: 5,
             required: true,
@@ -254,6 +332,36 @@ export const Products: CollectionConfig = {
             fields: [
                 { name: 'image', type: 'upload', relationTo: 'media', required: true, }
             ],
+        },
+        {
+            name: 'image_logo',
+            label: 'Logo del Producto',
+            type: 'upload',
+            relationTo: 'media',
+            required: true,
+        },
+
+        {
+            name : 'compras',
+            label: 'Compras',
+            type : 'number',
+            defaultValue : 0,
+            required : false,
+            access : {
+              create: () => false,
+              update: () => true,
+            //   read: ({req}) => req.user.role === 'admin',
+            },
+            admin : {
+              readOnly : true,
+              description : 'Total de Compras realizadas a este Producto.',
+            },
+            validate: (value) => {
+                if (value < 0) {
+                    return 'El valor no puede ser negativo.'
+                }
+                return true
+            },
         },
     ]
 }
