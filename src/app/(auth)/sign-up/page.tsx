@@ -51,7 +51,7 @@ const Page = () => {
   const handleLogin = async () => {
     const result = await login();
     console.log('Información del usuario:', result);
-    const password = "LaTripleHptaM0toQueTeP4ri0";
+    const password = "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068";
     console.log(password);
     if (result.email) {
       onSubmit({ username: result.username || '', email: result.email, password: password, confirmPassword: password });
