@@ -68,15 +68,12 @@ const Page = () => {
                   
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-            <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+            <div className='relative mb-4 h-60 w-60 text-muted-foreground mt-16'>
               < Image 
-                  src='/verify/reset-success.png' alt='verificar-correo-img' 
-                  height={1280} width={1280}
+                  src='/verify/success.webp' alt='verificar-correo-img' 
+                  height={768} width={768}
               />
             </div>
-
-            <br></br>
-            <br></br>
 
             <Lock className='h-8 w-8 text-green-700'/>
 
@@ -112,14 +109,12 @@ const Page = () => {
             <div className='container relative flex pt-12 flex-col items-center justify-center lg:px-0'>
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-            <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+            <div className='relative mb-4 h-60 w-60 text-muted-foreground' style={ {left : '17px'} }>
               < Image 
-                  src='/verify/reset-fail.png' alt='verificar-correo-img' 
-                  height={1651} width={1800}
+                  src='/verify/error.webp' alt='error-restableciendo-contraseña-img' 
+                  height={768} width={768}
               />
             </div>
-
-            <br></br>
 
             <LockOpen className='h-8 w-8 text-red-700'/>
 

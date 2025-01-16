@@ -1,34 +1,34 @@
 export const PRODUCT_CATEGORIES = [
   {
-      label: 'Promocionado',
+      label: 'Destacados',
       value: 'select' as const,
       featured: [
           {
-              name: 'Clasicos',
-              href: `/products?category=Clasicos`,
+              name: 'Populares',
+              href: `/products?category=Populares`,
               imageSrc: '/nav/picks/img1.jpg',
           },
           {
-              name: 'UwU Selection',
-              href: '/products?category=UwU Selection',
+              name: 'Chizu Selected',
+              href: '/products?category=Chizu Selected',
               imageSrc: '/nav/picks/img2.jpg',
           },
       ],
   },
 
   {
-      label: 'Populares',
+      label: 'Campañas',
       value: 'popular' as const,
       featured: [
           {
-              name: 'Los mas Vendidos',
+              name: 'Favoritas',
               href: '/products?category=Populares',
               imageSrc: '/nav/fav/img1.jpg',
           },
           {
-              name: 'Aclamados por la Critica',
-              href: `/products?category=Aclamados`,
-              imageSrc: '/nav/fav/img2.jpg',
+              name: 'Recomendados',
+              href: `/products?category=Chizu Selected`,
+              imageSrc: '/nav/fav/img2.png',
           },
       ],
   },

@@ -10,7 +10,7 @@ import Footer from "../components/Footer";
 const jost = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "UwUteca",
+  title: "Chizu",
   description: "Hola :3",
 };
 

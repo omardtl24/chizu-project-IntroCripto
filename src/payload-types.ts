@@ -53,14 +53,6 @@ export interface Order {
   _isPaid: boolean;
   user: string | User;
   products: (string | Product)[];
-  quantities?:
-    | {
-        product_name?: string | null;
-        quantity?: number | null;
-        acc?: number | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -78,6 +70,22 @@ export interface Product {
   category: (string | Category)[];
   compras?: number | null;
   product_files: string | ProductFile;
+  requirements_min: {
+    os: string;
+    cpu: string;
+    ram: number;
+    gpu: string;
+    directX?: number | null;
+    storage: number;
+  };
+  requirements_recomended: {
+    os: string;
+    cpu: string;
+    ram: number;
+    gpu: string;
+    directX?: number | null;
+    storage: number;
+  };
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;
   priceId?: string | null;
   stripeId?: string | null;
@@ -85,6 +93,7 @@ export interface Product {
     image: string | Media;
     id?: string | null;
   }[];
+  image_logo: string | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -161,6 +170,17 @@ export interface Media {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
+
+export interface Comentario {
+  id: string;
+  comentario?: string | null;
+  rating: '1' | '2' | '3' | '4' | '5';
+  user?: (string | null) | User;
+  product?: (string | null) | Product;
+  updatedAt: string;
+  createdAt: string;
+}
+
 export interface PayloadPreference {
   id: string;
   user: {

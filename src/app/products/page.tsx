@@ -155,7 +155,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                               <div key="precio-mayor" className="flex items-center">
 
                                 <button onClick={() => setSortPrice('price')} >
-                                  <CircleArrowUp className={`h-5 w-5 ${sortPrice === 'price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                                  <CircleArrowUp className={`h-5 w-5 ${sortPrice === 'price' ? 'text-teal-700' : 'text-gray-500'}`} />
                                 </button>
 
                                 <label className="ml-3 text-sm text-gray-600">
@@ -166,7 +166,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                               <div key="precio-menor" className="flex items-center">
 
                                 <button onClick={() => setSortPrice('-price')} >
-                                  <CircleArrowDown className={`h-5 w-5 ${sortPrice === '-price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                                  <CircleArrowDown className={`h-5 w-5 ${sortPrice === '-price' ? 'text-teal-700' : 'text-gray-500'}`} />
                                 </button>
 
                                 <label className="ml-3 text-sm text-gray-600">
@@ -201,7 +201,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                   name="search"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Busca tu Manga  :)"
+                  placeholder="Busca tu Juego  :)"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
                 <div className='absolute -left-8 top-0 mt-2 mr-4'>
@@ -284,7 +284,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                         <div className="space-y-4">
                           <div key="precio-mayor" className="flex items-center">
                             <button onClick={() => setSortPrice('price')} >
-                              <CircleArrowUp className={`h-5 w-5 ${sortPrice === 'price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                              <CircleArrowUp className={`h-5 w-5 ${sortPrice === 'price' ? 'text-teal-700' : 'text-gray-500'}`} />
                             </button>
                             <label className="ml-3 text-sm text-gray-600">
                               Menor a Mayor
@@ -292,7 +292,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                           </div>
                           <div key="precio-menor" className="flex items-center">
                             <button onClick={() => setSortPrice('-price')} >
-                              <CircleArrowDown className={`h-5 w-5 ${sortPrice === '-price' ? 'text-blue-600' : 'text-gray-500'}`} />
+                              <CircleArrowDown className={`h-5 w-5 ${sortPrice === '-price' ? 'text-teal-700' : 'text-gray-500'}`} />
                             </button>
                             <label className="ml-3 text-sm text-gray-600">
                               Mayor a Menor

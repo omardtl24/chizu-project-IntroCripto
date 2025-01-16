@@ -1,24 +1,38 @@
 import { Product } from "../../payload-types"
 import { BeforeChangeHook } from "payload/dist/globals/config/types"
-import { CollectionConfig } from "payload/types"
+import { Access, CollectionConfig } from "payload/types"
 import { stripe } from '../../lib/stripe'
 
+const adminAndUser: Access = ({ req: { user } }) => {
+  if (user.role === 'admin') return true
+
+  return {
+    id: { equals: user.id, },
+  }
+}
+
+const onlyUser: Access = ({ req: { user } }) => {
+  return {
+    id: { equals: user.id, },
+  }
+}
 
 export const Products: CollectionConfig = {
     slug: 'products',
-    labels: { singular: 'Producto', plural: 'Productos' },
+    labels: { singular: 'Juego', plural: 'Juegos' },
 
     admin: {
         useAsTitle: 'name',
-        hidden: ({ user }) => user.role !== 'admin',
-        description: 'Lista de todos los Productos registrados, en publicación o no.',
+        // hidden: ({ user }) => user.role !== 'admin',
+        description: 'Lista de todos los Juegos subidos.',
         hideAPIURL: true,
     },
 
     access: {
-        create: ({ req }) => req.user.role === 'admin',
-        delete: ({ req }) => req.user.role === 'admin',
-        update: ({ req }) => req.user.role === 'admin',
+        create: adminAndUser,
+        delete: adminAndUser,
+        update: adminAndUser,
+        read: adminAndUser,
     },
 
     hooks: {
@@ -83,10 +97,13 @@ export const Products: CollectionConfig = {
             hasMany: false,
             access : {
                 update: () => false,
-                read: () => true,
+                // read: ({req}) => req.user.role === 'admin',
                 create: () => false,
             },
-            admin: { hidden : true, },
+            admin: { 
+                condition: ({ id }) => !!id, // Mostrar el campo solo si el producto ya existe (tiene ID).
+                readOnly: true, // Hacer el campo de solo lectura en el panel de administración.
+              },
         },
 
         {
@@ -122,6 +139,7 @@ export const Products: CollectionConfig = {
             name: 'qty',
             label: 'Cantidad',
             type: 'number',
+            defaultValue:1,
             required: true,
             validate: (value) => {
                 if (value < 0) {
@@ -131,6 +149,14 @@ export const Products: CollectionConfig = {
                     return 'El valor debe ser un número entero.'
                 }
                 return true
+            },
+            access: {
+                read: () => false,
+                update: () => false,
+                create: () => true,
+            },
+            admin : {
+                hidden : true, 
             },
         },
 
@@ -144,35 +170,112 @@ export const Products: CollectionConfig = {
         },
 
         {
-            name : 'compras',
-            label: 'Compras',
-            type : 'number',
-            defaultValue : 0,
-            required : false,
-            access : {
-              create: () => false,
-              update: () => true,
-              read: ({req}) => req.user.role === 'admin',
-            },
-            admin : {
-            //   readOnly : true,
-              description : 'Total de Compras realizadas a este Producto.',
-            },
-            validate: (value) => {
-                if (value < 0) {
-                    return 'El valor no puede ser negativo.'
-                }
-                return true
-            },
-        },
-
-        {
             name: 'product_files',
             label: 'Archivo',
             type: 'relationship',
             relationTo: 'product_files',
             hasMany: false,
             required: true,
+        },
+
+        {
+            name: 'requirements_min',
+            label: 'Requerimientos Minimos de Sistema',
+            type: 'group',
+            fields: [
+                {
+                    name: 'os',
+                    label: 'Sistema Operativo',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Windows 7',
+                },
+                {
+                    name: 'cpu',
+                    label: 'CPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Ryzen 3',
+                },
+                {
+                    name: 'ram',
+                    label: 'RAM [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 4,
+                },
+                {
+                    name: 'gpu',
+                    label: 'GPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'NVIDIA GTX 1050 Ti',
+                },
+                {
+                    name: 'directX',
+                    label: 'directX',
+                    type: 'number',
+                    required: false,
+                    defaultValue: '11',
+                },
+                {
+                    name: 'storage',
+                    label: 'Almacenamiento [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 5,
+                },
+            ],
+        },
+
+        {
+            name: 'requirements_recomended',
+            label: 'Requerimientos Recomendados de Sistema',
+            type: 'group',
+            fields: [
+                {
+                    name: 'os',
+                    label: 'Sistema Operativo',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Windows 10',
+                },
+                {
+                    name: 'cpu',
+                    label: 'CPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'Ryzen 5',
+                },
+                {
+                    name: 'ram',
+                    label: 'RAM [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 8,
+                },
+                {
+                    name: 'gpu',
+                    label: 'GPU',
+                    type: 'text',
+                    required: true,
+                    defaultValue: 'AMD RX 5600 XT',
+                },
+                {
+                    name: 'directX',
+                    label: 'directX',
+                    type: 'number',
+                    required: false,
+                    defaultValue: '12',
+                },
+                {
+                    name: 'storage',
+                    label: 'Almacenamiento [GB]',
+                    type: 'number',
+                    required: true,
+                    defaultValue: 5,
+                },
+            ],
         },
 
         {
@@ -218,8 +321,8 @@ export const Products: CollectionConfig = {
 
         {
             name: 'images',
+            label: 'Imagenes del Producto',
             type: 'array',
-            label: 'Imagen',
             minRows: 1,
             maxRows: 5,
             required: true,
@@ -229,6 +332,36 @@ export const Products: CollectionConfig = {
             fields: [
                 { name: 'image', type: 'upload', relationTo: 'media', required: true, }
             ],
+        },
+        {
+            name: 'image_logo',
+            label: 'Logo del Producto',
+            type: 'upload',
+            relationTo: 'media',
+            required: true,
+        },
+
+        {
+            name : 'compras',
+            label: 'Compras',
+            type : 'number',
+            defaultValue : 0,
+            required : false,
+            access : {
+              create: () => false,
+              update: () => true,
+            //   read: ({req}) => req.user.role === 'admin',
+            },
+            admin : {
+              readOnly : true,
+              description : 'Total de Compras realizadas a este Producto.',
+            },
+            validate: (value) => {
+                if (value < 0) {
+                    return 'El valor no puede ser negativo.'
+                }
+                return true
+            },
         },
     ]
 }

@@ -3,11 +3,11 @@ import { Access, CollectionConfig } from "payload/types";
 import { number } from "zod";
 
 const adminAndUser: Access = ({ req: { user } }) => {
-    if (user.role === 'admin') return true
-  
-    return {
-      id: { equals: user.id, },
-    }
+  if (user.role === 'admin') return true
+
+  return {
+    id: { equals: user.id, },
+  }
 }
 
 const onlyUser: Access = ({ req: { user } }) => {
@@ -22,27 +22,27 @@ class SpecialError extends APIError {
   }
 }
 
-export const Users : CollectionConfig = {
-    slug : 'users',
-    labels: {singular: 'Usuario', plural: 'Usuarios'},
-    admin : {
-        useAsTitle : 'username',
-        description : 'Registro de todos los usuarios del sistema.',
-        hidden : ({user}) => user.role !== 'admin',
-        hideAPIURL: true,
-    },
+export const Users: CollectionConfig = {
+  slug: 'users',
+  labels: { singular: 'Usuario', plural: 'Usuarios' },
+  admin: {
+    useAsTitle: 'username',
+    description: 'Registro de todos los usuarios del sistema.',
+    hidden: ({ user }) => user.role !== 'admin',
+    hideAPIURL: true,
+  },
 
 
-    auth : {
-        maxLoginAttempts : 15,
-        lockTime : 1000 * 60 * 60,
-        tokenExpiration : 7200 * 3,
+  auth: {
+    maxLoginAttempts: 5,
+    tokenExpiration: 3600 * 6, // en segundos
+    lockTime: 1000 * 60 * 60 * 2, // en milisegundos
 
-        verify : { 
-            generateEmailHTML : ({token}) => { 
-                const verifyURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`
+    verify: {
+      generateEmailHTML: ({ token }) => {
+        const verifyURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`
 
-                return `
+        return `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
                 <head>
@@ -151,9 +151,9 @@ export const Users : CollectionConfig = {
                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
                       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
                       
-                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #c2e0f4;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #93D3D7;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
                 <div id="u_column_1" class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                  <div style="background-color: #c2e0f4;height: 100%;width: 100% !important;">
+                  <div style="background-color: #93D3D7;height: 100%;width: 100% !important;">
                   <!--[if (!mso)&(!IE)]><!--><div class="v-col-padding" style="box-sizing: border-box; height: 100%; padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;"><!--<![endif]-->
                   
                 <table id="u_content_heading_8" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -162,7 +162,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 60px 10px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <!--[if mso]><table width="100%"><tr><td><![endif]-->
-                    <h1 class="v-font-size" style="margin: 0px; line-height: 130%; text-align: center; word-wrap: break-word; font-family: 'Open Sans',sans-serif; font-size: 50px; font-weight: 400;"><div><strong>Hola :3</strong></div></h1>
+                    <h1 class="v-font-size" style="margin: 0px; line-height: 130%; text-align: center; word-wrap: break-word; font-family: 'Open Sans',sans-serif; font-size: 50px; font-weight: 400;"><div><strong>¡Hola Gamer!</strong></div></h1>
                   <!--[if mso]></td></tr></table><![endif]-->
                 
                       </td>
@@ -212,8 +212,8 @@ export const Users : CollectionConfig = {
                     <tr>
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
                         
-                  <div class="v-font-size" style="font-family: 'Montserrat',sans-serif; font-size: 35px; font-weight: 700; color: #3398c3; line-height: 130%; text-align: center; word-wrap: break-word;">
-                    <p style="line-height: 130%;">Chizu</p>
+                  <div class="v-font-size" style="font-family: 'Montserrat',sans-serif; font-size: 35px; font-weight: 700; color: #2EAEAF; line-height: 130%; text-align: center; word-wrap: break-word;">
+                    <p style="line-height: 130%;">C H I Z U</p>
                   </div>
                 
                       </td>
@@ -252,7 +252,7 @@ export const Users : CollectionConfig = {
                   <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                 <div align="center">
                   <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="" style="height:37px; v-text-anchor:middle; width:152px;" arcsize="11%"  stroke="f" fillcolor="#0c6287"><w:anchorlock/><center style="color:#FFFFFF;"><![endif]-->
-                    <a href="${verifyURL}" target="_blank" class="v-button v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #0c6287; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
+                    <a href="${verifyURL}" target="_blank" class="v-button v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #2EAEAF; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
                       <span style="display:block;padding:10px 20px;line-height:120%;"><span style="line-height: 16.8px;">Verificar Cuenta</span></span>
                     </a>
                     <!--[if mso]></center></v:roundrect><![endif]-->
@@ -281,9 +281,9 @@ export const Users : CollectionConfig = {
                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
                       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
                       
-                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #c2e0f4;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
+                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #93D3D7;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
                 <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                  <div style="background-color: #c2e0f4;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                  <div style="background-color: #93D3D7;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                   <!--[if (!mso)&(!IE)]><!--><div class="v-col-padding" style="box-sizing: border-box; height: 100%; padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
                   
                 <table id="u_content_text_3" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -337,21 +337,21 @@ export const Users : CollectionConfig = {
                 </html>
                 
                 `
-            },
-            generateEmailSubject : () => {
-                return `Verifica tu Cuenta` 
-            }
-         },
-        
-        forgotPassword : { 
-            generateEmailSubject : () => {
-                return `Recuperacion de Contraseña` 
-            },
-            generateEmailHTML: (params) => {
-                // Use the token provided to allow your user to reset their password
-                const resetPasswordURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/pswd-reset?token=${params?.token}`
-        
-                return `
+      },
+      generateEmailSubject: () => {
+        return `Verifica tu Cuenta`
+      }
+    },
+
+    forgotPassword: {
+      generateEmailSubject: () => {
+        return `Recuperacion de Contraseña`
+      },
+      generateEmailHTML: (params) => {
+        // Use the token provided to allow your user to reset their password
+        const resetPasswordURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/pswd-reset?token=${params?.token}`
+
+        return `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
                 <head>
@@ -443,7 +443,7 @@ export const Users : CollectionConfig = {
                 <!--[if !mso]><!--><link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet" type="text/css"><!--<![endif]-->
                 
                 </head>
-                
+    
                 <body class="clean-body u_body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #ffffff;color: #000000">
                   <!--[if IE]><div class="ie-container"><![endif]-->
                   <!--[if mso]><div class="mso-container"><![endif]-->
@@ -460,9 +460,9 @@ export const Users : CollectionConfig = {
                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
                       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
                       
-                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #c2e0f4;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
+                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #93D3D7;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
                 <div id="u_column_1" class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                  <div style="background-color: #c2e0f4;height: 100%;width: 100% !important;">
+                  <div style="background-color: #93D3D7;height: 100%;width: 100% !important;">
                   <!--[if (!mso)&(!IE)]><!--><div class="v-col-padding" style="box-sizing: border-box; height: 100%; padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;"><!--<![endif]-->
                   
                 <table id="u_content_heading_8" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -471,7 +471,7 @@ export const Users : CollectionConfig = {
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 60px 10px;font-family:'Montserrat',sans-serif;" align="left">
                         
                   <!--[if mso]><table width="100%"><tr><td><![endif]-->
-                    <h1 class="v-font-size" style="margin: 0px; line-height: 130%; text-align: center; word-wrap: break-word; font-family: 'Open Sans',sans-serif; font-size: 50px; font-weight: 400;"><div><strong>Hola :3</strong></div></h1>
+                    <h1 class="v-font-size" style="margin: 0px; line-height: 130%; text-align: center; word-wrap: break-word; font-family: 'Open Sans',sans-serif; font-size: 50px; font-weight: 400;"><div><strong>¡Hola Gamer!</strong></div></h1>
                   <!--[if mso]></td></tr></table><![endif]-->
                 
                       </td>
@@ -521,8 +521,8 @@ export const Users : CollectionConfig = {
                     <tr>
                       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
                         
-                  <div class="v-font-size" style="font-family: 'Montserrat',sans-serif; font-size: 35px; font-weight: 700; color: #3398c3; line-height: 130%; text-align: center; word-wrap: break-word;">
-                    <p style="line-height: 130%;">Chizu</p>
+                  <div class="v-font-size" style="font-family: 'Montserrat',sans-serif; font-size: 35px; font-weight: 700; color: #2EAEAF; line-height: 130%; text-align: center; word-wrap: break-word;">
+                    <p style="line-height: 130%;">C H I Z U</p>
                   </div>
                 
                       </td>
@@ -561,7 +561,7 @@ export const Users : CollectionConfig = {
                   <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                 <div align="center">
                   <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="" style="height:37px; v-text-anchor:middle; width:152px;" arcsize="11%"  stroke="f" fillcolor="#0c6287"><w:anchorlock/><center style="color:#FFFFFF;"><![endif]-->
-                    <a href="${resetPasswordURL}" target="_blank" class="v-button v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #0c6287; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
+                    <a href="${resetPasswordURL}" target="_blank" class="v-button v-font-size" style="box-sizing: border-box;display: inline-block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #2EAEAF; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
                       <span style="display:block;padding:10px 20px;line-height:120%;"><span style="line-height: 16.8px;">Recuperar Contraseña</span></span>
                     </a>
                     <!--[if mso]></center></v:roundrect><![endif]-->
@@ -590,9 +590,9 @@ export const Users : CollectionConfig = {
                     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
                       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
                       
-                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #c2e0f4;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
+                <!--[if (mso)|(IE)]><td align="center" width="600" class="v-col-padding" style="background-color: #93D3D7;width: 600px;padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
                 <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                  <div style="background-color: #c2e0f4;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                  <div style="background-color: #93D3D7;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
                   <!--[if (!mso)&(!IE)]><!--><div class="v-col-padding" style="box-sizing: border-box; height: 100%; padding: 50px 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
                   
                 <table id="u_content_text_3" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -646,137 +646,101 @@ export const Users : CollectionConfig = {
                 </html>
                 
                 `
-            },
-         },
+      },
+    },
+  },
+
+  access: {
+    read: adminAndUser,
+    create: ({ req }) => req.user.role === 'admin',
+    delete: ({ req }) => req.user.role === 'admin',
+    unlock: ({ req }) => req.user.role === 'admin',
+    update: onlyUser,
+  },
+
+  fields: [
+
+    {
+      name: 'role',
+      defaultValue: 'user',
+      required: true,
+      type: 'select',
+      options: [{ label: 'Admin', value: 'admin' }, { label: 'User', value: 'user' }],
+      access: {
+        read: ({ req }) => req.user.role === 'admin',
+        update: ({ req }) => req.user.role === 'admin',
+      },
     },
 
-    access : {
-        read : adminAndUser,
-        create: ({ req }) => req.user.role === 'admin',
-        delete: ({ req }) => req.user.role === 'admin',
-        unlock: ({ req }) => req.user.role === 'admin',
-        update: onlyUser,
+    {
+      name: 'username',
+      label: 'Username',
+      type: 'text',
+      required: true,
+      validate: (value) => {
+        if (typeof value !== 'string') {
+          return 'Ingrese una cadena de texto por favor.';
+        }
+        if (value.length < 1) {
+          return 'El nombre de usuario debe tener al menos 1 caracter';
+        }
+        if (value.length > 20) {
+          return 'El nombre de usuario debe tener como maximo 20 caracteres';
+        }
 
+        return true;
+      },
+      access: {
+        update: ({ req: { user }, doc }) => user && doc && user.id === doc.id,
+      },
     },
 
-    // hooks: {
-    //   beforeChange: [
+    {
+      name: 'ordenes',
+      label: 'Ordenes',
+      type: 'number',
+      defaultValue: 0,
+      required: false,
+      access: {
+        create: () => false,
+        update: () => false,
+        read: ({ req }) => req.user.role === 'admin',
+      },
+      admin: {
+        description: 'Total de Ordenes realizadas.',
+      }
+    },
 
-    //     ({ req: { user, method }, data, originalDoc, operation }) => {
+    {
+      name: 'ordenes_hist',
+      label: 'Historial de Ordenes',
+      type: 'relationship',
+      relationTo: 'orders',
+      hasMany: true,
+      required: false,
+      access: {
+        create: () => false,
+        update: () => false,
+        read: ({ req }) => req.user.role === 'admin',
+      },
+      admin: {
+        description: 'Registro de Ordenes realizadas a la fecha.',
+      }
+    },
 
-    //       if (operation === 'update' && data.email !== undefined && 'email' in data ) {    
-    //         if (data.email !== originalDoc.email) {
-    //           data.email = originalDoc.email;
-    //           throw new SpecialError('No se puede cambiar el correo.');
-    //         }
-    //       }
-
-    //     },
-
-    //     async ({ req, originalDoc, operation, data }) => {
-
-    //       if (operation === 'update' && data.username !== undefined && 'username' in data){
-    //         const {docs:existingUser} = await req.payload.find( {
-    //           collection : 'users',
-    //           where : {
-    //               username : {equals : data.username,},
-    //           },
-    //         })
-            
-    //         if (existingUser !== undefined && existingUser.length !== 0){
-    //           throw new SpecialError('El nombre de usuario ya está en uso');
-    //         }
-    //       }
-
-    //     },
-
-    //   ],
-    // },
-
-    fields : [
-
-        { 
-            name : 'role', 
-            defaultValue : 'user', 
-            required : true,
-            type : 'select', 
-            options : [ {label: 'Admin', value : 'admin'}, {label : 'User', value : 'user'} ],
-            access: {
-                read: ({req}) => req.user.role === 'admin',
-                update: () => false,
-            },
-        }, 
-
-        { 
-            name : 'username', 
-            label : 'Username',
-            type : 'text',
-            required : true,
-            validate: (value) => {
-                if (typeof value !== 'string') {
-                    return 'Ingrese una cadena de texto por favor.';
-                }
-                if (value.length < 1) {
-                    return 'El nombre de usuario debe tener al menos 1 caracter';
-                }
-                if (value.length > 20) {
-                    return 'El nombre de usuario debe tener como maximo 20 caracteres';
-                }
-
-                return true;
-            },
-            access: {
-              update: ({ req: { user }, doc }) => user && doc && user.id === doc.id,
-            },
-        }, 
-
-        {
-          name : 'ordenes',
-          label: 'Ordenes',
-          type : 'number',
-          defaultValue : 0,
-          required : false,
-          access : {
-            create: () => false,
-            update: () => false,
-            read: ({req}) => req.user.role === 'admin',
-          },
-          admin : {
-            description : 'Total de Ordenes realizadas.',
-          }
-        },
-
-        {
-          name : 'ordenes_hist',
-          label: 'Orders Record',
-          type : 'relationship',
-          relationTo : 'orders',
-          hasMany : true,
-          required : false,
-          access : {
-            create: () => false,
-            update: () => false,
-            read: ({req}) => req.user.role === 'admin',
-          },
-          admin : {
-            description : 'Registro de Ordenes realizadas a la fecha.',
-          }
-        },
-
-        {
-            name: 'lastLogin',
-            label: 'Ultimo Login',
-            type: 'date',
-            access: {
-                create: () => false,
-                read: ({req}) => req.user.role === 'admin',
-                update: () => false,
-            },
-            admin : {
-              readOnly: true, 
-              // description : 'Historial de Inicios de Sesion a la fecha.',
-            },
-        },      
-    ],
+    {
+      name: 'lastLogin',
+      label: 'Ultimo Login',
+      type: 'date',
+      access: {
+        create: () => false,
+        read: ({ req }) => req.user.role === 'admin',
+        update: () => false,
+      },
+      admin: {
+        readOnly: true,
+      },
+    },
+  ],
 
 }

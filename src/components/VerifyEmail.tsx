@@ -30,10 +30,10 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
 
       <div className='flex flex-col items-center gap-2'>
 
-        <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+        <div className='relative mb-4 h-60 w-60 text-muted-foreground ml-2' style={{left: '17px'}}>
             < Image 
-                src='/verify/error.png' alt='error-correo-img' 
-                layout="responsive" height={680} width={680}
+                src='/verify/error.webp' alt='error-correo-img' 
+                layout="responsive" height={768} width={768}
             />
         </div>
 
@@ -63,16 +63,12 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
 
       <div className='flex h-full flex-col items-center justify-center'>
 
-        <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+        <div className='relative h-60 w-60 text-muted-foreground mt-10 mb-2'>
             < Image 
-                src='/verify/success.png' alt='success-correo-img' 
-                layout="responsive" height={724} width={1156}
+                src='/verify/success.webp' alt='success-correo-img' 
+                layout="responsive" height={768} width={768}
             />
         </div>
-
-        <br></br>
-        <br></br>
-        <br></br>
 
         <MailCheck className='h-10 w-10 text-green-600' />
 
@@ -81,8 +77,8 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
         </h3>
 
         <p className='text-gray-800 text-center mt-1'>
-          Gracias por registrarse a la {' '}
-          <span className='font-semibold text-blue-700' >UwUteca</span>.
+          Gracias por registrarse en {' '}
+          <span className='font-semibold text-teal-800' >Chizu</span>.
         </p>
 
         <hr></hr>
