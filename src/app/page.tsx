@@ -10,6 +10,7 @@ import {
   Slider
 } from '@/components/landing-components';
 
+
 const Page: React.FC = () => {
   return (
     <>
