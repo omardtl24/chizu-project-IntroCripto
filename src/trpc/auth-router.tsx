@@ -11,14 +11,14 @@ import crypto from 'crypto';
 export const authRouter = router({
     createPayloadUser: publicProcedure.input(SignUpValidator)
         .mutation(async ({ input }) => {
-            
+
             const email = input.email;
             let username = input.username;
             const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") ? process.env.PALABRA_MAGICA + email + "A" : input.password;
-            
+
             // Aquí se imprime la contraseña en el lado del servidor 
             console.log("Password:", password);
-            
+
             const payload = await getPayloadClient();
 
             // verificar que el correo no este ya registrado
@@ -31,34 +31,36 @@ export const authRouter = router({
             if (users.length !== 0) {
                 throw new TRPCError({ code: 'CONFLICT' });
             }
+            if (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") {
+                // Función para generar un string aleatorio con al menos una letra mayúscula
+                function generarStringConMayuscula() {
+                    let randomString = '';
+                    do {
+                        randomString = crypto.randomBytes(10).toString('hex');
+                    } while (!/[A-Z]/.test(randomString));
+                    return randomString;
+                }
 
-            // Función para generar un string aleatorio con al menos una letra mayúscula
-            function generarStringConMayuscula() {
-                let randomString = '';
-                do {
-                    randomString = crypto.randomBytes(10).toString('hex');
-                } while (!/[A-Z]/.test(randomString));
-                return randomString;
-            }
-
-            // Verificar y generar un nombre de usuario único
-            let user_name = await payload.find({
-                collection: 'users',
-                where: {
-                    username: { equals: username },
-                },
-            });
-
-            while (user_name.docs.length !== 0 || !/[A-Z]/.test(username)) {
-                username = generarStringConMayuscula();
-                user_name = await payload.find({
+                // Verificar y generar un nombre de usuario único
+                let user_name = await payload.find({
                     collection: 'users',
                     where: {
                         username: { equals: username },
                     },
                 });
+
+                while (user_name.docs.length !== 0 || !/[A-Z]/.test(username)) {
+                    username = generarStringConMayuscula();
+                    user_name = await payload.find({
+                        collection: 'users',
+                        where: {
+                            username: { equals: username },
+                        },
+                    });
+                }
             }
 
+            console.log("Completado ssss");
             await payload.create({ collection: 'users', data: { email, password, username, role: 'user' } });
             return { success: true, sentToEmail: email };
 
@@ -154,7 +156,7 @@ export const authRouter = router({
                 res: res,
             })
             // payload.logger.info(`Se ha iniciado sesion ${user.username}, ${user.id}`)
-            await payload.update( { collection : 'users', id : user.id, data : { lastLogin : new Date().toISOString() } } )
+            await payload.update({ collection: 'users', id: user.id, data: { lastLogin: new Date().toISOString() } })
 
             return { success: true }
         }
