@@ -9,7 +9,7 @@ import { ArrowLeft, TextSearch, CircleDollarSign, BookOpenCheck } from "lucide-r
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ZodError } from 'zod'
+import { set, ZodError } from 'zod'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { SignUpValidator, TypeSignUpValidator } from '@/lib/validators/signup-credentials-validator'
@@ -17,6 +17,7 @@ import Image from 'next/image'
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AuthProvider, useAuth } from '@/LOGIN/context/authContext'
+import { useState } from 'react'
 
 const Page = () => {
   const router = useRouter();
@@ -24,8 +25,11 @@ const Page = () => {
     resolver: zodResolver(SignUpValidator),
   });
 
-  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate } = trpc.auth.createPayloadUser.useMutation({
     onError: (err) => {
+      setIsLoading(false);
       if (err.data?.code === 'CONFLICT') {
         toast.warning('Este correo ya se encuentra registrado.');
         return;
@@ -41,6 +45,7 @@ const Page = () => {
       toast.error('Hubo un error en el servidor, porfavor intente de nuevo.');
     },
     onSuccess: ({ sentToEmail }) => {
+      setIsLoading(false);
       toast.success(`Porfavor verifique su cuenta en ${sentToEmail}.`);
       router.push('/verify-email?to=' + sentToEmail);
     },
@@ -49,10 +54,13 @@ const Page = () => {
   const { login, logout } = useAuth();
 
   const handleLogin = async () => {
+    setIsLoading(true);
     const result = await login();
-    console.log('Información del usuario:', result);
+    if (result.email === null) {
+      setIsLoading(false);
+      return;
+    }
     const password = "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A";
-    console.log(password);
     if (result.email) {
       onSubmit({ username: result.username || '', email: result.email, password: password, confirmPassword: password });
     }
@@ -60,6 +68,7 @@ const Page = () => {
   };
 
   const onSubmit = ({ username, email, password, confirmPassword }: TypeSignUpValidator) => {
+    setIsLoading(true);
     mutate({ username, email, password, confirmPassword });
   };
 
@@ -166,7 +175,7 @@ const Page = () => {
                   </div>
                   <hr className="border-t-8 border-white"></hr>
                   <hr className="border-t-1 border-gray-400"></hr>
-                  <Button className='mt-2'>Registrarse</Button>
+                  <Button isLoading={isLoading} className='mt-2'>Registrarse</Button>
                 </div>
               </form>
               <Button

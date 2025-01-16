@@ -29,9 +29,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const login = async (): Promise<{ email: string | null, username: string | null }> => {
+        try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-    
+        } catch (error) {
+            if ((error as { code: string }).code === 'auth/popup-closed-by-user') {
+                return { email: null, username: null };
+            }
+        }
         if (user) {
             const userInfo = {
                 email: user.email,
