@@ -371,10 +371,10 @@ export const Slider: React.FC = () => {
     <div className="container mx-auto flex flex-col items-center px-4 py-10 scroll-mt-10">
       <ProductReel
         key={1}
-        title={'Un'}
-        subtitle={'Juegos disponibles'}
-        href={`/products?category=FPS`}
-        query={{ sort: 'desc', limit: 4, category: ["FPS"] }} />
+        title={'Chizu Selected'}
+        subtitle={'Nuestros Juegos Favoritos'}
+        href={`/products?category=Chizu Selected`}
+        query={{ sort: 'desc', limit: 4, category: ["Chizu Selected"] }} />
     </div>
   </ScrollAnimation>
 };

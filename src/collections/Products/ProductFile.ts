@@ -6,6 +6,13 @@ const addUser: BeforeChangeHook = ({ req, data }) => {
   const user = req.user as User | null
   return { ...data, user: user?.id }
 }
+const adminAndUser: Access = ({ req: { user } }) => {
+  if (user.role === 'admin') return true
+
+  return {
+    id: { equals: user.id, },
+  }
+}
 
 const adquiridos: Access = async ({ req }) => {
   const user = req.user as User | null
@@ -59,7 +66,8 @@ export const ProductFiles: CollectionConfig = {
   admin: {
     // hidden: ({ user }) => user.role !== 'admin',
     hideAPIURL: true,
-    description: 'Adelantos de los Mangas para ser descargados por los Usuarios, una vez han adquirido un Manga.',
+    description: 'Recompensas y Juegos adquiridos o subidos.',
+    useAsTitle: 'id',
   },
 
   hooks: {
@@ -68,14 +76,14 @@ export const ProductFiles: CollectionConfig = {
 
   access: {
     read: adquiridos,
-    update: ({ req }) => req.user.role === 'admin',
-    delete: ({ req }) => req.user.role === 'admin',
+    update: adminAndUser,
+    delete: adminAndUser,
   },
   
   upload: {
     staticURL: '/product_files',
     staticDir: 'product_files',
-    mimeTypes: [ 'image/*', 'application/pdf' ],
+    mimeTypes: [ 'image/*', 'application/pdf', 'application/x-zip-compressed'],
   },
 
   fields: [
@@ -83,7 +91,10 @@ export const ProductFiles: CollectionConfig = {
       name: 'user',
       type: 'relationship',
       relationTo: 'users',
-      admin: { condition: () => false, },
+      admin: { 
+        condition: ({ id }) => !!id,
+        readOnly: true,
+      },
       hasMany: false,
       required: true,
     },
