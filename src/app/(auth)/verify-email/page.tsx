@@ -24,7 +24,7 @@ const VerifyEmailPage = ( {searchParams} : PageProps ) => {
 
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-              <div className='relative mb-4 h-60 w-60 text-muted-foreground mt-10'>
+              <div className='relative mb-4 h-64 w-64 text-muted-foreground mt-10'>
                 < Image 
                     src='/verify/verify-mail.webp' alt='verificar-correo-img' 
                     layout="responsive" height={768} width={768}

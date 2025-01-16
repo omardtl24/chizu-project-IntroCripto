@@ -150,10 +150,10 @@ const Page = ( {searchParams} : PageProps ) => {
                   
                   <div className='flex h-full flex-col items-center justify-center space-y-1'>
 
-                  <div className='relative mb-3 h-30 w-30 text-muted-foreground'>
+                  <div className='relative mb-3 h-60 w-60 text-muted-foreground'>
                     < Image 
-                        src='/verify/forget.webp' alt='verificar-correo-img' 
-                        height={320} width={160}
+                        src='/verify/verify-mail.webp' alt='verificar-correo-img' 
+                        height={768} width={768}
                     />
                   </div>
 
@@ -165,13 +165,13 @@ const Page = ( {searchParams} : PageProps ) => {
 
 
                     <p className='text-gray-800 text-center text-semibold'>
-                      Hemos enviado un enlace de recuperacion de contraseña por correo.
+                      Hemos enviado un enlace de recuperacion de contraseña por correo
                     </p>
 
                     <Minus className='h-4 w-8 text-blue-700'/>
 
                     <p className='text-gray-600 text-center text-sm'>
-                      Lo siento Mario, tu contraseña esta en otro castillo.
+                        Quizá fue Meow el que se comió la contraseña
                     </p>
 
 

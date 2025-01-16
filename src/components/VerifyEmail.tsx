@@ -30,10 +30,10 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
 
       <div className='flex flex-col items-center gap-2'>
 
-        <div className='relative mb-4 h-60 w-60 text-muted-foreground'>
+        <div className='relative mb-4 h-60 w-60 text-muted-foreground ml-2' style={{left: '17px'}}>
             < Image 
                 src='/verify/error.webp' alt='error-correo-img' 
-                layout="responsive" height={35} width={50}
+                layout="responsive" height={768} width={768}
             />
         </div>
 
@@ -63,10 +63,10 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
 
       <div className='flex h-full flex-col items-center justify-center'>
 
-        <div className='relative h-75 w-75 text-muted-foreground mt-10 mb-1'>
+        <div className='relative h-60 w-60 text-muted-foreground mt-10 mb-2'>
             < Image 
                 src='/verify/success.webp' alt='success-correo-img' 
-                layout="responsive" height={1077} width={780}
+                layout="responsive" height={768} width={768}
             />
         </div>
 
