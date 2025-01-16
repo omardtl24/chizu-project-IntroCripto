@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { CircleDollarSign, Compass, TextSearch, Instagram, Twitter, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import SupportButton from './support/SupportForm'
 
 const Footer = () => {
     const pathname = usePathname()
@@ -120,6 +121,7 @@ const Footer = () => {
                                 </div>
                             </div>
                         )}
+                        <SupportButton/>  
                     </div>
                     <div className='mt-4 md:mt-0 flex items-center justify-center'>
                         <p className='text-sm text-gray-600'>
