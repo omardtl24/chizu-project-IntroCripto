@@ -181,10 +181,10 @@ export const OurStats: React.FC = () => {
         <section id="advantages" className="container mx-auto px-8 py-20 grid gap-8">
             <ScrollAnimation animation="fadeIn">
                 <div className="bg-gray-100 rounded-xl shadow-md p-8">
-                    <Typography className="text-5xl font-bold leading-tight" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography className="text-5xl font-bold leading-tight" color="blue-gray" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         Ventajas
                     </Typography>
-                    <Typography variant="lead" className="mt-3 text-gray-500 text-justify text-xl"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="lead" className="mt-3 text-gray-500 text-justify text-xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         En Chizu, buscamos revolucionar la forma en que los videojuegos son
                         creados. Nuestra plataforma ofrece beneficios únicos tanto a
                         desarrolladores independientes como a jugadores, creando un
@@ -366,13 +366,18 @@ export const Faq: React.FC = () => {
 
 export const Slider: React.FC = () => {
     return <ScrollAnimation animation="fadeIn">
+        <div className="flex flex-col sm:flex-row gap-4 mt-0 items-center justify-center mb-2">
+            <Link href='/products' className={buttonVariants()}>
+                Explorar Catalogo &rarr;
+            </Link>
+        </div>
         <div className="container mx-auto flex flex-col items-center px-4 py-10 scroll-mt-10">
             <ProductReel
                 key={1}
-                title={'Un'}
-                subtitle={'Juegos disponibles'}
-                href={`/products?category=FPS`}
-                query={{ sort: 'desc', limit: 4, category: ["FPS"] }} />
+                title={'Chizu Selected'}
+                subtitle={'Nuestros favoritos del momento.'}
+                href={`/products?category=Chizu Selected`}
+                query={{ sort: 'desc', limit: 4, category: ["Chizu Selected"] }} />
         </div>
     </ScrollAnimation>
 };
