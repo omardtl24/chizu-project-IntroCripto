@@ -29,20 +29,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const login = async (): Promise<{ email: string | null, username: string | null }> => {
+        let userGoogle: User | null = null;
         try {
         const result = await signInWithPopup(auth, provider);
-        const user = result.user;
+        userGoogle = result.user;
         } catch (error) {
             if ((error as { code: string }).code === 'auth/popup-closed-by-user') {
                 return { email: null, username: null };
             }
         }
-        if (user) {
+        if (userGoogle) {
             const userInfo = {
-                email: user.email,
-                name: user.displayName,
-                photoURL: user.photoURL
+                email: userGoogle.email,
+                name: userGoogle.displayName,
+                photoURL: userGoogle.photoURL
             };
+            console.log('Información del usuario:', userInfo);
             // Esto es un ejemplo de cómo enviar la información del usuario a una función google cloud
             // try {
             //     await fetch('https://us-central1-chizu-444720.cloudfunctions.net/createUserInDbByGoogleAuth', {
@@ -56,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // } catch (error) {
             //     console.error('Error al enviar la información del usuario:', error);
             // }
-            return { email: user.email, username: user.displayName?.slice(0,20) ?? "chizu-user" }; // Retornamos el correo y el nombre de usuario
+            return { email: userGoogle!.email, username: userGoogle!.displayName?.slice(0,20) ?? "chizu-user" }; // Retornamos el correo y el nombre de usuario
         }
         return { email: null, username: null };
     };
