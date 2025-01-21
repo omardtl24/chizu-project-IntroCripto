@@ -48,3 +48,4 @@ Ofrecer una plataforma accesible en donde los desarrolladores puedan publicar y 
 2. Seguridad en el proceso de Pagos: Usando un administrador de pagos avalado por la normativa PCI DSS para la seguridad de pagos con tarjeta de débito y crédito. 
 3. Rapidez: Tiempo de respuesta a peticiones menor a 5 segundos con una conexión de mínimo 80MB/s.
 4. Compatibilidad: Funcional en las últimas versiones de Chrome, Opera y Microsoft Edge a la fecha; 123.0.6312.28, 114.0.5282.102, 132.0.1, respectivamente.
+5. Tener metricas en Google lighsight mayores al 90 en desktop
