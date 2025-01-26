@@ -10,19 +10,62 @@ import { Button, buttonVariants } from "../../components/ui/button";
 import { Check, Loader2, X } from "lucide-react"
 import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
-import { useRouter  } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+
+
 
 
 const Page = () => {
+    initMercadoPago('TEST-43a1fa88-d786-41f2-9c5c-2a4af1c2606f', {
+        locale: "es-CO",
+    });
 
+    const [preferenceId, setPreferenceId] = useState<string | null>(null);
+
+    const createPreference = async () => {
+        try {
+            const response = await fetch("/api/create_preference", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: "1234",
+                    title: "Bananita contenta",
+                    quantity: 1,
+                    price: 100,
+                }),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error en la respuesta del servidor");
+            }
+    
+            const data = await response.json();
+            const { id } = data;
+            console.log("JOA MANI TENGO EL ID", id);
+            return id;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
+
+    const handleBuy = async () => {
+        const id = await createPreference();
+        if (id) {
+            setPreferenceId(id);
+        }
+    }
     const router = useRouter()
 
     const { items, removeItem, clearCart } = useCart()
 
-    const {mutate : stripe_session, isLoading} = trpc.payment.createSession.useMutation({
-        onSuccess: ({url}) => { 
-            if (url){ router.push(url) }
+    const { mutate: stripe_session, isLoading } = trpc.payment.createSession.useMutation({
+        onSuccess: ({ url }) => {
+            if (url) { router.push(url) }
         }
     })
 
@@ -32,9 +75,9 @@ const Page = () => {
         setIsMounted(true)
     }, [])
 
-    const cartTotal = items.reduce( (total, { product, qty }) => total + ( product.price * (qty ?? 1) ), 0 )
+    const cartTotal = items.reduce((total, { product, qty }) => total + (product.price * (qty ?? 1)), 0)
 
-    const products_info = items.map( (item) => [item.product.id.toString(), item.qty] as [string, number] )
+    const products_info = items.map((item) => [item.product.id.toString(), item.qty] as [string, number])
 
     return (
         <div className='bg-white'>
@@ -81,7 +124,7 @@ const Page = () => {
                             </div>
                         ) : null}
 
-                        {   items.length > 0 ? (
+                        {items.length > 0 ? (
                             <div className="flex-shrink-0 flex justify-normal mr-2">
                                 <button
                                     className="text-gray-700 hover:text-red-700 mb-2 inline-flex items-center"
@@ -103,7 +146,7 @@ const Page = () => {
                             })}>
 
                             {isMounted &&
-                                items.map( (item) => {
+                                items.map((item) => {
                                     const [category] = item.product.category as Category[]
                                     const label = category.name
 
@@ -152,7 +195,7 @@ const Page = () => {
                                                         <p className='mt-1 text-sm font-medium text-gray-900'>
                                                             {formatPrice(item.product.price)}
                                                         </p>
-                                                        
+
                                                         <p className='mt-4 flex space-x-2 text-sm text-gray-700'>
                                                             <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
 
@@ -167,8 +210,8 @@ const Page = () => {
                                                             <Button
                                                                 aria-label='remove product'
                                                                 onClick={() => {
-                                                                        removeItem(item.product.id)
-                                                                    }
+                                                                    removeItem(item.product.id)
+                                                                }
                                                                 }
                                                                 variant='ghost'>
                                                                 <X
@@ -176,7 +219,7 @@ const Page = () => {
                                                                     aria-hidden='true'
                                                                 />
                                                             </Button>
-                                                        
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -220,21 +263,24 @@ const Page = () => {
 
                         <div className='mt-6'>
                             <Button className='w-full' size='lg'
-                                onClick= {
+                                onClick={
                                     () => {
-                                        if ( items.length > 0 ){ 
+                                        if (items.length > 0) {
                                             stripe_session({ products_info: products_info });
                                             // clearCart();
                                         }
-                                        else {toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.' )}
+                                        else { toast.warning('Añade productos al Carrito antes de ingresar a la Pasarela de Pagos.') }
                                     }
                                 }
 
-                                disabled = {items.length === 0 || isLoading }
+                                disabled={items.length === 0 || isLoading}
                             >
-                                {isLoading ? ( <Loader2 className='h-4 w-4 animate-spin mr-1.5 ml-1.5' /> ) : null}
+                                {isLoading ? (<Loader2 className='h-4 w-4 animate-spin mr-1.5 ml-1.5' />) : null}
                                 Finalizar Compra
                             </Button>
+                            <Button className='w-full mt-4' size='lg' onClick={handleBuy}> Comprar con Mercado Pago</Button>
+                            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts: { valueProp: 'smart_option' } }} />}
+                            
                         </div>
 
                     </section>
