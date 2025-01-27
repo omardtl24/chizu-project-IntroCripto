@@ -1,7 +1,7 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
 
 const client = new MercadoPagoConfig({
-    accessToken: "TEST-3623515732418680-012605-1600091736c383b440b7d916dd70b7cb-277425185",
+    accessToken: "APP_USR-3623515732418680-012605-56a47655d860cd180ebccb9bebcdfd16-277425185",
 });
 
 export const createPreference = async (req: any, res: any) => {
@@ -29,6 +29,10 @@ export const createPreference = async (req: any, res: any) => {
                 pending: "https://www.youtube.com/@onthecode",
             },
             auto_return: "approved",
+            payment_methods: {
+                excluded_payment_types: [{ id: "ticket" }], // Excluye métodos de pago que no sean tarjeta
+                installments: 1, // Opcional: Limita el número de cuotas
+            },
         };
         console.log("==================================== 3");
         const preference = new Preference(client);

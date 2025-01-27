@@ -18,7 +18,7 @@ import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 
 const Page = () => {
-    initMercadoPago('TEST-43a1fa88-d786-41f2-9c5c-2a4af1c2606f', {
+    initMercadoPago('APP_USR-630f8082-3777-47a6-b34c-6c2ec4965871', {
         locale: "es-CO",
     });
 
