@@ -1,22 +1,22 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
 
 const client = new MercadoPagoConfig({
-    accessToken: "APP_USR-3623515732418680-012605-56a47655d860cd180ebccb9bebcdfd16-277425185",
+    accessToken: "TEST-3524539752788201-012515-593b32ee2e6253a6732d1eb2fb893aa2-1107696534",
+    options: { timeout: 5000, idempotencyKey: 'abc' }
 });
 
-export const createPreference = async (req: any, res: any) => {
+export const createPreference = async (req, res) => {
     try {
         console.log(req.body);
-        console.log("==================================== 1"); 
+        console.log("==================================== 1");
         const requestBody = req.body;
-        if (!requestBody.title || !requestBody.quantity || !requestBody.price || !requestBody.id) {
+        if (!requestBody.title || !requestBody.quantity || !requestBody.price) {
             return res.status(400).json({ error: "Faltan datos" });
         }
         console.log("==================================== 2");
         const body = {
             items: [
                 {
-                    id: requestBody.id,
                     title: requestBody.title,
                     quantity: Number(requestBody.quantity),
                     unit_price: Number(requestBody.price),
@@ -29,18 +29,30 @@ export const createPreference = async (req: any, res: any) => {
                 pending: "https://www.youtube.com/@onthecode",
             },
             auto_return: "approved",
-            payment_methods: {
-                excluded_payment_types: [{ id: "ticket" }], // Excluye métodos de pago que no sean tarjeta
-                installments: 1, // Opcional: Limita el número de cuotas
-            },
         };
+
+        const preference2 = new Preference(client);
+
+        const value2 = await preference2.create({
+            body: {
+                items: [
+                    {
+                        title: 'My product',
+                        quantity: 1,
+                        unit_price: 20000
+                    }
+                ],
+            }
+        });
         console.log("==================================== 3");
-        const preference = new Preference(client);
         const result = await preference.create({ body });
-        return res.status(200).json({ id: result.id });
+        const preference = new Preference(client);
+        console.log("valor de result: ", result.id,  "\n valor de preference2: ", value2.id);
+        return res.status(200).json({ id: value2.id });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Error al crear la preferencia :(" });
     }
 }
-export {createPreference as POST}
+export { createPreference as POST }
+

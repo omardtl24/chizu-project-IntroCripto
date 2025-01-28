@@ -12,15 +12,14 @@ import { Category } from "../../payload-types"
 import { trpc } from '@/trpc/client'
 import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
+
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 
 
-
+initMercadoPago('TEST-7dddc6b8-125e-4830-b457-5077f5c23b9d');
 const Page = () => {
-    initMercadoPago('APP_USR-630f8082-3777-47a6-b34c-6c2ec4965871', {
-        locale: "es-CO",
-    });
+    
 
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
@@ -32,7 +31,6 @@ const Page = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    id: "1234",
                     title: "Bananita contenta",
                     quantity: 1,
                     price: 100,
@@ -279,7 +277,7 @@ const Page = () => {
                                 Finalizar Compra
                             </Button>
                             <Button className='w-full mt-4' size='lg' onClick={handleBuy}> Comprar con Mercado Pago</Button>
-                            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts: { valueProp: 'smart_option' } }} />}
+                            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts:{ valueProp: 'smart_option'}}} />}
                             
                         </div>
 
