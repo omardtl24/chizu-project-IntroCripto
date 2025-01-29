@@ -1,105 +1,118 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 
 function App() {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+    const [status, setStatus] = useState<'Completada' | 'Terminada' | 'En curso'>('Terminada');
 
     const plans = [
         {
-            name: 'Basic',
+            name: 'Bronce',
             price: 0,
-            features: ['Basic access', 'Limited storage', 'Email support'],
+            features: [
+                "Agradecimientos en créditos", 
+                "Imagenes de desarrollo"],
             current: true,
         },
-        {
-            name: 'Standard',
+        {   
+            name: 'Oro',
             price: 12,
-            features: ['Everything in Basic', 'Advanced features', 'Priority support'],
+            features: [
+                "Agradecimientos en créditos",
+                "Imágenes dedesarrollo",
+                "Invitación al grupo de Discord"],
             current: false,
         },
         {
-            name: 'Professional',
+            name: 'Diamante',
             price: 24,
-            features: ['Everything in Standard', 'Custom integrations', '24/7 support'],
+            features: [
+                "Agradecimientos en créditos",
+                "Imágenes de desarrollo",
+                "Invitacion a Discord",
+                "Descargable de la última versión del Juego"
+            ],
             current: false,
         },
     ];
 
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'Completada':
+                return 'text-green-500';
+            case 'Terminada':
+                return 'text-red-500';
+            case 'En curso':
+                return 'text-blue-500';
+            default:
+                return 'text-gray-500';
+        }
+    };
+
     return (
         <div className="min-h-screen bg-radial-gradient flex items-center justify-center p-6">
             <div className="max-w-6xl w-full backdrop-blur-xl bg-white/10 rounded-3xl p-8 shadow-2xl border border-white/20">
+
+                {/* Nueva sección para el logo y la información del juego */}
+                <div className="flex justify-center items-center mb-12">
+                    <div>
+                        <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/04/zero-two-feature.jpg" alt="Logo del Juego" className="h-48 rounded-3xl" />
+                    </div>
+                    <div className="text-left pl-12">
+                        <h2 className="text-2xl font-bold">Halo Zero</h2>
+                        <p className="text-gray-600">Creador: Juan Gomez</p>
+                    </div>
+                </div>
+
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-white mb-4">Subscription Plans</h1>
-                    <p className="text-gray-300 max-w-2xl mx-auto">
-                        Upgrade to access User Roles and Permissions, Mobile accessibility, Integration with AI Tools and Standard Customer support.
+                    <h1 className="text-4xl font-bold text-black mb-4">Descripción de la campaña</h1>
+                    <p className="text-gray-800 max-w-2xl mx-auto text-justify">
+                        Elije el plan que más te convenga, todos los planes incluyen agradecimientos en los créditos del juego. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto delectus amet excepturi ratione nisi quasi minima tempora numquam. Recusandae aliquid consequuntur obcaecati mollitia dolor sit illo ex officiis harum! Assumenda!
                     </p>
                 </div>
 
-                {/* Por si se quiere agregar un switch para cambiar entre mensual y anual */}
-                {/* <div className="flex justify-center mb-12">
-                    <div className="bg-gray-900/50 p-1 rounded-xl">
-                        <button
-                            onClick={() => setBillingCycle('monthly')}
-                            className={`px-6 py-2 rounded-lg transition-all ${billingCycle === 'monthly'
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-gray-400 hover:text-white'
-                                }`}
-                        >
-                            Monthly
-                        </button>
-                        <button
-                            onClick={() => setBillingCycle('annual')}
-                            className={`px-6 py-2 rounded-lg transition-all ${billingCycle === 'annual'
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-gray-400 hover:text-white'
-                                }`}
-                        >
-                            Annual
-                        </button>
-                    </div>
-                </div> */}
+                {/* Nueva sección para el estado */}
+                <div className="text-center mb-12">
+                    <span className={`text-xl font-bold ${getStatusColor(status)}`}>
+                        {status}
+                    </span>
+                </div>
 
                 <div className="grid md:grid-cols-3 gap-8 mb-12">
                     {plans.map((plan) => (
                         <div
                             key={plan.name}
-                            // className="relative bg-transparent rounded-2xl p-1 backdrop-blur-sm border border-white/10 hover:border-indigo-500/50 transition-all duration-300 hover:transform hover:-translate-y-1 subscription-card"
                             className="relative bg-transparent rounded-2xl p-1 hover:border-indigo-500/50 transition-all duration-300 hover:transform hover:-translate-y-1 subscription-card"
                         >
-                            <div className="inset-1 bg-gray-900 rounded-2xl p-4">
-                                <h3 className="text-xl font-semibold text-white mb-4">{plan.name}</h3>
-                                <div className="flex items-baseline mb-6">
-                                    <span className="text-3xl font-bold text-white">$</span>
-                                    <span className="text-5xl font-bold text-white">{plan.price}</span>
-                                    <span className="text-gray-400 ml-2">/Per user<br />/Per month</span>
+                            <div className="bg-white rounded-xl border hover:border-transparent p-4 h-full flex flex-col justify-between">
+                                <div>
+                                    <h3 className="text-xl font-semibold text-black mb-4">{plan.name}</h3>
+                                    <div className="flex items-baseline mb-6">
+                                        <span className="text-3xl font-bold text-black">$</span>
+                                        <span className="text-5xl font-bold text-black">{plan.price}</span>
+                                        <span className="text-gray-400 ml-2">/Por mes</span>
+                                    </div>
+                                    <ul className="space-y-4 mb-8">
+                                        {plan.features.map((feature) => (
+                                            <li key={feature} className="flex items-center text-gray-800">
+                                                <Check className="h-5 w-5 text-green-400 mr-2" />
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                                <ul className="space-y-4 mb-8">
-                                    {plan.features.map((feature) => (
-                                        <li key={feature} className="flex items-center text-gray-300">
-                                            <Check className="h-5 w-5 text-indigo-400 mr-2" />
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
                                 <button
                                     className={`w-full py-3 rounded-xl transition-all ${plan.current
-                                        ? 'bg-gray-700 text-gray-300 cursor-default'
-                                        : 'bg-indigo-600 hover:bg-indigo-500 text-white'
-                                        }`}
+                                        ? 'bg-gray-500 text-gray-300 cursor-default'
+                                        : 'bg-[#007373] hover:bg-[#009c9c] text-white'
+                                    }`}
                                 >
                                     {plan.current ? 'Current Plan' : 'Select Plan'}
                                 </button>
                             </div>
                         </div>
                     ))}
-                </div>
-
-                <div className="text-center">
-                    <p className="text-gray-400 mb-6">100% secure payment method with money back guarantee.</p>
-                    <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl transition-all">
-                        Upgrade now
-                    </button>
                 </div>
             </div>
         </div>

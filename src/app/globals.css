@@ -133,9 +133,15 @@ body {
     backdrop-filter: blur(24px);
   }
   .bg-radial-gradient {
-    background: radial-gradient(circle at center, #1e3a8a 0%, #020617 30%);
+    background: 
+      radial-gradient(circle at 25% 75%, #b8f0f0 0%, rgba(255, 255, 255, 0) 25%),
+      /* Esto es para agregar solo el centro */
+      /* radial-gradient(circle at center, #b8f0f0 0%, #FEFEFE 35%), */
+      radial-gradient(circle at 75% 25%, #b8f0f0 0%, rgba(255, 255, 255, 0) 25%);
   }
 }
+
+
 
 .subscription-card {
   position: relative;
@@ -149,11 +155,13 @@ body {
   inset: -2px;
   background: conic-gradient(
     from var(--angle),
-    #007343,
-    #004eb4,
-    #000873,
-    #009393
-  );
+    #6fecc7, /* Versión más clara de #007343 */
+    #66a9e7, /* Versión más clara de #004eb4 */
+    #588ab9, /* Versión más clara de #000873 */
+    #63e0c7  /* Versión más clara de #009393 */
+);
+
+
   border-radius: 1rem;
   z-index: -1;
   opacity: 0;
