@@ -14,6 +14,7 @@ export interface Config {
     media: Media;
     product_files: ProductFile;
     orders: Order;
+    comentarios: Comentario;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -24,11 +25,11 @@ export interface Config {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   role: 'admin' | 'user';
   username: string;
   ordenes?: number | null;
-  ordenes_hist?: (string | Order)[] | null;
+  ordenes_hist?: (number | Order)[] | null;
   lastLogin?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -48,11 +49,11 @@ export interface User {
  * via the `definition` "orders".
  */
 export interface Order {
-  id: string;
+  id: number;
   total: number;
   _isPaid: boolean;
-  user: string | User;
-  products: (string | Product)[];
+  user: number | User;
+  products: (number | Product)[];
   updatedAt: string;
   createdAt: string;
 }
@@ -61,15 +62,14 @@ export interface Order {
  * via the `definition` "products".
  */
 export interface Product {
-  id: string;
-  user?: (string | null) | User;
+  id: number;
+  user?: (number | null) | User;
   name: string;
   description?: string | null;
   price: number;
   qty: number;
-  category: (string | Category)[];
-  compras?: number | null;
-  product_files: string | ProductFile;
+  category: (number | Category)[];
+  product_files: number | ProductFile;
   requirements_min: {
     os: string;
     cpu: string;
@@ -90,10 +90,11 @@ export interface Product {
   priceId?: string | null;
   stripeId?: string | null;
   images: {
-    image: string | Media;
+    image: number | Media;
     id?: string | null;
   }[];
-  image_logo: string | Media;
+  image_logo: number | Media;
+  compras?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -102,7 +103,7 @@ export interface Product {
  * via the `definition` "category".
  */
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   description?: string | null;
   updatedAt: string;
@@ -113,8 +114,8 @@ export interface Category {
  * via the `definition` "product_files".
  */
 export interface ProductFile {
-  id: string;
-  user?: (string | null) | User;
+  id: number;
+  user?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -123,14 +124,16 @@ export interface ProductFile {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
-  user?: (string | null) | User;
+  id: number;
+  user?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -139,6 +142,8 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
   sizes?: {
     thumbnail?: {
       url?: string | null;
@@ -168,24 +173,26 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-preferences".
+ * via the `definition` "comentarios".
  */
-
 export interface Comentario {
-  id: string;
+  id: number;
   comentario?: string | null;
   rating: '1' | '2' | '3' | '4' | '5';
-  user?: (string | null) | User;
-  product?: (string | null) | Product;
+  user?: (number | null) | User;
+  product?: (number | null) | Product;
   updatedAt: string;
   createdAt: string;
 }
-
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences".
+ */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -205,7 +212,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
