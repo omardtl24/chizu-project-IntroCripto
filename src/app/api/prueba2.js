@@ -42,11 +42,17 @@ export const createPreference = async (req, res) => {
                         unit_price: 20000
                     }
                 ],
+                back_urls: {
+                    success: "https://www.youtube.com/watch?v=TwC0Db7oerM",
+                    failure: "https://www.youtube.com/@onthecode",
+                    pending: "https://chatgpt.com",
+                },
+                auto_return: "approved",
             }
         });
         console.log("==================================== 3");
-        const result = await preference.create({ body });
         const preference = new Preference(client);
+        const result = await preference.create({body });
         console.log("valor de result: ", result.id,  "\n valor de preference2: ", value2.id);
         return res.status(200).json({ id: value2.id });
     } catch (error) {
