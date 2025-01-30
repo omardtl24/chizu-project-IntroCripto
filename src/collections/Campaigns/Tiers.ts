@@ -72,7 +72,6 @@ export const Tiers: CollectionConfig = {
             required: true,
             admin: {
                 position: 'sidebar',
-                readOnly: true,
             },
         },
     ],

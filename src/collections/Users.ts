@@ -745,8 +745,8 @@ export const Users: CollectionConfig = {
       name: 'subscriptions',
       label: 'Suscripciones del Usuario',
       type: 'relationship',
-      relationTo: 'subscription',
-      hasMany: true,  
+      relationTo: 'subscriptions',
+      hasMany: true,  // Un usuario puede tener muchas suscripciones
       admin: {
           description: 'Lista de todas las suscripciones activas o pasadas del usuario.',
           position: 'sidebar',
@@ -757,7 +757,7 @@ export const Users: CollectionConfig = {
       label: 'Campaña Creada',
       type: 'relationship',
       relationTo: 'campaigns',
-      hasMany: false, 
+      hasMany: false,  // Un usuario puede crear una sola campaña
       admin: {
           readOnly: true,
           position: 'sidebar',

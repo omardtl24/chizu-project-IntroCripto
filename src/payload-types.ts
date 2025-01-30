@@ -14,7 +14,6 @@ export interface Config {
     media: Media;
     product_files: ProductFile;
     orders: Order;
-    comentarios: Comentario;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -25,11 +24,11 @@ export interface Config {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   role: 'admin' | 'user';
   username: string;
   ordenes?: number | null;
-  ordenes_hist?: (number | Order)[] | null;
+  ordenes_hist?: (string | Order)[] | null;
   lastLogin?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -49,11 +48,11 @@ export interface User {
  * via the `definition` "orders".
  */
 export interface Order {
-  id: number;
+  id: string;
   total: number;
   _isPaid: boolean;
-  user: number | User;
-  products: (number | Product)[];
+  user: string | User;
+  products: (string | Product)[];
   updatedAt: string;
   createdAt: string;
 }
@@ -62,14 +61,15 @@ export interface Order {
  * via the `definition` "products".
  */
 export interface Product {
-  id: number;
-  user?: (number | null) | User;
+  id: string;
+  user?: (string | null) | User;
   name: string;
   description?: string | null;
   price: number;
   qty: number;
-  category: (number | Category)[];
-  product_files: number | ProductFile;
+  category: (string | Category)[];
+  compras?: number | null;
+  product_files: string | ProductFile;
   requirements_min: {
     os: string;
     cpu: string;
@@ -90,11 +90,10 @@ export interface Product {
   priceId?: string | null;
   stripeId?: string | null;
   images: {
-    image: number | Media;
+    image: string | Media;
     id?: string | null;
   }[];
-  image_logo: number | Media;
-  compras?: number | null;
+  image_logo: string | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -103,7 +102,7 @@ export interface Product {
  * via the `definition` "category".
  */
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   updatedAt: string;
@@ -114,8 +113,8 @@ export interface Category {
  * via the `definition` "product_files".
  */
 export interface ProductFile {
-  id: number;
-  user?: (number | null) | User;
+  id: string;
+  user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -124,16 +123,14 @@ export interface ProductFile {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
-  user?: (number | null) | User;
+  id: string;
+  user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -142,8 +139,6 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
   sizes?: {
     thumbnail?: {
       url?: string | null;
@@ -173,26 +168,74 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "comentarios".
+ * via the `definition` "payload-preferences".
  */
+
 export interface Comentario {
-  id: number;
+  id: string;
   comentario?: string | null;
   rating: '1' | '2' | '3' | '4' | '5';
-  user?: (number | null) | User;
-  product?: (number | null) | Product;
+  user?: (string | null) | User;
+  product?: (string | null) | Product;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface Campaign {
+  id: string;
+  title: string;
+  description: string;
+  user: string | User;
+  category: string | Categorycampaign;
+  bannerImage: string | Media;
+  startDate?: string | null;
+  status: 'suspendida' | 'activa' | 'finalizada';
+  tiers?: (string | Tier)[] | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categorycampaign".
+ */
+export interface Categorycampaign {
+  id: string;
+  name: string;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-preferences".
+ * via the `definition` "tiers".
  */
+export interface Tier {
+  id: string;
+  title: string;
+  price: number;
+  description: string;
+  campaign: string | Campaign | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscriptions".
+ */
+export interface Subscription {
+  id: string;
+  user: string | User;
+  tier: string | Tier;
+  startDate: string;
+  status: 'activa' | 'cancelada' | 'expirada';
+  updatedAt: string;
+  createdAt: string;
+}
+
+
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -212,7 +255,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;

@@ -18,6 +18,18 @@ export const Campaigns: CollectionConfig = {
         description: 'Gestión de campañas creadas por los usuarios.',
     },
 
+    hooks: {
+        beforeChange: [
+            ({ data, req }) => {
+                if (!data.user && req.user) {
+                    data.user = req.user.id;  // Asignar automáticamente el usuario autenticado.
+                }
+                return data;
+            },
+        ],
+    },
+    
+
     access: {
         create: ({ req }) => !!req.user,
         read: ({ req }) => !!req.user,
@@ -56,6 +68,7 @@ export const Campaigns: CollectionConfig = {
             required: true,
             admin: {
                 readOnly: true,
+                hidden: true
             },
         },
         {
@@ -64,6 +77,7 @@ export const Campaigns: CollectionConfig = {
             type: 'relationship',
             relationTo: 'categorycampaign',
             required: true,
+            hasMany: true
         },
         {
             name: 'bannerImage',
@@ -102,14 +116,10 @@ export const Campaigns: CollectionConfig = {
             label: 'Tiers de suscripción',
             type: 'relationship',
             relationTo: 'tiers',
+            required: false,
             hasMany: true,
             admin: {
                 description: 'Define los diferentes niveles de suscripción para esta campaña.',
-            },
-            validate: (tiers) => {
-                if (!tiers || tiers.length < 1) return 'La campaña debe tener al menos un tier.';
-                if (tiers.length > 3) return 'La campaña no puede tener más de 3 tiers.';
-                return true;
             },
         }
               

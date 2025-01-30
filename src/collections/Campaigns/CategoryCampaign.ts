@@ -1,9 +1,9 @@
 import { CollectionConfig } from "payload/types";
 
 
-export const Category: CollectionConfig = {
+export const CategoryCampaign: CollectionConfig = {
     slug: 'categorycampaign',
-    labels: {singular: 'Categoria', plural: 'Categorias'},
+    labels: {singular: 'Categoria de Campaña', plural: 'Categorias de Campaña'},
 
     admin: { 
         useAsTitle: 'name' ,
