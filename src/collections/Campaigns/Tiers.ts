@@ -19,6 +19,33 @@ export const Tiers: CollectionConfig = {
         description: 'Gestión de niveles de suscripción para campañas.',
     },
 
+    hooks: {
+        beforeChange: [
+            async ({ data, req, operation }) => {
+                if (operation === 'create') {
+                    const campaignId = data.campaign;
+
+                    // Contar los tiers existentes para la campaña
+                    const existingTiers = await req.payload.find({
+                        collection: 'tiers',
+                        where: {
+                            campaign: {
+                                equals: campaignId,
+                            },
+                        },
+                        limit: 0,
+                    });
+
+                    if (existingTiers.totalDocs >= 3) {
+                        throw new Error('No puedes agregar más de 3 tiers a esta campaña.');
+                    }
+                }
+
+                return data;
+            },
+        ],
+    },
+
     access: {
         create: ({ req }) => !!req.user,  
         read: ({ req }) => !!req.user,    

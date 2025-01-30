@@ -14,6 +14,10 @@ export interface Config {
     media: Media;
     product_files: ProductFile;
     orders: Order;
+    campaigns: Campaign;
+    categorycampaign: Categorycampaign;
+    subscriptions: Subscription;
+    tiers: Tier;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -30,6 +34,8 @@ export interface User {
   ordenes?: number | null;
   ordenes_hist?: (string | Order)[] | null;
   lastLogin?: string | null;
+  subscriptions?: (string | Subscription)[] | null;
+  campaignCreated?: (string | null) | Campaign;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -212,7 +218,7 @@ export interface Tier {
   title: string;
   price: number;
   description: string;
-  campaign: string | Campaign | null;
+  campaign: string | Campaign;
   updatedAt: string;
   createdAt: string;
 }

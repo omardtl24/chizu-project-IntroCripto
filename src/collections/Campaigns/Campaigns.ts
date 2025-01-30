@@ -1,4 +1,5 @@
 import { Access, CollectionConfig } from "payload/types";
+import payload from 'payload';  
 
 const yourOwn: Access = ({ req: { user } }) => {
     if (user.role === 'admin') {
@@ -20,10 +21,44 @@ export const Campaigns: CollectionConfig = {
 
     hooks: {
         beforeChange: [
-            ({ data, req }) => {
+            async ({ data, req, operation }) => {
+                // Asignar automáticamente el usuario autenticado si no está definido
                 if (!data.user && req.user) {
-                    data.user = req.user.id;  // Asignar automáticamente el usuario autenticado.
+                    data.user = req.user.id;
                 }
+    
+                // Limitar a una campaña por usuario en la operación de creación
+                if (operation === 'create') {
+                    const existingCampaigns = await payload.find({
+                        collection: 'campaigns',
+                        where: {
+                            user: {
+                                equals: req.user.id,
+                            },
+                        },
+                    });
+    
+                    if (existingCampaigns.totalDocs > 0) {
+                        throw new Error('Solo puedes crear una campaña.');
+                    }
+                }
+
+                if (data.id || data._id) {
+                    const tiersCount = await req.payload.find({
+                        collection: 'tiers',
+                        where: {
+                            campaign: {
+                                equals: data.id || data._id,
+                            },
+                        },
+                        limit: 0,
+                    });
+
+                    if (tiersCount.totalDocs > 3) {
+                        throw new Error('La campaña no puede tener más de 3 tiers.');
+                    }
+                }
+    
                 return data;
             },
         ],
@@ -120,8 +155,14 @@ export const Campaigns: CollectionConfig = {
             hasMany: true,
             admin: {
                 description: 'Define los diferentes niveles de suscripción para esta campaña.',
+            },   
+            validate: (tiers) => {
+                if (tiers && tiers.length > 3) {
+                    return 'La campaña no puede tener más de 3 tiers.';
+                }
+                return true;
             },
-        }
+        },
               
     ],
 };

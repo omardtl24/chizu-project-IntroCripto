@@ -25,7 +25,7 @@ dotenv.config({
 export default buildConfig({
 
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-    collections: [ Users, Category, Products, Media, ProductFiles, Orders, Campaigns, CategoryCampaign, Subscriptions, Tiers], 
+    collections: [ Users, Category, Products, Media, ProductFiles, Orders, Campaigns, CategoryCampaign, Subscriptions, Tiers ], 
     routes: {
         admin: '/panel',
     },
