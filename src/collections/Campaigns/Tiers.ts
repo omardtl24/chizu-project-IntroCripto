@@ -1,12 +1,17 @@
 import { CollectionConfig, Access} from "payload/types";
 
-const yourOwn: Access = ({ req: { user } }) => {
+const adminOrOwnerTierReadAccess: Access = ({ req }) => {
+    const user = req.user;
+
     if (user.role === 'admin') {
-        return true;
+        return true; // Administradores pueden ver todos los tiers
     }
 
+    // Solo permitir acceso si el usuario es el creador de la campaña
     return {
-        user: { equals: user?.id },
+        'campaign.user': {
+            equals: user.id,
+        },
     };
 };
 
@@ -17,6 +22,7 @@ export const Tiers: CollectionConfig = {
     admin: {
         useAsTitle: 'title',
         description: 'Gestión de niveles de suscripción para campañas.',
+        hideAPIURL: true
     },
 
     hooks: {
@@ -47,10 +53,10 @@ export const Tiers: CollectionConfig = {
     },
 
     access: {
-        create: ({ req }) => !!req.user,  
-        read: ({ req }) => !!req.user,    
-        update: yourOwn,                  
-        delete: yourOwn,                  
+        create: adminOrOwnerTierReadAccess,  
+        read: adminOrOwnerTierReadAccess,    
+        update: adminOrOwnerTierReadAccess,                  
+        delete: ({ req }) => req.user?.role === 'admin',                  
     },
 
     fields: [

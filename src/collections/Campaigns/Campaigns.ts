@@ -1,13 +1,19 @@
 import { Access, CollectionConfig } from "payload/types";
 import payload from 'payload';  
 
-const yourOwn: Access = ({ req: { user } }) => {
+const adminOrOwnerReadAccess: Access = ({ req }) => {
+    const user = req.user;
+
+    // Los administradores pueden ver todas las campañas
     if (user.role === 'admin') {
         return true;
     }
 
+    // Los usuarios solo pueden ver campañas propias
     return {
-        user: { equals: user?.id },
+        user: {
+            equals: user.id,
+        },
     };
 };
 
@@ -17,6 +23,7 @@ export const Campaigns: CollectionConfig = {
     admin: {
         useAsTitle: 'title',
         description: 'Gestión de campañas creadas por los usuarios.',
+        hideAPIURL: true
     },
 
     hooks: {
@@ -66,10 +73,10 @@ export const Campaigns: CollectionConfig = {
     
 
     access: {
-        create: ({ req }) => !!req.user,
-        read: ({ req }) => !!req.user,
-        update: yourOwn,
-        delete: ({ req }) => req.user?.role === 'admin',
+        create: ({ req }) => !!req.user,        // Permitir que cualquier usuario autenticado cree campañas
+        read: adminOrOwnerReadAccess,               // Solo el creador o admin puede ver campañas
+        update: adminOrOwnerReadAccess,             // Solo el creador o admin puede actualizar campañas
+        delete: ({ req }) => req.user.role === 'admin',             // Solo el creador o admin puede eliminar campañas
     },
 
     fields: [

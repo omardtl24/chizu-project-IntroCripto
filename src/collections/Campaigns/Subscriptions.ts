@@ -16,13 +16,14 @@ export const Subscriptions: CollectionConfig = {
     admin: {
         useAsTitle: 'tier',  
         description: 'Gestión de las suscripciones a tiers de campañas.',
+        hideAPIURL: true
     },
 
     access: {
-        create: ({ req }) => !!req.user,  
+        create: () => false,  
         read: yourOwn,                     
         update: ({ req }) => req.user?.role === 'admin',                  
-        delete: yourOwn,                   
+        delete: () => false,                   
     },
 
     fields: [
