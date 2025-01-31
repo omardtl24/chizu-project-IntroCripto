@@ -43,10 +43,13 @@ const ProductListing = (props : Props) => {
 
     if (!product || !isVisible){ return <PlaceHolder/> }
 
-    const urls = product.images.map( ({image}) => (
-        typeof image === 'string' ? image : image.url
-    )).filter(Boolean) as string[]
-
+    const urls = product.images.map(({ image }) => {
+        if (image) {
+            return typeof image === 'string' ? image : image.url ?? '';
+        }
+        return '';
+    }).filter(Boolean) as string[];
+    
     if (isVisible && product){
         return (
             <Link

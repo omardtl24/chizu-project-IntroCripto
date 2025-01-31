@@ -45,7 +45,7 @@ const Page = () => {
                 };
             });
     
-            console.log("Listado de productos:", products);
+            // console.log("Listado de productos:", products);
     
             const response = await fetch("/api/create_preference", {
                 method: "POST",
@@ -61,7 +61,7 @@ const Page = () => {
     
             const data = await response.json();
             const { id } = data;
-            console.log("ID de la preferencia creada:", id);
+            // console.log("ID de la preferencia creada:", id);
             return id;
         } catch (error) {
             console.log(error);
