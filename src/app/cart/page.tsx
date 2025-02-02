@@ -23,18 +23,36 @@ const Page = () => {
 
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
+    interface Product {
+        title: string;
+        quantity: number;
+        unit_price: number;
+        picture_url: string;
+    }
+    
     const createPreference = async () => {
         try {
+            const products: Product[] = items.map(item => {
+                const imageUrl = typeof item.product.image_logo === 'string' 
+                    ? item.product.image_logo 
+                    : item.product.image_logo.url || '';
+    
+                return {
+                    title: item.product.name,
+                    quantity: item.product.qty,
+                    unit_price: item.product.price,
+                    picture_url: imageUrl
+                };
+            });
+    
+            // console.log("Listado de productos:", products);
+    
             const response = await fetch("/api/create_preference", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    title: "Bananita contenta",
-                    quantity: 1,
-                    price: 100,
-                }),
+                body: JSON.stringify(products),
             });
     
             if (!response.ok) {
@@ -43,7 +61,7 @@ const Page = () => {
     
             const data = await response.json();
             const { id } = data;
-            console.log("JOA MANI TENGO EL ID", id);
+            // console.log("ID de la preferencia creada:", id);
             return id;
         } catch (error) {
             console.log(error);

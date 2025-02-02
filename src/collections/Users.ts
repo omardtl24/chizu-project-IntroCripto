@@ -741,6 +741,27 @@ export const Users: CollectionConfig = {
         readOnly: true,
       },
     },
-  ],
-
+    {
+      name: 'subscriptions',
+      label: 'Suscripciones del Usuario',
+      type: 'relationship',
+      relationTo: 'subscriptions',
+      hasMany: true, 
+      admin: {
+          description: 'Lista de todas las suscripciones activas o pasadas del usuario.',
+          position: 'sidebar',
+      },
+    },
+    {
+      name: 'campaignCreated',
+      label: 'Campaña Creada',
+      type: 'relationship',
+      relationTo: 'campaigns',
+      hasMany: false, 
+      admin: {
+          readOnly: true,
+          position: 'sidebar',
+      },
+    },
+  ]
 }
