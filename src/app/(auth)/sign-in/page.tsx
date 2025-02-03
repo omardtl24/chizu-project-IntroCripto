@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { AuthProvider, useAuth } from '@/LOGIN/context/authContext'
+import { ButtonPusheable } from '@/components/button_pusheable'
 
 const Page = () => {
     const router = useRouter();
@@ -152,7 +153,8 @@ const Page = () => {
                                     <hr className="border-t-5 border-white"></hr>
                                     <hr className="border-t-5 border-white"></hr>
                                     <hr className="border-t-1 border-gray-400"></hr>
-                                    <Button isLoading={isLoading}>Iniciar Sesion</Button>
+                                    <ButtonPusheable
+                                        isLoading={isLoading}>Iniciar Sesion</ButtonPusheable>
                                 </div>
                             </form>
                             <Button

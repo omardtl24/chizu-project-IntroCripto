@@ -13,6 +13,7 @@ import { ZodError } from 'zod'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { ForgotValidator, TypeForgotValidator } from '../../../lib/validators/forgot-pswd-validator'
+import { ButtonPusheable } from '@/components/button_pusheable'
 
 
 const Page = () => {
@@ -99,7 +100,8 @@ const Page = () => {
                                 <hr className="border-t-5 border-white"></hr>
                                 <hr className="border-t-1 border-gray-400"></hr>
 
-                                <Button className='mt-1'>Enviar Verificación</Button>
+                                <ButtonPusheable
+                                    isLoading={isLoading}>Enviar Verificación</ButtonPusheable>
 
                             </div>
                         </form>

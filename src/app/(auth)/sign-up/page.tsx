@@ -18,6 +18,7 @@ import Image from 'next/image'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AuthProvider, useAuth } from '@/LOGIN/context/authContext'
 import { useState } from 'react'
+import { ButtonPusheable } from '@/components/button_pusheable'
 
 const Page = () => {
   const router = useRouter();
@@ -175,7 +176,8 @@ const Page = () => {
                   </div>
                   <hr className="border-t-8 border-white"></hr>
                   <hr className="border-t-1 border-gray-400"></hr>
-                  <Button isLoading={isLoading} className='mt-2'>Registrarse</Button>
+                  <ButtonPusheable
+                    isLoading={isLoading}>Registrarse</ButtonPusheable>
                 </div>
               </form>
               <Button
