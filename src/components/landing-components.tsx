@@ -12,7 +12,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 
-// Definición de tipos
+
 type AnimationType = "fadeIn" | "slideRight" | "slideLeft" | "zoomIn";
 
 interface ScrollAnimationProps {
@@ -20,6 +20,7 @@ interface ScrollAnimationProps {
     className?: string;
     animation: AnimationType;
 }
+
 
 interface EventInfo {
     title: string;
@@ -45,7 +46,7 @@ interface FaqInfo {
     desc: string;
 }
 
-// Componente personalizado para animar al hacer scroll
+
 const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ children, className, animation }) => {
     const animations = {
         fadeIn: {
@@ -75,14 +76,18 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ children, className, 
     };
 
     return (
-        <motion.div
-            className={className}
-            {...animations[animation]}
-        >
-            {children}
-        </motion.div>
+        <div className="overflow-hidden">
+            <motion.div
+                className={className}
+                {...animations[animation]}
+            >
+                {children}
+            </motion.div>
+        </div>
     );
 };
+
+export default ScrollAnimation;
 
 
 // HERO

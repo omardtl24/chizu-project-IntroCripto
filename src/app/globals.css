@@ -84,7 +84,8 @@
   background-size: 8px 8px;
   position: relative;
   top: 50%; /* Centrar verticalmente */
-  transform: translateY(-20%); /* Centrar verticalmente */
+  transform: translateY(40%); /* Centrar verticalmente */
+  left: 45%; /* Centrar horizontalmente */
   animation: l4-0 1s linear infinite alternate;
 }
 .loader:before {
@@ -111,4 +112,185 @@
 }
 @keyframes l4-2 {
   100% {top:-0.1px}
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+}
+
+@layer utilities {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(8px);
+  }
+  .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+  .bg-radial-gradient {
+    background: 
+      radial-gradient(circle at 25% 75%, #b8f0f0 0%, rgba(255, 255, 255, 0) 25%),
+      /* Esto es para agregar solo el centro */
+      /* radial-gradient(circle at center, #b8f0f0 0%, #FEFEFE 35%), */
+      radial-gradient(circle at 75% 25%, #b8f0f0 0%, rgba(255, 255, 255, 0) 25%);
+  }
+}
+
+
+
+.subscription-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.subscription-card::before,
+.subscription-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(
+    from var(--angle),
+    #6fecc7, /* Versión más clara de #007343 */
+    #66a9e7, /* Versión más clara de #004eb4 */
+    #588ab9, /* Versión más clara de #000873 */
+    #63e0c7  /* Versión más clara de #009393 */
+);
+
+
+  border-radius: 1rem;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: rotate-gradient 3s linear infinite;
+}
+
+.subscription-card::after {
+  filter: blur(12px);
+}
+
+.subscription-card:hover::before,
+.subscription-card:hover::after {
+  opacity: 1;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-gradient {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* CSS */
+.button-82-pushable {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-82-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+
+.button-82-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    hsl(187, 100%, 14%) 0%,
+    hsl(187, 97%, 15%) 8%,
+    hsl(187, 100%, 16%) 92%,
+    hsl(226, 100%, 16%) 100%
+  );
+}
+
+.button-82-front {
+  display: block;
+  position: relative;
+  padding: 12px 27px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: white;
+  background: #007373;
+  will-change: transform;
+  transform: translateY(-4px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+
+@media (min-width: 768px) {
+  .button-82-front {
+    font-size: 1.25rem;
+    padding: 12px 42px;
+  }
+}
+
+.button-82-pushable:hover {
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.button-82-pushable:hover .button-82-front {
+  transform: translateY(-6px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:hover .button-82-shadow {
+  transform: translateY(4px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-82-pushable:active .button-82-shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:focus:not(:focus-visible) {
+  outline: none;
 }

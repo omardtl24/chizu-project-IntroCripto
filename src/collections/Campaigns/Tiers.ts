@@ -4,10 +4,10 @@ const adminOrOwnerTierReadAccess: Access = ({ req }) => {
     const user = req.user;
 
     if (user.role === 'admin') {
-        return true; // Administradores pueden ver todos los tiers
+        return true; 
     }
 
-    // Solo permitir acceso si el usuario es el creador de la campaña
+
     return {
         'campaign.user': {
             equals: user.id,
@@ -95,6 +95,26 @@ export const Tiers: CollectionConfig = {
                 if (!value) return 'Debe proporcionar una descripción para el tier.';
                 if (value.length < 10) return 'La descripción debe tener al menos 10 caracteres.';
                 return true;
+            },
+        },
+        {
+            name: 'features',
+            label: 'Características',
+            type: 'array',
+            labels: {
+                singular: 'Característica',
+                plural: 'Características',
+            },
+            fields: [
+                {
+                    name: 'feature',
+                    type: 'text',
+                    required: true,
+                    label: 'Característica',
+                },
+            ],
+            admin: {
+                description: 'Lista de características incluidas en este tier.',
             },
         },
         {

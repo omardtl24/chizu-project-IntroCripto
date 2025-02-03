@@ -218,6 +218,12 @@ export interface Tier {
   title: string;
   price: number;
   description: string;
+  features?:
+  | {
+      feature: string;
+      id?: string | null;
+    }[]
+  | null;
   campaign: string | Campaign;
   updatedAt: string;
   createdAt: string;

@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, TextSearch, CircleDollarSign, BookOpenCheck } from "lucide-react"
+import { ArrowLeft, TextSearch, BookOpenCheck, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -14,10 +14,10 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { SignUpValidator, TypeSignUpValidator } from '@/lib/validators/signup-credentials-validator'
 import Image from 'next/image'
-
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AuthProvider, useAuth } from '@/LOGIN/context/authContext'
 import { useState } from 'react'
+import { ButtonPusheable } from '@/components/button_pusheable'
 
 const Page = () => {
   const router = useRouter();
@@ -26,6 +26,16 @@ const Page = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const { mutate } = trpc.auth.createPayloadUser.useMutation({
     onError: (err) => {
@@ -73,129 +83,153 @@ const Page = () => {
   };
 
   return (
-    <main className='lg:min-h-full'>
-      <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
+    <div className="grid min-h-screen lg:grid-cols-2">
+      <div className="hidden lg:block relative">
         <Image
           fill
           src='/sign-up.webp'
-          className='h-full w-full object-cover object-center'
-          alt='sign-in'
+          className='object-cover'
+          alt='sign-up'
         />
       </div>
-      <div>
-        <div className='mx-auto max-w-2xl px-6 py-4 sm:px-6 sm:py-4 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-19 lg:py-4 xl:gap-x-24'>
-          <div className='lg:col-start-2'>
-            <div className='flex flex-col items-center space-y-2 text-center mt-10'>
-              <img src='/logo.png' width={115} height={45} alt="logo" />
-              <h1 className='text-2xl font-semibold tracking-tight'>
-                Registrar Cuenta
-              </h1>
-              <Link
-                className={buttonVariants({
-                  variant: 'link',
-                  className: 'gap-1.5',
+      
+      <div className="px-4 py-10 lg:px-8">
+        <div className="max-w-md mx-auto">
+          <div className='flex flex-col items-center space-y-2 text-center mb-8'>
+            <img src='/logo.png' width={115} height={45} alt="logo" />
+            <h1 className='text-2xl font-semibold tracking-tight'>
+              Registrar Cuenta
+            </h1>
+            <Link
+              className={buttonVariants({
+                variant: 'link',
+                className: 'gap-1.5',
+              })}
+              href='/sign-in'>
+              <ArrowLeft className='h-4 w-4' />
+              Ya estas registrado? Inicia Sesion
+            </Link>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className='space-y-1'>
+              <Label htmlFor='email'>E-mail</Label>
+              <Input
+                {...register('email')}
+                className={cn({
+                  'focus-visible:ring-red-500': errors.email,
                 })}
-                href='/sign-in'>
-                <ArrowLeft className='h-4 w-4' />
-                Ya estas registrado? Inicia Sesion
-              </Link>
+                placeholder='nombre@example.com'
+              />
+              {errors?.email && (
+                <p className='text-sm text-red-500'>
+                  {errors.email.message}
+                </p>
+              )}
             </div>
-            <div className='grid gap-6'>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className='grid gap-1'>
-                  <div className='grid gap-1 py-2'>
-                    <Label htmlFor='email'>E-mail</Label>
-                    <Input
-                      {...register('email')}
-                      className={cn({
-                        'focus-visible:ring-red-500': errors.email,
-                      })}
-                      placeholder='nombre@example.com'
-                    />
-                    {errors?.email && (
-                      <p className='text-sm text-red-500'>
-                        {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className='grid gap-1 py-2'>
-                    <Label htmlFor='username'>Username</Label>
-                    <Input
-                      {...register('username')}
-                      className={cn({
-                        'focus-visible:ring-red-500': errors.username,
-                      })}
-                      placeholder='Ingresa tu nombre de usuario'
-                    />
-                    {errors?.username && (
-                      <p className='text-sm text-red-500'>
-                        {errors.username.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className='grid gap-1 py-2'>
-                    <Label htmlFor='password'>Contraseña</Label>
-                    <Input
-                      {...register('password')}
-                      type='password'
-                      className={cn({
-                        'focus-visible:ring-red-500': errors.password,
-                      })}
-                      placeholder='Ingresa tu contraseña'
-                    />
-                    {errors?.password && (
-                      <p className='text-sm text-red-500'>
-                        {errors.password.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className='grid gap-1 py-2'>
-                    <Label htmlFor='confirmacion'>Confirmacion</Label>
-                    <Input
-                      {...register('confirmPassword')}
-                      type='password'
-                      className={cn({
-                        'focus-visible:ring-red-500': errors.confirmPassword,
-                      })}
-                      placeholder='Confirma tu contraseña'
-                    />
-                    {errors?.confirmPassword && (
-                      <p className='text-sm text-red-500'>
-                        {errors.confirmPassword.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className='text-right -mb-1'>
-                    <Button variant='ghost' className='text-sm text-semibold text-gray-600'>
-                      <Link className='text-sm text-semibold text-gray-600 flex items-center gap-1.5' href='/activate-user'>
-                        Reactivar Cuenta
-                        <BookOpenCheck className='h-3.5 w-3.5' />
-                      </Link>
-                    </Button>
-                  </div>
-                  <hr className="border-t-8 border-white"></hr>
-                  <hr className="border-t-1 border-gray-400"></hr>
-                  <Button isLoading={isLoading} className='mt-2'>Registrarse</Button>
-                </div>
-              </form>
-              <Button
-                onClick={handleLogin}
-                className="flex items-center gap-2 bg-white text-black border border-gray-300 hover:bg-blue-50 px-4 py-2 -mt-4"
-              >
-                <svg
-                  viewBox="0 0 48 48"
-                  className="block h-5 w-5"
-                  fill="none"
+
+            <div className='space-y-1'>
+              <Label htmlFor='username'>Username</Label>
+              <Input
+                {...register('username')}
+                className={cn({
+                  'focus-visible:ring-red-500': errors.username,
+                })}
+                placeholder='Ingresa tu nombre de usuario'
+              />
+              {errors?.username && (
+                <p className='text-sm text-red-500'>
+                  {errors.username.message}
+                </p>
+              )}
+            </div>
+
+            <div className='space-y-1'>
+              <Label htmlFor='password'>Contraseña</Label>
+              <div className='relative'>
+                <Input
+                  {...register('password')}
+                  type={showPassword ? 'text' : 'password'}
+                  className={cn({
+                    'focus-visible:ring-red-500': errors.password,
+                  })}
+                  placeholder='Ingresa tu contraseña'
+                />
+                <button
+                  type='button'
+                  onClick={togglePasswordVisibility}
+                  className='absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-400'
                 >
-                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-                  <path fill="none" d="M0 0h48v48H0z" />
-                </svg>
-                Continuar con Google
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
+              {errors?.password && (
+                <p className='text-sm text-red-500'>
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <div className='space-y-1'>
+              <Label htmlFor='confirmPassword'>Confirmación</Label>
+              <div className='relative'>
+                <Input
+                  {...register('confirmPassword')}
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  className={cn({
+                    'focus-visible:ring-red-500': errors.confirmPassword,
+                  })}
+                  placeholder='Confirma tu contraseña'
+                />
+                <button
+                  type='button'
+                  onClick={toggleConfirmPasswordVisibility}
+                  className='absolute right-2 top-1/2 transform -translate-y-1/2 text-zinc-400'
+                >
+                  {showConfirmPassword ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
+              {errors?.confirmPassword && (
+                <p className='text-sm text-red-500'>
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            <div className='text-right'>
+              <Button variant='ghost' className='text-sm font-semibold text-gray-600'>
+                <Link className='flex items-center gap-1.5' href='/activate-user'>
+                  Reactivar Cuenta
+                  <BookOpenCheck className='h-3.5 w-3.5' />
+                </Link>
               </Button>
-              <div className='text-right -mt-2'>
+            </div>
+
+            <hr className="border-gray-400" />
+
+            <ButtonPusheable isLoading={isLoading} className='w-full'>
+              Registrarse
+            </ButtonPusheable>
+          </form>
+
+          <Button
+            onClick={handleLogin}
+            className="w-full mt-4 flex items-center justify-center gap-2 bg-white text-black border border-gray-300 hover:bg-blue-50"
+          >
+            <svg
+              viewBox="0 0 48 48"
+              className="h-5 w-5"
+              fill="none"
+            >
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+              <path fill="none" d="M0 0h48v48H0z" />
+            </svg>
+            Continuar con Google
+          </Button>
+              <div className='text-right mt-2'>
                 <Dialog>
 
                   <DialogTrigger asChild>
@@ -266,12 +300,10 @@ const Page = () => {
                   </DialogContent>
 
                 </Dialog>
-              </div>
-            </div>
-          </div>
+                </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
