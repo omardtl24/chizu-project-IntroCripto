@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, TextSearch, CircleDollarSign, BookOpenCheck } from "lucide-react"
+import { ArrowLeft, TextSearch, BookOpenCheck, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -27,6 +27,16 @@ const Page = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const { mutate } = trpc.auth.createPayloadUser.useMutation({
     onError: (err) => {
@@ -136,30 +146,49 @@ const Page = () => {
                   </div>
                   <div className='grid gap-1 py-2'>
                     <Label htmlFor='password'>Contraseña</Label>
-                    <Input
-                      {...register('password')}
-                      type='password'
-                      className={cn({
-                        'focus-visible:ring-red-500': errors.password,
-                      })}
-                      placeholder='Ingresa tu contraseña'
-                    />
+                    <div className='relative'>
+                      <Input
+                        {...register('password')}
+                        type={showPassword ? 'text' : 'password'}
+                        className={cn({
+                          'focus-visible:ring-red-500': errors.password,
+                        })}
+                        placeholder='Ingresa tu contraseña'
+                      />
+                      <button
+                        type='button'
+                        onClick={togglePasswordVisibility}
+                        className='absolute right-2 top-1/2 transform text-zinc-400 -translate-y-1/2'
+                      >
+                        {showPassword ? <EyeOff /> : <Eye />} {/* Ícono para la contraseña */}
+                      </button>
+                    </div>
                     {errors?.password && (
                       <p className='text-sm text-red-500'>
                         {errors.password.message}
                       </p>
                     )}
                   </div>
+
                   <div className='grid gap-1 py-2'>
-                    <Label htmlFor='confirmacion'>Confirmacion</Label>
-                    <Input
-                      {...register('confirmPassword')}
-                      type='password'
-                      className={cn({
-                        'focus-visible:ring-red-500': errors.confirmPassword,
-                      })}
-                      placeholder='Confirma tu contraseña'
-                    />
+                    <Label htmlFor='confirmacion'>Confirmación</Label>
+                    <div className='relative'>
+                      <Input
+                        {...register('confirmPassword')}
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        className={cn({
+                          'focus-visible:ring-red-500': errors.confirmPassword,
+                        })}
+                        placeholder='Confirma tu contraseña'
+                      />
+                      <button
+                        type='button'
+                        onClick={toggleConfirmPasswordVisibility}
+                        className='absolute right-2 top-1/2 transform text-zinc-400 -translate-y-1/2'
+                      >
+                        {showConfirmPassword ? <EyeOff /> : <Eye />} {/* Ícono para la confirmación */}
+                      </button>
+                    </div>
                     {errors?.confirmPassword && (
                       <p className='text-sm text-red-500'>
                         {errors.confirmPassword.message}

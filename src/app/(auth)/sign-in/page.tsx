@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ArrowRight, KeyRound, LogOut } from "lucide-react"
+import { ArrowRight, KeyRound, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,12 +17,17 @@ import { useEffect, useState } from 'react'
 import { AuthProvider, useAuth } from '@/LOGIN/context/authContext'
 import { ButtonPusheable } from '@/components/button_pusheable'
 
+
 const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const isAdmin = searchParams.get('as') === 'admin';
     const origin = searchParams.get('origin');
+    const [showPassword, setShowPassword] = useState(false);
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
     const { register, handleSubmit, formState: { errors }, } = useForm<TAuthCredentialsValidator>({
         resolver: zodResolver(AuthCredentialsValidator),
     });
@@ -127,15 +132,23 @@ const Page = () => {
                                     </div>
                                     <div className='grid gap-1 py-2'>
                                         <Label htmlFor='password'>Contraseña</Label>
-                                        <Input
-                                            {...register('password')}
-                                            type='password'
-                                            className={cn({
-                                                'focus-visible:ring-red-500':
-                                                    errors.password,
-                                            })}
-                                            placeholder='contraseña'
-                                        />
+                                        <div className='relative'>
+                                            <Input
+                                                {...register('password')}
+                                                type={showPassword ? 'text' : 'password'}
+                                                className={cn({
+                                                    'focus-visible:ring-red-500': errors.password,
+                                                })}
+                                                placeholder='Contraseña'
+                                            />
+                                            <button
+                                                type='button'
+                                                onClick={togglePasswordVisibility}
+                                                className='absolute right-2 top-1/2 transform text-zinc-400 -translate-y-1/2'
+                                            >
+                                                {showPassword ? <EyeOff /> : <Eye />} {/* Usa los íconos de Lucide */}
+                                            </button>
+                                        </div>
                                         {errors?.password && (
                                             <p className='text-sm text-red-500'>
                                                 {errors.password.message}
