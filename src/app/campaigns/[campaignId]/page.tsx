@@ -78,7 +78,7 @@ const Page = async ({ params }: UrlProps) => {
 
           {/* Subscription Tiers */}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {(tiers as unknown as Tier[]).map((tier: Tier) => (
+            {(tiers as unknown as Tier[]).reverse().map((tier: Tier) => (
               <div key={tier.id} className="relative bg-transparent rounded-xl p-[2px] hover:border-indigo-500/50 transition-all duration-300 hover:transform hover:-translate-y-1 subscription-card">
                 <div className="bg-white rounded-xl border p-4 h-full flex flex-col justify-between">
                   <div>
