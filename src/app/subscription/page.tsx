@@ -13,11 +13,11 @@ function App() {
             name: 'Bronce',
             price: 0,
             features: [
-                "Agradecimientos en créditos", 
+                "Agradecimientos en créditos",
                 "Imagenes de desarrollo"],
             current: true,
         },
-        {   
+        {
             name: 'Oro',
             price: 12,
             features: [
@@ -63,20 +63,23 @@ function App() {
                     </div>
 
                     {/* Game logo and info section */}
-                    <div className="flex justify-center items-center mb-12">
-                        <div>
-                            <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/04/zero-two-feature.jpg" alt="Logo del Juego" className="h-48 rounded-3xl" />
-                        </div>
-                        <div className="text-left pl-12">
-                            <h2 className="text-2xl font-bold">Halo Zero</h2>
-                            <p className="text-gray-600">Creador: Juan Gomez</p>
+                    <div className="flex flex-col lg:flex-row items-center gap-6 mb-12">
+                        <img
+                            src={ "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2021/04/zero-two-feature.jpg"}
+                            alt="Logo del Juego"
+                            className="w-full lg:w-1/2 h-72 object-cover rounded-lg"
+                        />
+                        <div className="text-center lg:text-left lg:w-1/2">
+                            <h1 className="text-5xl font-bold text-gray-900">{ "Halo Zero"}</h1>
+                            <p className="text-gray-600 mt-2">Creador: { "Juan Gomez"}</p>
                         </div>
                     </div>
 
+                    {/* Campaign description section */}
                     <div className="text-center mb-12">
-                        <h1 className="text-4xl font-bold text-black mb-4">Descripción de la campaña</h1>
-                        <p className="text-gray-800 max-w-2xl mx-auto text-justify">
-                            Elije el plan que más te convenga, todos los planes incluyen agradecimientos en los créditos del juego. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto delectus amet excepturi ratione nisi quasi minima tempora numquam. Recusandae aliquid consequuntur obcaecati mollitia dolor sit illo ex officiis harum! Assumenda!
+                        <h1 className="text-3xl font-bold text-black mb-4">Descripción de la campaña</h1>
+                        <p className="text-gray-800 mx-auto text-justify">
+                            { "Elije el plan que más te convenga, todos los planes incluyen agradecimientos en los créditos del juego. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto delectus amet excepturi ratione nisi quasi minima tempora numquam. Recusandae aliquid consequuntur obcaecati mollitia dolor sit illo ex officiis harum! Assumenda!"}
                         </p>
                     </div>
 
@@ -107,7 +110,7 @@ function App() {
                                         className={`w-full py-3 rounded-xl transition-all ${plan.current
                                             ? 'bg-gray-500 text-gray-300 cursor-default'
                                             : 'bg-[#007373] hover:bg-[#009c9c] text-white'
-                                        }`}
+                                            }`}
                                     >
                                         {plan.current ? 'Current Plan' : 'Select Plan'}
                                     </button>

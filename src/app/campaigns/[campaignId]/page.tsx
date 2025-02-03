@@ -52,36 +52,36 @@ const Page = async ({ params }: UrlProps) => {
           {campaign.description}
         </p>
         <div className="mt-12">
-  <h2 className="text-3xl font-bold mb-6 text-center">Tiers de suscripción</h2>
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-    {tiers.docs.map((tier: Tier) => (
-      <div key={tier.id} className="p-6 bg-white rounded-lg border flex flex-col justify-between">
-        <div>
-          <h3 className="text-xl font-semibold">{tier.title}</h3>
-          <p className="mt-2 text-gray-600">{tier.description}</p>
-          <div className="mt-4 flex items-baseline text-2xl font-bold">
-            <span className="text-lg">$</span> {/* Signo de dólar más pequeño */}
-            <span className="text-3xl">{tier.price.toLocaleString()}</span> {/* Precio más grande */}
-            <span className="text-sm text-gray-400 ml-1">/mes</span> {/* Texto "/mes" pequeño */}
+          <h2 className="text-3xl font-bold mb-6 text-center">Tiers de suscripción</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {tiers.docs.map((tier: Tier) => (
+              <div key={tier.id} className="p-6 bg-white rounded-lg border flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold">{tier.title}</h3>
+                  <p className="mt-2 text-gray-600">{tier.description}</p>
+                  <div className="mt-4 flex items-baseline text-2xl font-bold">
+                    <span className="text-lg">$</span> {/* Signo de dólar más pequeño */}
+                    <span className="text-3xl">{tier.price.toLocaleString()}</span> {/* Precio más grande */}
+                    <span className="text-sm text-gray-400 ml-1">/mes</span> {/* Texto "/mes" pequeño */}
+                  </div>
+                  {tier.features && tier.features.length > 0 && (
+                    <ul className="mt-4 space-y-2">
+                      {tier.features.map((featureObj: { id: number; feature: string }) => (
+                        <li key={featureObj.id} className="flex items-center text-gray-700">
+                          <Check className="w-4 h-4 mr-2 text-green-500" />
+                          {featureObj.feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <button className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                  Seleccionar Plan
+                </button>
+              </div>
+            ))}
           </div>
-          {tier.features && tier.features.length > 0 && (
-            <ul className="mt-4 space-y-2">
-              {tier.features.map((featureObj: { id: number; feature: string }) => (
-                <li key={featureObj.id} className="flex items-center text-gray-700">
-                  <Check className="w-4 h-4 mr-2 text-green-500" />
-                  {featureObj.feature}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
-        <button className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-          Seleccionar Plan
-        </button>
-      </div>
-    ))}
-  </div>
-</div>
       </div>
     </div>
   );
