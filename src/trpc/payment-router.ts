@@ -31,17 +31,17 @@ export const paymentRouter = router({
 
         const valid_products = products.filter( (product) => Boolean(product.priceId) )
         const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = []
-
+        console.log("stripeorder product map", valid_products.map((p) => p.id as string))
         const order = await payload.create({
             collection: 'orders',
             data: {
-              _isPaid: false,
-              products: valid_products.map((p) => p.id as string),
-              user: user.id,
+                _isPaid: false,
+                products: valid_products.map((p) => p.id as string),
+                user: user.id,
 
-              total: valid_products.reduce( (acc, product) => {
-                return acc + ( product.price as number);
-              }, 0 ),
+                total: valid_products.reduce( (acc, product) => {
+                    return acc + ( product.price as number);
+                }, 0 ),
 
             },
         })

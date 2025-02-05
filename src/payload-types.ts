@@ -54,6 +54,8 @@ export interface User {
  * via the `definition` "orders".
  */
 export interface Order {
+  paymentId?: number | null;
+  preferenceId?: string | null;
   id: string;
   total: number;
   _isPaid: boolean;

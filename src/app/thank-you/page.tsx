@@ -16,7 +16,8 @@ interface PageProps {
 }
 
 const ThankYouPage = async ({ searchParams }: PageProps) => {
-    const orderId = searchParams.orderId
+    const orderId = searchParams.orderId //cambiar a preferenceID y crear una nueva variable que se llame paymentID y obtenerla de los parámetros
+   
     const nextCookies = cookies()
 
     const { user } = await getServerUser(nextCookies)
@@ -26,8 +27,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
         collection: "orders",
         depth: 2,
         where: {
-            id: {
-                equals: orderId,
+            id: { // cambiar a preferenceID también
+                equals: orderId, // cambiar a preferenceID
             },
         },
     })
@@ -35,7 +36,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
     const [order] = orders
 
     if (!order) { return notFound() }
-
+    // si el order.paymentID es igual a null, entonces order.paymentID = paymentID.
     const orderUserId =
         typeof order.user === 'string'
             ? order.user

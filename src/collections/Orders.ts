@@ -26,6 +26,26 @@ export const Orders : CollectionConfig = {
 
     fields: [
         {
+          name: 'paymentId',
+          type: 'number',
+          required : false,
+          access: {
+            create: () => false,
+            read: () => true,
+            update: ({req}) => req.user.role === 'admin',
+          },
+        },                
+        {
+          name: 'preferenceId',
+          type: 'text',
+          required : false,
+          access: {
+            create: () => false,
+            read: () => true,
+            update: ({req}) => req.user.role === 'admin',
+          },
+        },        
+        {
           name: 'total',
           label: 'Total',
           type: 'number',
