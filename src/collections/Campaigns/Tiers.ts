@@ -127,5 +127,13 @@ export const Tiers: CollectionConfig = {
                 position: 'sidebar',
             },
         },
+        {
+            name: 'rewards',
+            label: 'Recompensas',
+            type: 'relationship',
+            relationTo: 'rewards',
+            hasMany: true,
+            required: false,
+        }
     ],
 };
