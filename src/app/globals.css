@@ -260,6 +260,7 @@ body {
   }
 }
 
+
 .button-82-pushable:hover {
   filter: brightness(110%);
   -webkit-filter: brightness(110%);
@@ -293,4 +294,11 @@ body {
 
 .button-82-pushable:focus:not(:focus-visible) {
   outline: none;
+}
+
+.button-82-pushable:disabled .button-82-front {
+  background: #ccc; /* Cambia el color de fondo cuando está deshabilitado */
+  cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
+  transform: none; /* Desactiva el efecto de transformación */
+  transition: none; /* Desactiva la transición */
 }
