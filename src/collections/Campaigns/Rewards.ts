@@ -17,62 +17,62 @@ const adminAndUser = (): Access => async ({ req }) => {
   }
 }
 
-const yourOwnAndPurchased: Access = async ({ req }) => {
-  const user = req.user as User | null
+// const yourOwnAndPurchased: Access = async ({ req }) => {
+//   const user = req.user as User | null
 
-  if (user?.role === 'admin') return true
-  if (!user) return false
+//   if (user?.role === 'admin') return true
+//   if (!user) return false
 
-  const { docs: tiers } = await req.payload.find({
-    collection: 'tiers',
-    depth: 0,
-    where: {
-      user: {
-        equals: user.id,
-      },
-    },
-  })
+//   const { docs: tiers } = await req.payload.find({
+//     collection: 'tiers',
+//     depth: 0,
+//     where: {
+//       user: {
+//         equals: user.id,
+//       },
+//     },
+//   })
 
-  const ownRewards = tiers
-    .map((tier) => tier.rewards)
-    .flat()
+//   const ownRewards = tiers
+//     .map((tier) => tier.rewards)
+//     .flat()
 
-  const { docs: orders } = await req.payload.find({
-    collection: 'orders',
-    depth: 2,
-    where: {
-      user: {
-        equals: user.id,
-      },
-      type: { equals: 'reward' }
-    },
-  })
+//   const { docs: orders } = await req.payload.find({
+//     collection: 'orders',
+//     depth: 2,
+//     where: {
+//       user: {
+//         equals: user.id,
+//       },
+//       type: { equals: 'reward' }
+//     },
+//   })
 
-  const purchasedRewards = orders
-    .map((order) => {
-      return order.tiers.map((product) => {
-        if (typeof product === 'string')
-          return req.payload.logger.error(
-            'Search depth not sufficient to find purchased file IDs'
-          )
+//   const purchasedRewards = orders
+//     .map((order) => {
+//       return order.tiers.map((product) => {
+//         if (typeof product === 'string')
+//           return req.payload.logger.error(
+//             'Search depth not sufficient to find purchased file IDs'
+//           )
 
-        return typeof product.product_files === 'string'
-          ? product.product_files
-          : product.product_files.id
-      })
-    })
-    .filter(Boolean)
-    .flat()
+//         return typeof product.product_files === 'string'
+//           ? product.product_files
+//           : product.product_files.id
+//       })
+//     })
+//     .filter(Boolean)
+//     .flat()
 
-  return {
-    id: {
-      in: [
-        ...ownRewards,
-        ...purchasedRewards,
-      ],
-    },
-  }
-}
+//   return {
+//     id: {
+//       in: [
+//         ...ownRewards,
+//         ...purchasedRewards,
+//       ],
+//     },
+//   }
+// }
 
 export const Rewards: CollectionConfig = {
   slug: 'rewards',
@@ -90,7 +90,7 @@ export const Rewards: CollectionConfig = {
   },
 
   access: {
-    read: yourOwnAndPurchased,
+    read:  adminAndUser(), //yourOwnAndPurchased,
     update: adminAndUser(),
     delete: ({ req }) => req.user.role === 'admin',
   },

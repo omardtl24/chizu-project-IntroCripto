@@ -129,11 +129,17 @@ export const Tiers: CollectionConfig = {
         },
         {
             name: 'rewards',
-            label: 'Recompensas',
-            type: 'relationship',
-            relationTo: 'rewards',
-            hasMany: true,
+            label: 'Recompensas del Tier',
+            type: 'array',
+            minRows: 1,
+            maxRows: 5,
             required: false,
-        }
+            labels: {
+                singular: 'Recompensa', plural: 'Recompensas',
+            },
+            fields: [
+                { name: 'reward', type: 'upload', relationTo: 'rewards', required: false, }
+            ],
+        },
     ],
 };
