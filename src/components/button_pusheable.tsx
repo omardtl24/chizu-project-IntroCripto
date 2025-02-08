@@ -8,9 +8,10 @@ interface ButtonPusheableProps extends React.ButtonHTMLAttributes<HTMLButtonElem
 }
 
 export const ButtonPusheable = React.forwardRef<HTMLButtonElement, ButtonPusheableProps>(
-    ({ className, isLoading = false, children, ...props }, ref) => {
+    ({ className, disabled =false, isLoading = false, children, ...props }, ref) => {
         return (
             <button
+                disabled = {disabled}
                 className={cn("button-82-pushable", className)}
                 role="button"
                 ref={ref}
