@@ -17,6 +17,7 @@ import { Campaigns } from './collections/Campaigns/Campaigns'
 import { CategoryCampaign } from './collections/Campaigns/CategoryCampaign'
 import { Subscriptions } from './collections/Campaigns/Subscriptions'
 import { Tiers } from './collections/Campaigns/Tiers'
+import { Rewards } from './collections/Campaigns/Rewards'
 
 dotenv.config({
     path: path.resolve(__dirname, '../.env'),
@@ -25,7 +26,7 @@ dotenv.config({
 export default buildConfig({
 
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-    collections: [ Users, Category, Products, Media, ProductFiles, Orders, Campaigns, CategoryCampaign, Subscriptions, Tiers ], 
+    collections: [ Users, Category, Products, Media, ProductFiles, Orders, Campaigns, CategoryCampaign, Subscriptions, Tiers, Rewards ], 
     routes: {
         admin: '/panel',
     },

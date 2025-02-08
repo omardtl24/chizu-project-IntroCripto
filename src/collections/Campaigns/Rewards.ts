@@ -1,4 +1,4 @@
-import { User } from '../../payload-types'
+import { Tier, User } from '../../payload-types'
 import { BeforeChangeHook } from 'payload/dist/collections/config/types'
 import { Access, CollectionConfig } from 'payload/types'
 
@@ -23,8 +23,8 @@ const yourOwnAndPurchased: Access = async ({ req }) => {
   if (user?.role === 'admin') return true
   if (!user) return false
 
-  const { docs: products } = await req.payload.find({
-    collection: 'products',
+  const { docs: tiers } = await req.payload.find({
+    collection: 'tiers',
     depth: 0,
     where: {
       user: {
@@ -33,8 +33,8 @@ const yourOwnAndPurchased: Access = async ({ req }) => {
     },
   })
 
-  const ownProductFileIds = products
-    .map((prod) => prod.product_files)
+  const ownRewards = tiers
+    .map((tier) => tier.rewards)
     .flat()
 
   const { docs: orders } = await req.payload.find({
@@ -44,20 +44,19 @@ const yourOwnAndPurchased: Access = async ({ req }) => {
       user: {
         equals: user.id,
       },
+      type: { equals: 'reward' }
     },
   })
 
-  const purchasedProductFileIds = orders
+  const purchasedRewards = orders
     .map((order) => {
-      return order.products?.map((product) => {
-        if (typeof product === 'string')
-          return req.payload.logger.error(
-            'Search depth not sufficient to find purchased file IDs'
-          )
+      const tier = order.tiers as Tier
+      return (tier.rewards ?? []).map((reward) => {
 
-        return typeof product.product_files === 'string'
-          ? product.product_files
-          : product.product_files.id
+        return typeof reward === 'string'
+          ? reward
+          : reward.id
+
       })
     })
     .filter(Boolean)
@@ -66,21 +65,21 @@ const yourOwnAndPurchased: Access = async ({ req }) => {
   return {
     id: {
       in: [
-        ...ownProductFileIds,
-        ...purchasedProductFileIds,
+        ...ownRewards,
+        ...purchasedRewards,
       ],
     },
   }
 }
 
-export const ProductFiles: CollectionConfig = {
-  slug: 'product_files',
-  labels: {singular: 'Archivo', plural: 'Archivos'},
+export const Rewards: CollectionConfig = {
+  slug: 'rewards',
+  labels: {singular: 'Recompensa', plural: 'Recompensas'},
 
   admin: {
     // hidden: ({ user }) => user.role !== 'admin',
     hideAPIURL: true,
-    description: 'Recompensas y Juegos adquiridos o subidos.',
+    description: 'Recompensas adquiridas o subidas.',
     useAsTitle: 'id',
   },
 
@@ -89,7 +88,7 @@ export const ProductFiles: CollectionConfig = {
   },
 
   access: {
-    read: yourOwnAndPurchased,
+    read:  adminAndUser(), //yourOwnAndPurchased,
     update: adminAndUser(),
     delete: ({ req }) => req.user.role === 'admin',
   },
@@ -101,6 +100,11 @@ export const ProductFiles: CollectionConfig = {
   },
 
   fields: [
+    {
+      name: 'label',
+      type: 'text',
+      required: true,
+    },
     {
       name: 'user',
       type: 'relationship',

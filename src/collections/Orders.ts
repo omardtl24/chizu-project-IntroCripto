@@ -86,7 +86,7 @@ export const Orders : CollectionConfig = {
           name: 'products',
           type: 'relationship',
           relationTo: 'products',
-          required: true,
+          required: false,
           hasMany: true,
           access : {
             read: ({req}) => req.user.role === 'admin',
@@ -94,6 +94,18 @@ export const Orders : CollectionConfig = {
             update: ({req}) => req.user.role === 'admin',
           },
         },
+        {
+          name: 'tiers',
+          type: 'relationship',
+          relationTo: 'tiers',
+          required: false,
+          hasMany: false,
+          access : {
+            read: ({req}) => req.user.role === 'admin',
+            create: () => false,
+            update: ({req}) => req.user.role === 'admin',
+          }
+        }
     ],
 
 }

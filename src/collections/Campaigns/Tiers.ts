@@ -127,5 +127,19 @@ export const Tiers: CollectionConfig = {
                 position: 'sidebar',
             },
         },
+        {
+            name: 'rewards',
+            label: 'Recompensas del Tier',
+            type: 'array',
+            minRows: 1,
+            maxRows: 5,
+            required: false,
+            labels: {
+                singular: 'Recompensa', plural: 'Recompensas',
+            },
+            fields: [
+                { name: 'reward', type: 'upload', relationTo: 'rewards', required: false, }
+            ],
+        },
     ],
 };
