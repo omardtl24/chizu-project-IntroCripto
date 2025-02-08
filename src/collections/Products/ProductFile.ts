@@ -89,7 +89,12 @@ export const ProductFiles: CollectionConfig = {
   },
 
   access: {
-    read: yourOwnAndPurchased,
+    read: async ({req}) => {
+      const refer = req.headers.referer
+
+      if ( !req.user || !refer?.includes('panel') ){ return true }
+      return await adminAndUser()({req})
+    },
     update: adminAndUser(),
     delete: ({ req }) => req.user.role === 'admin',
   },
