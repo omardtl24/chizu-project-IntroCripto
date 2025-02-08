@@ -258,6 +258,7 @@ export interface Subscription {
 
 export interface Reward {
   id: string;
+  label: string;
   user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;

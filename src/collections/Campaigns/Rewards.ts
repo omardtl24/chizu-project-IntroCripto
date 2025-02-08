@@ -1,4 +1,4 @@
-import { User } from '../../payload-types'
+import { Tier, User } from '../../payload-types'
 import { BeforeChangeHook } from 'payload/dist/collections/config/types'
 import { Access, CollectionConfig } from 'payload/types'
 
@@ -17,62 +17,60 @@ const adminAndUser = (): Access => async ({ req }) => {
   }
 }
 
-// const yourOwnAndPurchased: Access = async ({ req }) => {
-//   const user = req.user as User | null
+const yourOwnAndPurchased: Access = async ({ req }) => {
+  const user = req.user as User | null
 
-//   if (user?.role === 'admin') return true
-//   if (!user) return false
+  if (user?.role === 'admin') return true
+  if (!user) return false
 
-//   const { docs: tiers } = await req.payload.find({
-//     collection: 'tiers',
-//     depth: 0,
-//     where: {
-//       user: {
-//         equals: user.id,
-//       },
-//     },
-//   })
+  const { docs: tiers } = await req.payload.find({
+    collection: 'tiers',
+    depth: 0,
+    where: {
+      user: {
+        equals: user.id,
+      },
+    },
+  })
 
-//   const ownRewards = tiers
-//     .map((tier) => tier.rewards)
-//     .flat()
+  const ownRewards = tiers
+    .map((tier) => tier.rewards)
+    .flat()
 
-//   const { docs: orders } = await req.payload.find({
-//     collection: 'orders',
-//     depth: 2,
-//     where: {
-//       user: {
-//         equals: user.id,
-//       },
-//       type: { equals: 'reward' }
-//     },
-//   })
+  const { docs: orders } = await req.payload.find({
+    collection: 'orders',
+    depth: 2,
+    where: {
+      user: {
+        equals: user.id,
+      },
+      type: { equals: 'reward' }
+    },
+  })
 
-//   const purchasedRewards = orders
-//     .map((order) => {
-//       return order.tiers.map((product) => {
-//         if (typeof product === 'string')
-//           return req.payload.logger.error(
-//             'Search depth not sufficient to find purchased file IDs'
-//           )
+  const purchasedRewards = orders
+    .map((order) => {
+      const tier = order.tiers as Tier
+      return (tier.rewards ?? []).map((reward) => {
 
-//         return typeof product.product_files === 'string'
-//           ? product.product_files
-//           : product.product_files.id
-//       })
-//     })
-//     .filter(Boolean)
-//     .flat()
+        return typeof reward === 'string'
+          ? reward
+          : reward.id
 
-//   return {
-//     id: {
-//       in: [
-//         ...ownRewards,
-//         ...purchasedRewards,
-//       ],
-//     },
-//   }
-// }
+      })
+    })
+    .filter(Boolean)
+    .flat()
+
+  return {
+    id: {
+      in: [
+        ...ownRewards,
+        ...purchasedRewards,
+      ],
+    },
+  }
+}
 
 export const Rewards: CollectionConfig = {
   slug: 'rewards',
@@ -102,6 +100,11 @@ export const Rewards: CollectionConfig = {
   },
 
   fields: [
+    {
+      name: 'label',
+      type: 'text',
+      required: true,
+    },
     {
       name: 'user',
       type: 'relationship',
