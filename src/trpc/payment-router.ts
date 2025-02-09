@@ -136,6 +136,7 @@ export const paymentRouter = router({
                 _isPaid: true,
             }
         });
+        payload.logger.info(`Se ha actualizado la orden ${orderId} como pagada`)
 
         return { isPaid: true}
     }),

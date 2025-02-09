@@ -64,7 +64,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                     <h1 className='mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl'>
                         Gracias por su Apoyo :3
                     </h1>
-                    {order._isPaid ? <p className='mt-2 text-base text-muted-foreground'>
+                    {order._isPaid ? <p className='mt-2 text-base text-gray-700'>
                         Su subscripción ha sido exitosa y ya puede acceder a sus recompensas. Le hemos enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
                         <span className='font-medium text-gray-900'>
@@ -72,8 +72,9 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                         </span>
                         ) : null}
                         
-                    </p> : (<p className='mt-2 text-base text-muted-foreground'>
-                        Estamos procesando su orden en este momento. Le enviaremos una confirmacion en breve.
+                    </p> : (<p className='mt-2 text-base text-gray-700'>
+                        Estamos procesando su Subscripcion, esto tomará cerca de{' '}
+                        <span className='font-medium text-gray-900'>30 segundos</span>. Le enviaremos una confirmación a su correo al finalizar.
                     </p>
                     )}
                     <div className='mt-10 text-sm font-medium'>
@@ -133,6 +134,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
                             orderId={String(order.id)} 
+                            paymentId={Array.isArray(paymentId) ? paymentId[0] : paymentId || ''}
                         />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>
