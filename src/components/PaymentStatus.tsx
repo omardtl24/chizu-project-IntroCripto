@@ -18,17 +18,8 @@ interface PaymentStatusProps {
 const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
     const router = useRouter();
 
-    const [data, setData] = useState(null);
     const [PapiYaExisto, setPapiYaExisto] = useState(false);
     const [error, setError] = useState("");
-
-    useEffect(() => {
-        fetch("/api/hello")
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, []);
-
-    console.log(data);
 
     useEffect(() => {
         if (paymentId) {
@@ -37,14 +28,12 @@ const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatus
 
             fetch(url.toString())
                 .then((res) => {
-                    console.log("estoy asi", res.ok);
                     if (!res.ok) {
                         throw new Error("Network response was not ok");
                     }
                     return res.json();
                 })
                 .then((data) => {
-                    console.log("estoy asi v3", data.payment.status);
                     setPapiYaExisto(data.payment.status == "approved" ? true : false);
                 })
                 .catch((error) => {
