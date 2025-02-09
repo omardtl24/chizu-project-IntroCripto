@@ -14,10 +14,16 @@ interface PaymentStatusProps {
 }
 //maybe poner otro parametro de paymentId
 const PaymentStatus = ({orderEmail, orderId, paymentId, isPaid}: PaymentStatusProps) => {
+    console.log("~~~~~~~~~~~~~~~~~~ Estamos dentro de PaymentStatus ~~~~~~~~~~~~~~~~~~")
+    console.log("Esto es el paymentId: ",paymentId)
+    console.log("Esto es el orderId: ",orderId)
+    console.log("Esto es el orderEmail: ",orderEmail)
+    console.log("Esto es el isPaid: ",isPaid)
     //const payload = await getPayloadClient()
     const router = useRouter()
     // 1. Llamar el endpoint adicional en la carpeta api
     const [payment, setPayment] = useState<PaymentStatusProps | null>(null);
+    fetch(`/api/payment-status?paymentId=${paymentId}`)
     useEffect(() => {
         if (paymentId) {
             fetch(`/api/payment-status?paymentId=${paymentId}`)
@@ -48,7 +54,7 @@ const PaymentStatus = ({orderEmail, orderId, paymentId, isPaid}: PaymentStatusPr
     }
     // 3. mandar el correo
     
-    const {data} = trpc.payment.pollOrderStatus.useQuery({orderId}, {
+    const {data} = trpc.payment.pollOrderStatus.useQuery({orderId}, { //esto no es lo del correo, es lo antiguo del ispaid
         enabled: isPaid === false,
         refetchInterval: (data) => (data?.isPaid ? false: 1500)
     }) 
