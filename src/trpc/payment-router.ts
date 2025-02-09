@@ -121,4 +121,22 @@ export const paymentRouter = router({
 
         return { isPaid: order._isPaid}
     }),
+
+    updateOrderStatus: privateProcedure
+    .input(z.object({orderId: z.string()}))
+    .mutation(async({input}) => {
+        const {orderId} = input
+
+        const payload = await getPayloadClient()
+
+        await payload.update({
+            collection : 'orders', 
+            id : orderId, 
+            data : { 
+                _isPaid: true,
+            }
+        });
+
+        return { isPaid: true}
+    }),
 })

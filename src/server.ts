@@ -69,7 +69,6 @@ const start = async () => {
 
   const cartRouter = express.Router();
   cartRouter.use(payload.authenticate);
-
   cartRouter.get('/', (req, res) => {
     const request = req as PayloadRequest;
     if (!request.user) {

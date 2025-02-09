@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getPayloadClient } from "@/getPayload";
 import { Campaign, Media, Tier, User } from "@/payload-types";
 import { Check } from "lucide-react";
@@ -13,7 +13,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { cookies } from 'next/headers'
+import { getServerUser } from '@/lib/payload-utils'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import CampaignClientComponent from '../../../components/campaign/campaign-client';
+import { useState } from "react";
 
 
 interface UrlProps {
@@ -36,8 +40,15 @@ const getStatusColor = (status: string) => {
 };
 
 const Page = async ({ params }: UrlProps) => {
+  const cookie = cookies()
+  const { user } = await getServerUser(cookie)
   const { campaignId } = params;
   const payload = await getPayloadClient();
+
+  if (!user) {
+    const currentUrl = `/campaigns/${campaignId}`;
+    redirect(`/sign-in?returnUrl=${encodeURIComponent(currentUrl)}`);
+  }
 
   const { docs: campaigns } = await payload.find({
     collection: "campaigns",
@@ -59,6 +70,53 @@ const Page = async ({ params }: UrlProps) => {
 
   const bannerImage = campaignData.bannerImage as Media;
   const author = campaignData.user as User;
+
+  //#region ---- MercadoPago Truco ----
+
+  // const [preferenceId, setPreferenceId] = useState<string | null>(null);
+  // const createPreference = async (tier: Tier) => {
+  //   try {
+  //     const products = [
+  //       {
+  //         user_id: "10", //user.id,
+  //         id: tier.id,
+  //         title: tier.title,
+  //         quantity: 1,
+  //         unit_price: tier.price,
+  //         picture_url: bannerImage?.url || "/default-banner.jpg",
+  //         isProduct: false,
+  //       }
+  //     ];
+
+  //     const response = await fetch("/api/create_preference", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(products),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Error en la respuesta del servidor");
+  //     }
+
+  //     const data = await response.json();
+  //     const { id } = data;
+  //     return id;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const handleBuy = async (tier: Tier) => {
+  //   const id = await createPreference(tier);
+  //   if (id) {
+  //     setPreferenceId(id);
+  //   }
+  // };
+
+  //#endregion ---- MercadoPago Truco ----
+
 
   return (
     <div className="min-h-screen bg-radial-gradient flex items-center justify-center p-6">
@@ -136,10 +194,21 @@ const Page = async ({ params }: UrlProps) => {
                           Cancelar
                         </AlertDialogCancel>
 
-                        <AlertDialogAction>
+                        {/* <AlertDialogAction onClick={() => handleBuy(tier)}>
                           Aceptar
+                          {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts: { valueProp: 'smart_option' } }} />}
+                        </AlertDialogAction> */}
+
+
+                        <AlertDialogAction asChild>
+                          <CampaignClientComponent
+                            user={user}
+                            bannerImageUrl={bannerImage?.url || "/default-banner.jpg"}
+                            tier={tier}
+                          />
                         </AlertDialogAction>
-                        
+
+
 
                       </AlertDialogFooter>
 

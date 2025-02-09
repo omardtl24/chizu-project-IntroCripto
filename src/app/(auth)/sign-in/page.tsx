@@ -20,8 +20,9 @@ import { ButtonPusheable } from '@/components/button_pusheable'
 const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const isAdmin = searchParams.get('as') === 'admin';
-    const origin = searchParams.get('origin');
+    const isAdmin = searchParams?.get('as') === 'admin';
+    const origin = searchParams?.get('origin');
+    const returnUrl = searchParams?.get('returnUrl');
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -40,6 +41,10 @@ const Page = () => {
             router.refresh();
             if (origin) {
                 window.location.href = `/${origin}`;
+                return;
+            }
+            if (returnUrl) {
+                router.push(returnUrl);
                 return;
             }
             if (isAdmin) {

@@ -41,7 +41,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
             : (order.user as User).id
 
     if (orderUserId !== user?.id) {   //no autorizado
-        return redirect(`/sign-in?origin=thank-you?orderId=${order.id}`)
+        return redirect(`/sign-in?origin=tier-thank-you?orderId=${order.id}`)
     }
 
     const orderTotal = order.total as number

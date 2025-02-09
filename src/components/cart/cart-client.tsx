@@ -41,7 +41,8 @@ const CartClient = ({user} : { user : User}) => {
                     title: item.product.name,
                     quantity: item.product.qty,
                     unit_price: item.product.price,
-                    picture_url: imageUrl
+                    picture_url: imageUrl,
+                    isProduct: true,
                 };
             });
 

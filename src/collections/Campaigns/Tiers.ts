@@ -131,7 +131,7 @@ export const Tiers: CollectionConfig = {
             name: 'rewards',
             label: 'Recompensas del Tier',
             type: 'array',
-            minRows: 1,
+            minRows: 0,
             maxRows: 5,
             required: false,
             labels: {

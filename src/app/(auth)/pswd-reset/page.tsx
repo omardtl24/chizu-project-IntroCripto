@@ -22,7 +22,7 @@ const Page = () => {
 
   const router = useRouter()
   const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+  const token = searchParams?.get('token') || 'invalid'
 
   const [success, setSuccess] = useState(false)
   const [fail, setFail] = useState(false)
