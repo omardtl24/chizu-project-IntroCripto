@@ -17,6 +17,8 @@ interface PageProps {
 
 const TierThankYouPage = async ({ searchParams }: PageProps) => {
     const orderId = searchParams.orderId
+    const paymentId = searchParams.payment_id // new
+    const preferenceId = searchParams.preference_id // new
     const nextCookies = cookies()
 
     const { user } = await getServerUser(nextCookies)

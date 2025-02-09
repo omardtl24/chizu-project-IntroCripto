@@ -1,4 +1,3 @@
-// Esta es una API que crea una preferencia de MercadoPago con los productos recibidos en el body
 const payload = require("payload");
 const getPayloadClient = require("../../getPayload");
 const { MercadoPagoConfig, Preference } = require("mercadopago");
@@ -18,14 +17,13 @@ const isProductValid = (product) => {
 
 const createPreference = async (req, res) => {
     try {
-        console.log("Llegaste al primer paso :)");
+        console.log("Llegaste al primer paso :)", req.body);
 
         const isProduct = req.body[0].isProduct;
 
-        const productsIDS = req.body.map((product) => product.id)
+        const productsIDS = req.body.map((product) => product.id);
         const userID = req.body[0].user_id;
         const products = req.body.map(({ id, user_id, isProduct,...rest }) => rest);
-
 
         if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({ error: "No se recibieron productos" });
@@ -47,7 +45,7 @@ const createPreference = async (req, res) => {
             },
         });
         const user = users[0];
-        let chizuOrder = any
+        let chizuOrder = any;
         // Crear la orden en la base de datos
         if (isProduct) {
             chizuOrder = await payload.create({
@@ -101,31 +99,26 @@ const createPreference = async (req, res) => {
                         in: productsIDS
                     },
                 },
-            })
+            });
 
             productsPayload.forEach(async (product) => {
-                // const qty = products_info.find( ([id, qty]) => id === product.id )?.[1] ?? 1
-
                 await payload.update({
                     collection: 'products',
                     id: product.id,
                     data: { compras: (typeof product.compras === 'number' ? product.compras : 0) + 1 },
                 });
-
-            })
+            });
         }
-
         //#endregion ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Payload truco ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        console.log("Productos", products);
+        console.log("Productos", products, "Es producto?", isProduct);
 
         if (isProduct) {
             const value2 = await preference2.create({
                 body: {
                     items: products,
                     back_urls: {
-
-                        success: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${chizuOrder.id}`, // crear order
+                        success: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${chizuOrder.id}`,
                         failure: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
                         pending: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${chizuOrder.id}`,
                     },
@@ -134,14 +127,13 @@ const createPreference = async (req, res) => {
             });
 
             return res.status(200).json({ id: value2.id });
-        }
-
-        else {
-            const value2 = await preference2.create({
+        } else {
+            const preference3 = new Preference(client);
+            const value3 = await preference3.create({
                 body: {
                     items: products,
                     back_urls: {
-                        success: `${process.env.NEXT_PUBLIC_SERVER_URL}/tier-thank-you?orderId=${chizuOrder.id}`, // crear order
+                        success: `${process.env.NEXT_PUBLIC_SERVER_URL}/tier-thank-you?orderId=${chizuOrder.id}`,
                         failure: `${process.env.NEXT_PUBLIC_SERVER_URL}/products`,
                         pending: `${process.env.NEXT_PUBLIC_SERVER_URL}/tier-thank-you?orderId=${chizuOrder.id}`,
                     },
@@ -149,7 +141,7 @@ const createPreference = async (req, res) => {
                 }
             });
 
-            return res.status(200).json({ id: value2.id });
+            return res.status(200).json({ id: value3.id });
         }
 
     } catch (error) {
