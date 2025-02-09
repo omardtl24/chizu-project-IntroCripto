@@ -1,87 +1,85 @@
-"use client"
+"use client";
 
-import { trpc } from "@/trpc/client"
-import { useRouter } from "next/navigation"
+import { trpc } from "@/trpc/client";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import MercadoPago from "mercadopago"
-import { ReceiptEmailHtml } from './components/email/Receipt'
-import { getPayloadClient } from '@/getPayload'
+import MercadoPago from "mercadopago";
+import { ReceiptEmailHtml } from "./components/email/Receipt";
+import { getPayloadClient } from "@/getPayload";
+import { boolean } from "zod";
+
 interface PaymentStatusProps {
-    orderEmail: string
-    orderId: string
-    paymentId: string
-    isPaid: boolean
+    orderEmail: string;
+    orderId: string;
+    paymentId: string;
+    isPaid: boolean;
 }
-//maybe poner otro parametro de paymentId
-const PaymentStatus = ({orderEmail, orderId, paymentId, isPaid}: PaymentStatusProps) => {
-    console.log("~~~~~~~~~~~~~~~~~~ Estamos dentro de PaymentStatus ~~~~~~~~~~~~~~~~~~")
-    console.log("Esto es el paymentId: ",paymentId)
-    console.log("Esto es el orderId: ",orderId)
-    console.log("Esto es el orderEmail: ",orderEmail)
-    console.log("Esto es el isPaid: ",isPaid)
-    //const payload = await getPayloadClient()
-    const router = useRouter()
-    // 1. Llamar el endpoint adicional en la carpeta api
-    const [payment, setPayment] = useState<PaymentStatusProps | null>(null);
-    fetch(`/api/payment-status?paymentId=${paymentId}`)
+
+const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
+    const router = useRouter();
+
+    const [data, setData] = useState(null);
+    const [PapiYaExisto, setPapiYaExisto] = useState(false);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        fetch("/api/hello")
+            .then((res) => res.json())
+            .then((data) => setData(data));
+    }, []);
+
+    console.log(data);
+
     useEffect(() => {
         if (paymentId) {
-            fetch(`/api/payment-status?paymentId=${paymentId}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    // data.payment vendrá con la forma que definiste en el endpoint
-                    setPayment(data.payment);
+            const url = new URL("/api/payment-status", window.location.origin);
+            url.searchParams.append("paymentId", paymentId);
+
+            fetch(url.toString())
+                .then((res) => {
+                    console.log("estoy asi", res.ok);
+                    if (!res.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return res.json();
                 })
-                .catch(console.error);
+                .then((data) => {
+                    console.log("estoy asi v3", data.payment.status);
+                    setPapiYaExisto(data.payment.status == "approved" ? true : false);
+                })
+                .catch((error) => {
+                    setError("Failed to fetch payment status");
+                    console.error("Error fetching payment status:", error);
+                });
         }
-    }, [paymentId]);    
-    console.log("Esto es la respuesta de la api: ",payment)
-    // 2. Actualizar ispaid en la orden asociada con la respuesta del endpoint
-    /*
-    if (payment && payment.status === 'approved') {
-        await payload.update({
-            collection: 'orders',
-            data: {
-                ?: parseInt(Array.isArray(paymentId) ? paymentId[0] : paymentId),
-                preferenceId: Array.isArray(preferenceId) ? preferenceId[0] : preferenceId,
-            },
-            where: {
-                id: {
-                    equals: orderId,
-                },
-            },
-        })}            
-    }
-    // 3. mandar el correo
-    
-    const {data} = trpc.payment.pollOrderStatus.useQuery({orderId}, { //esto no es lo del correo, es lo antiguo del ispaid
-        enabled: isPaid === false,
-        refetchInterval: (data) => (data?.isPaid ? false: 1500)
-    }) 
-    
+    }, [paymentId]);
 
-    useEffect(() => {
-        if(data?.isPaid) router.refresh()
-    }, [data?.isPaid, router])*/
-    // agregar uso de send email con el componente importado ReceiptEmailHtml (para referencia ver auth-router.tsx)
-    return <div className="mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600">
-        <div>
-            <p className="font-medium text-gray-900">
-                Confirmación en:
-            </p>
-            <p>{orderEmail}</p>
+    return (
+        <div className="mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600">
+            <div>
+                <p className="font-medium text-gray-900">Confirmación en:</p>
+                <p>{orderEmail}</p>
+            </div>
+
+            <div>
+                <p className="font-medium text-gray-900">EErrorrr:</p>
+                <p>{PapiYaExisto}</p>
+
+                <div>
+                    <p className="font-medium text-gray-900">Estado de la Orden:</p>
+                    <p className={PapiYaExisto ? "text-green-600" : ""}>
+                        {PapiYaExisto ? "Pago Exitoso" : "Pendiente de Pago"}
+                    </p>
+                </div>
+            </div>
+
+            {error && (
+                <div>
+                    <p className="text-red-600">{error}</p>
+                </div>
+            )}
         </div>
+    );
+};
 
-        <div>
-            <p className="font-medium text-gray-900">
-                Estado de la Orden:
-            </p>
-            <p className={isPaid ? 'text-green-600' : ''}>
-                {isPaid ? "Pago Exitoso" : "Pendiente de Pago"}
-            </p>
-        </div>
-    </div>
-}
-
-
-export default PaymentStatus
+export default PaymentStatus;
