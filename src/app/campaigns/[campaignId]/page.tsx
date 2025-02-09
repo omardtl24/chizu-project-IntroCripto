@@ -2,6 +2,19 @@ import { notFound } from "next/navigation";
 import { getPayloadClient } from "@/getPayload";
 import { Campaign, Media, Tier, User } from "@/payload-types";
 import { Check } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button, buttonVariants } from "@/components/ui/button"
+
 
 interface UrlProps {
   params: {
@@ -97,9 +110,45 @@ const Page = async ({ params }: UrlProps) => {
                       ))}
                     </ul>
                   </div>
-                  <button className="w-full py-3 rounded-xl bg-[#007373] hover:bg-[#009c9c] text-white transition-all">
-                    Seleccionar Plan
-                  </button>
+
+                  <AlertDialog>
+
+                    <AlertDialogTrigger asChild>
+                      <button className="w-full py-3 rounded-xl bg-[#007373] hover:bg-[#009c9c] text-white transition-all">
+                        Seleccionar Plan
+                      </button>
+                    </AlertDialogTrigger>
+
+
+                    <AlertDialogContent>
+
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Suscribirse a {tier.title}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Si desea continuar, porfavor seleccione en Aceptar y sera redirigido a la pasarela de pagos.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter>
+
+
+                        <AlertDialogCancel>
+                          Cancelar
+                        </AlertDialogCancel>
+
+                        <AlertDialogAction>
+                          Aceptar
+                        </AlertDialogAction>
+                        
+
+                      </AlertDialogFooter>
+
+                    </AlertDialogContent>
+
+
+                  </AlertDialog>
+
+
                 </div>
               </div>
             ))}
@@ -107,7 +156,7 @@ const Page = async ({ params }: UrlProps) => {
         </div>
       </div>
     </div>
-      );
+  );
 };
 
-      export default Page;
+export default Page;

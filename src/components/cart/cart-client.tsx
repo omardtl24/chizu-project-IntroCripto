@@ -294,6 +294,8 @@ const CartClient = ({user} : { user : User}) => {
                                 {isLoading ? (<Loader2 className='h-4 w-4 animate-spin mr-1.5 ml-1.5' />) : null}
                                 Finalizar Compra
                             </Button>
+
+                            
                             <Button className='w-full mt-4' size='lg' onClick={handleBuy}> Comprar con Mercado Pago</Button>
                             {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts:{ valueProp: 'smart_option'}}} />}
                             
