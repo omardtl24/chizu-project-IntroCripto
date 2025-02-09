@@ -16,9 +16,6 @@ export const authRouter = router({
             let username = input.username;
             const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") ? process.env.PALABRA_MAGICA + email + "A" : input.password;
 
-            // Aquí se imprime la contraseña en el lado del servidor 
-            // console.log("Password:", password);
-
             const payload = await getPayloadClient();
 
             // verificar que el correo no este ya registrado
@@ -60,7 +57,6 @@ export const authRouter = router({
                 }
             }
 
-            console.log("Completado");
             await payload.create({ collection: 'users', data: { email, password, username, role: 'user' } });
             return { success: true, sentToEmail: email };
 
@@ -137,7 +133,6 @@ export const authRouter = router({
 
         const email = input.email
         const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") ? process.env.PALABRA_MAGICA + email + "A" : input.password;
-        // console.log(password)
         const payload = await getPayloadClient()
         const { res } = ctx
 

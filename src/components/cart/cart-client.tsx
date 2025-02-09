@@ -44,9 +44,7 @@ const CartClient = ({user} : { user : User}) => {
                     picture_url: imageUrl
                 };
             });
-    
-            // console.log("Listado de productos:", products);
-    
+
             const response = await fetch("/api/create_preference", {
                 method: "POST",
                 headers: {
@@ -61,7 +59,6 @@ const CartClient = ({user} : { user : User}) => {
     
             const data = await response.json();
             const { id } = data;
-            // console.log("ID de la preferencia creada:", id);
             return id;
         } catch (error) {
             console.log(error);

@@ -9,6 +9,7 @@ import Link from 'next/link'
 import PaymentStatus from '../../components/PaymentStatus'
 import CartClean from '../../components/CartClean'
 
+
 interface PageProps {
     searchParams: {
         [key: string]: string | string[] | undefined
@@ -17,7 +18,8 @@ interface PageProps {
 
 const ThankYouPage = async ({ searchParams }: PageProps) => {
     const orderId = searchParams.orderId //cambiar a preferenceID y crear una nueva variable que se llame paymentID y obtenerla de los parámetros
-   
+    const paymentId = searchParams.payment_id // new
+    const preferenceId = searchParams.preference_id // new
     const nextCookies = cookies()
 
     const { user } = await getServerUser(nextCookies)
@@ -36,7 +38,20 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
     const [order] = orders
 
     if (!order) { return notFound() }
-    // si el order.paymentID es igual a null, entonces order.paymentID = paymentID.
+    if (preferenceId && paymentId){ //new
+        await payload.update({
+            collection: 'orders',
+            data: {
+                paymentId: parseInt(Array.isArray(paymentId) ? paymentId[0] : paymentId),
+                preferenceId: Array.isArray(preferenceId) ? preferenceId[0] : preferenceId,
+            },
+            where: {
+                id: {
+                    equals: orderId,
+                },
+            },
+        })}            
+    
     const orderUserId =
         typeof order.user === 'string'
             ? order.user
@@ -146,6 +161,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
                             orderId={String(order.id)} 
+                            paymentId={Array.isArray(paymentId) ? paymentId[0] : paymentId || ''}
                         />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>

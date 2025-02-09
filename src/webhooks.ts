@@ -24,7 +24,7 @@ export const stripeWebhookHandler = async (
     const webhookRequest = req as any as WebhookRequest
     const body = webhookRequest.rawBody
     const signature = req.headers['stripe-signature'] || ''
-
+    console.log('body', body)
     let event
     try {
         event = stripe.webhooks.constructEvent(
