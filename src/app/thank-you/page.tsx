@@ -20,9 +20,6 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
     const orderId = searchParams.orderId //cambiar a preferenceID y crear una nueva variable que se llame paymentID y obtenerla de los parámetros
     const paymentId = searchParams.payment_id // new
     const preferenceId = searchParams.preference_id // new
-    
-    console.log('paymentId: ', paymentId)
-    console.log('preferenceId: ', preferenceId)
     const nextCookies = cookies()
 
     const { user } = await getServerUser(nextCookies)

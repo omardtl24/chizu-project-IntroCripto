@@ -21,9 +21,6 @@ const createPreference = async (req, res) => {
         const userID = req.body[0].user_id;
         const products = req.body.map(({ id, user_id, ...rest }) => rest);
 
-        console.log("esto es productosIDS: ",productsIDS);
-        console.log("esto es userID: ",userID);
-
 
         if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({ error: "No se recibieron productos" });
@@ -34,7 +31,6 @@ const createPreference = async (req, res) => {
                 return res.status(400).json({ error: "Formato de producto inválido" });
             }
         }
-        console.log("Productos validos");
         const preference2 = new Preference(client);
         
                 //#region ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Payload truco ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,7 +43,6 @@ const createPreference = async (req, res) => {
                     });
         const user = users[0];
 
-        console.log("Usuario encontrado: ", user.id);
 
         
         // Crear la orden en la base de datos
@@ -65,7 +60,6 @@ const createPreference = async (req, res) => {
             },
         });
 
-        console.log("Orden Creada payload: ", chizuOrder.id);
         
         await payload.update({
             collection : 'users', 
@@ -79,7 +73,6 @@ const createPreference = async (req, res) => {
             }
         });
 
-        console.log("Orden asociada al usuario");
         
         const { docs: productsPayload } = await payload.find({
             collection: 'products',
@@ -100,8 +93,6 @@ const createPreference = async (req, res) => {
             });
 
         })
-
-        console.log("Compra registrada en la DB");
         
         //#endregion ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Payload truco ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -118,12 +109,6 @@ const createPreference = async (req, res) => {
             }
         });
 
-
-        console.log("Preferencia Creada: ", value2.id);
-
-
-
-        //console.log("Preferencia creada:", value2);
         return res.status(200).json({ id: value2.id });
     } catch (error) {
         console.error(error);
