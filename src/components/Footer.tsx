@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import SupportButton from './support/SupportForm'
 
 const Footer = () => {
-    const pathname = usePathname()
+    const pathname = usePathname() ?? '/'
     const pathsToMinimize = [
         '/verify-email',
         '/sign-up',

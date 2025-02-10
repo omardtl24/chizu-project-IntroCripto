@@ -110,7 +110,8 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                                             <a href={downloadUrl}
                                                 download={label}
                                                 className='text-teal-700 hover:underline-offset-2'>
-                                                Descargar Juego
+                                                Descargar archivo
+                                                {downloadUrl}
                                             </a>
                                         ) : null}
                                     </div>
