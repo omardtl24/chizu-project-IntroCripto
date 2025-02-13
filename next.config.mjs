@@ -18,6 +18,10 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "chizu-project-production.up.railway.app",
 			},
+			{
+				protocol: "https",
+				hostname: "chizu-project-production-464e.up.railway.app",
+			},
 		],
 	},
 };
