@@ -6,57 +6,71 @@ const addUser: BeforeChangeHook = ({ req, data }) => {
   const user = req.user as User | null
   return { ...data, user: user?.id }
 }
-const adminAndUser: Access = ({ req: { user } }) => {
-  if (user.role === 'admin') return true
+const adminAndUser = (): Access => async ({ req }) => {
+  const user = req.user as User | undefined
+
+  if (!user){ return false }
+  if (user.role === 'admin'){ return true }
 
   return {
-    id: { equals: user.id, },
+    user: { equals: req.user.id, },
   }
 }
 
-const adquiridos: Access = async ({ req }) => {
+const yourOwnAndPurchased: Access = async ({ req }) => {
   const user = req.user as User | null
 
-  if (user?.role === 'admin'){ return true }
-  if (!user){ return false }
+  if (user?.role === 'admin') return true
+  if (!user) return false
 
   const { docs: products } = await req.payload.find({
     collection: 'products',
     depth: 0,
     where: {
-      user: { equals: user.id, },
+      user: {
+        equals: user.id,
+      },
     },
   })
 
-  const ownProductFileIds = products.map((prod) => prod.product_files).flat()
+  const ownProductFileIds = products
+    .map((prod) => prod.product_files)
+    .flat()
 
   const { docs: orders } = await req.payload.find({
     collection: 'orders',
-    depth: 2, // join no solo el user id, sino el objeto user completo con sus relaciones a productos adquiridos tambien.
+    depth: 2,
     where: {
-      user: { equals: user.id, },
+      user: {
+        equals: user.id,
+      },
     },
   })
 
-  const purchasedProductFileIds = orders.map((order) => {
+  const purchasedProductFileIds = orders
+    .map((order) => {
+      return order.products?.map((product) => {
+        if (typeof product === 'string')
+          return req.payload.logger.error(
+            'Search depth not sufficient to find purchased file IDs'
+          )
 
-      return order.products.map((product) => {
-        if (typeof product === 'string'){
-          return req.payload.logger.error( 'No se ha encontrado la ID (verificar la profundidad de busqueda depth )' )
-        }
-
-        return typeof product.product_files === 'string' ? product.product_files : product.product_files.id
+        return typeof product.product_files === 'string'
+          ? product.product_files
+          : product.product_files.id
       })
     })
-    .filter(Boolean).flat()
-
+    .filter(Boolean)
+    .flat()
 
   return {
     id: {
-      in: [ ...ownProductFileIds, ...purchasedProductFileIds, ],
+      in: [
+        ...ownProductFileIds,
+        ...purchasedProductFileIds,
+      ],
     },
   }
-
 }
 
 export const ProductFiles: CollectionConfig = {
@@ -75,9 +89,14 @@ export const ProductFiles: CollectionConfig = {
   },
 
   access: {
-    read: adquiridos,
-    update: adminAndUser,
-    delete: adminAndUser,
+    read: async ({req}) => {
+      const refer = req.headers.referer
+
+      if ( !req.user || !refer?.includes('panel') ){ return true }
+      return await adminAndUser()({req})
+    },
+    update: adminAndUser(),
+    delete: ({ req }) => req.user.role === 'admin',
   },
   
   upload: {

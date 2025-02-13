@@ -9,6 +9,7 @@ import Link from 'next/link'
 import PaymentStatus from '../../components/PaymentStatus'
 import CartClean from '../../components/CartClean'
 
+
 interface PageProps {
     searchParams: {
         [key: string]: string | string[] | undefined
@@ -16,7 +17,9 @@ interface PageProps {
 }
 
 const ThankYouPage = async ({ searchParams }: PageProps) => {
-    const orderId = searchParams.orderId
+    const orderId = searchParams.orderId //cambiar a preferenceID y crear una nueva variable que se llame paymentID y obtenerla de los parámetros
+    const paymentId = searchParams.payment_id // new
+    const preferenceId = searchParams.preference_id // new
     const nextCookies = cookies()
 
     const { user } = await getServerUser(nextCookies)
@@ -26,8 +29,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
         collection: "orders",
         depth: 2,
         where: {
-            id: {
-                equals: orderId,
+            id: { // cambiar a preferenceID también
+                equals: orderId, // cambiar a preferenceID
             },
         },
     })
@@ -35,6 +38,20 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
     const [order] = orders
 
     if (!order) { return notFound() }
+    if (preferenceId && paymentId) { //new
+        await payload.update({
+            collection: 'orders',
+            data: {
+                paymentId: parseInt(Array.isArray(paymentId) ? paymentId[0] : paymentId),
+                preferenceId: Array.isArray(preferenceId) ? preferenceId[0] : preferenceId,
+            },
+            where: {
+                id: {
+                    equals: orderId,
+                },
+            },
+        })
+    }
 
     const orderUserId =
         typeof order.user === 'string'
@@ -64,16 +81,17 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                     <h1 className='mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl'>
                         Gracias por su Compra :3
                     </h1>
-                    {order._isPaid ? <p className='mt-2 text-base text-muted-foreground'>
+                    {order._isPaid ? <p className='mt-2 text-base text-gray-700'>
                         Su orden ha sido exitosa y ya puede descargar su Juego. Le hemos enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
-                        <span className='font-medium text-gray-900'>
-                            {(order.user as User).email}
-                        </span>
+                            <span className='font-medium text-gray-900'>
+                                {(order.user as User).email}
+                            </span>
                         ) : null}
-                        
-                    </p> : (<p className='mt-2 text-base text-muted-foreground'>
-                        Estamos procesando su orden en este momento. Le enviaremos una confirmacion en breve.
+
+                    </p> : (<p className='mt-2 text-base text-gray-700'>
+                        Estamos procesando su orden, esto tomará cerca de{' '}
+                        <span className='font-medium text-gray-900'>30 segundos</span>. Le enviaremos una confirmación a su correo al finalizar.
                     </p>
                     )}
                     <div className='mt-10 text-sm font-medium'>
@@ -144,7 +162,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         <PaymentStatus
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
-                            orderId={String(order.id)} 
+                            orderId={String(order.id)}
+                            paymentId={Array.isArray(paymentId) ? paymentId[0] : paymentId || ''}
                         />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>

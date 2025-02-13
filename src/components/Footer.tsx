@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import SupportButton from './support/SupportForm'
 
 const Footer = () => {
-    const pathname = usePathname()
+    const pathname = usePathname() ?? '/'
     const pathsToMinimize = [
         '/verify-email',
         '/sign-up',
@@ -87,7 +87,7 @@ const Footer = () => {
                                     <Button
                                         variant="ghost"
                                         className="gap-1.5 justify-end text-gray-600"
-                                        onClick={() => (window.location.href = "/landing")}
+                                        onClick={() => (window.location.href = "/")}
                                     >
                                         <Compass className="h-5 w-5 text-gray-700" />
                                         <div className='text-gray-700'>

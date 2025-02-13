@@ -14,6 +14,11 @@ export interface Config {
     media: Media;
     product_files: ProductFile;
     orders: Order;
+    campaigns: Campaign;
+    categorycampaign: Categorycampaign;
+    subscriptions: Subscription;
+    tiers: Tier;
+    rewards: Reward;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -30,6 +35,8 @@ export interface User {
   ordenes?: number | null;
   ordenes_hist?: (string | Order)[] | null;
   lastLogin?: string | null;
+  subscriptions?: (string | Subscription)[] | null;
+  campaignCreated?: (string | null) | Campaign;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -52,7 +59,10 @@ export interface Order {
   total: number;
   _isPaid: boolean;
   user: string | User;
-  products: (string | Product)[];
+  products?: (string | Product)[] | null;
+  paymentId?: number | null;
+  preferenceId?: string | null;
+  tiers?: (string | null) | Tier;
   updatedAt: string;
   createdAt: string;
 }
@@ -123,6 +133,8 @@ export interface ProductFile {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -139,6 +151,8 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
   sizes?: {
     thumbnail?: {
       url?: string | null;
@@ -179,6 +193,83 @@ export interface Comentario {
   product?: (string | null) | Product;
   updatedAt: string;
   createdAt: string;
+}
+
+export interface Campaign {
+  id: string;
+  title: string;
+  description: string;
+  user: string | User;
+  category: string | Categorycampaign;
+  bannerImage: string | Media;
+  startDate?: string | null;
+  status: 'suspendida' | 'activa' | 'finalizada';
+  tiers?: (string | Tier)[] | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categorycampaign".
+ */
+export interface Categorycampaign {
+  id: string;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tiers".
+ */
+export interface Tier {
+  id: string;
+  title: string;
+  price: number;
+  description: string;
+  rewards?:
+    | {
+        reward?: string | Reward | null;
+        id?: string | null;
+      }[]
+    | null;
+  features?:
+  | {
+      feature: string;
+      id?: string | null;
+    }[]
+  | null;
+  campaign: string | Campaign;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscriptions".
+ */
+export interface Subscription {
+  id: string;
+  user: string | User;
+  tier: string | Tier;
+  startDate: string;
+  status: 'activa' | 'cancelada' | 'expirada';
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface Reward {
+  id: string;
+  label: string;
+  user?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 
 export interface PayloadPreference {

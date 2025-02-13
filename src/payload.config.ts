@@ -13,7 +13,11 @@ import { Media } from './collections/Media'
 import { ProductFiles } from './collections/Products/ProductFile'
 import { Orders } from './collections/Orders'
 import React from 'react'
-import { Comentarios } from './collections/Products/Comentarios'
+import { Campaigns } from './collections/Campaigns/Campaigns'
+import { CategoryCampaign } from './collections/Campaigns/CategoryCampaign'
+import { Subscriptions } from './collections/Campaigns/Subscriptions'
+import { Tiers } from './collections/Campaigns/Tiers'
+import { Rewards } from './collections/Campaigns/Rewards'
 
 dotenv.config({
     path: path.resolve(__dirname, '../.env'),
@@ -22,7 +26,7 @@ dotenv.config({
 export default buildConfig({
 
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-    collections: [ Users, Category, Products, Media, ProductFiles, Orders, Comentarios ], 
+    collections: [ Users, Category, Products, Media, ProductFiles, Orders, Campaigns, CategoryCampaign, Subscriptions, Tiers, Rewards ], 
     routes: {
         admin: '/panel',
     },

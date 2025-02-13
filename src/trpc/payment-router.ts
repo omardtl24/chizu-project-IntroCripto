@@ -31,17 +31,17 @@ export const paymentRouter = router({
 
         const valid_products = products.filter( (product) => Boolean(product.priceId) )
         const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = []
-
+        console.log("stripeorder product map", valid_products.map((p) => p.id as string))
         const order = await payload.create({
             collection: 'orders',
             data: {
-              _isPaid: false,
-              products: valid_products.map((p) => p.id as string),
-              user: user.id,
+                _isPaid: false,
+                products: valid_products.map((p) => p.id as string),
+                user: user.id,
 
-              total: valid_products.reduce( (acc, product) => {
-                return acc + ( product.price as number);
-              }, 0 ),
+                total: valid_products.reduce( (acc, product) => {
+                    return acc + ( product.price as number);
+                }, 0 ),
 
             },
         })
@@ -120,5 +120,24 @@ export const paymentRouter = router({
         const [order] = orders
 
         return { isPaid: order._isPaid}
+    }),
+
+    updateOrderStatus: privateProcedure
+    .input(z.object({orderId: z.string()}))
+    .mutation(async({input}) => {
+        const {orderId} = input
+
+        const payload = await getPayloadClient()
+
+        await payload.update({
+            collection : 'orders', 
+            id : orderId, 
+            data : { 
+                _isPaid: true,
+            }
+        });
+        payload.logger.info(`Se ha actualizado la orden ${orderId} como pagada`)
+
+        return { isPaid: true}
     }),
 })
