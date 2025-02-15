@@ -22,12 +22,12 @@ export const PRODUCT_CATEGORIES = [
       featured: [
           {
               name: 'Favoritas',
-              href: '/products?category=Populares',
+              href: '/campaigns?category=Populares',
               imageSrc: '/nav/fav/img1.jpg',
           },
           {
               name: 'Recomendados',
-              href: `/products?category=Chizu Selected`,
+              href: `/campaigns?category=Chizu Selected`,
               imageSrc: '/nav/fav/img2.png',
           },
       ],
