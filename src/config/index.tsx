@@ -22,7 +22,7 @@ export const PRODUCT_CATEGORIES = [
       featured: [
           {
               name: 'Favoritas',
-              href: '/campaigns?category=Populares',
+              href: '/campaigns',
               imageSrc: '/nav/fav/img1.jpg',
           },
           {
