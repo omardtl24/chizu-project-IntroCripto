@@ -8,6 +8,7 @@ import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
 import PaymentStatus from '../../components/PaymentStatus'
 import CartClean from '../../components/CartClean'
+import {Order} from '../../payload-types'
 
 
 interface PageProps {
@@ -34,7 +35,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
             },
         },
     })
-
+    const [orderPaymentStatus] = orders as unknown as Order[]
     const [order] = orders
 
     if (!order) { return notFound() }
@@ -160,6 +161,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         </div>
 
                         <PaymentStatus
+                            user={user}
+                            order={orderPaymentStatus}
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
                             orderId={String(order.id)}

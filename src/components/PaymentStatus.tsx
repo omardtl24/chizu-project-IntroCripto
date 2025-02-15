@@ -4,17 +4,28 @@ import { trpc } from "@/trpc/client";
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { ReceiptEmailHtml } from '@/components/email/Receipt'
+import nodemailer from 'nodemailer'
+import {User,Order, Product} from '../payload-types'
 
 interface PaymentStatusProps {
+    user: User;
+    order: Order;
     orderEmail: string;
     orderId: string;
     paymentId: string;
     isPaid: boolean;
 }
 
-const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
+const PaymentStatus = ({ user, order, orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
+    console.log("------------------------------USER------------------------------------")
+    console.log(user)
+    console.log("-----------------------------------------------------------------------")
+    console.log("------------------------------ORDER------------------------------------")
+    console.log(order)
+    console.log("-----------------------------------------------------------------------")
     const router = useRouter()
-
+    
     const { mutate: updateOrderStatus } = trpc.payment.updateOrderStatus.useMutation({
         onSuccess: async () => {
 
@@ -69,8 +80,32 @@ const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatus
         }
     );
     useEffect(() => {
-        if (data?.isPaid) router.refresh()
-      }, [data?.isPaid, router])
+        if (data?.isPaid) {
+            router.refresh()
+            //#region Email receipt
+            const url = new URL("/api/email-receipt", window.location.origin);
+
+            fetch(url.toString(), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user, order, orderId }),
+            })
+            .then((res) => res.json())
+            .then((response) => {
+                if (response.success) {
+                    console.log("Email enviado correctamente");
+                } else {
+                    console.error("Error enviando email:", response.error);
+                }
+            })
+            .catch((err) => console.error("Error en la petición de email:", err));
+            //#endregion 
+
+            
+        }
+    }, [data?.isPaid, router])
 
 
     return (
