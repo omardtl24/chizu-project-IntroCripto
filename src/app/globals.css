@@ -302,3 +302,11 @@ body {
   transform: none; /* Desactiva el efecto de transformación */
   transition: none; /* Desactiva la transición */
 }
+
+
+@layer utilities {
+  .stars-bg {
+    background-image: radial-gradient(circle, rgba(12, 12, 12, 0.144) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+}

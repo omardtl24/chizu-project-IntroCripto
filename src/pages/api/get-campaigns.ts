@@ -23,7 +23,6 @@ const db = pgp({
     ssl: { rejectUnauthorized: false },
 });
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -36,10 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 c.title, 
                 c.status, 
                 u.username, 
-                t.id AS tier_id, 
-                t.title AS tier_name, 
-                t.price AS tier_price, 
-                t.description AS tier_description, 
+                MIN(t.price) AS min_price, 
+                MAX(t.price) AS max_price, 
                 cc.name AS category_name,
                 m.filename AS banner_filename
             FROM campaigns c
@@ -51,44 +48,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             LEFT JOIN categorycampaign cc ON cr_category.categorycampaign_id = cc.id
             LEFT JOIN campaigns_rels cr_banner ON c.id = cr_banner.parent_id AND cr_banner.path = 'bannerImage'
             LEFT JOIN media m ON cr_banner.media_id = m.id
+            GROUP BY c.id, c.title, c.status, u.username, cc.name, m.filename
         `);
 
-        const result = campaigns.reduce((acc, campaign) => {
-            if (!acc[campaign.campaign_id]) {
-                acc[campaign.campaign_id] = {
-                    title: campaign.title,
-                    status: campaign.status,
-                    user: campaign.username,
-                    category: campaign.category_name,
-                    banner_filename: campaign.banner_filename,
-                    tiers: []
-                };
-            }
-            if (campaign.tier_id) {
-                acc[campaign.campaign_id].tiers.push({
-                    id: campaign.tier_id,
-                    name: campaign.tier_name,
-                    price: campaign.tier_price,
-                    description: campaign.tier_description
-                });
-            }
-            return acc;
-        }, {});
+        const result = campaigns.map(campaign => ({
+            id: campaign.campaign_id,
+            title: campaign.title,
+            status: campaign.status,
+            user: campaign.username,
+            category: campaign.category_name,
+            banner_filename: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${campaign.banner_filename}`,
+            min_price: campaign.min_price,
+            max_price: campaign.max_price
+        }));
 
         return res.status(200).json({ campaigns: result });
     } catch (error: any) {
         console.error('Database error:', error);
-        
-        const userMessage = process.env.NODE_ENV === 'production' 
-            ? 'Error connecting to database' 
+
+        const userMessage = process.env.NODE_ENV === 'production'
+            ? 'Error connecting to database'
             : error.message;
-            
-        return res.status(500).json({ 
+
+        return res.status(500).json({
             error: userMessage,
             details: process.env.NODE_ENV === 'development' ? error : undefined
         });
     } finally {
-        // Opcional: cerrar la conexión si no estás usando un pool
+        // Opcional: cerrar la conexión a la base de datos
         // await db.$pool.end();
     }
 }
