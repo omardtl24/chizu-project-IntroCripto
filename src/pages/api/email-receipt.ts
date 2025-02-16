@@ -1,26 +1,31 @@
-import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
-import { ReceiptEmailHtml } from "@/components/email/Receipt";
-import { Order, Product, User } from "@/payload-types";
+import { NextApiRequest, NextApiResponse } from 'next';
+import nodemailer from 'nodemailer';
+import { ReceiptEmailHtml } from '@/components/email/Receipt';
+import { Order, Product, User } from '@/payload-types';
 
-export async function POST(req: Request) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log('POST /api/email-receipt endpoint called');
     try {
-        console.log('POST /api/email-receipt endpoint called');
-        const { user, order, orderId } = await req.json();
+        const { user, order, orderId } = req.body;
+        console.log('Request body:', req.body);
+        if (!user || !order || !orderId) {
+            return res.status(400).json({ error: 'Missing required parameters' });
+        }
+
         let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
+            host: 'smtp.gmail.com',
             port: 587,
             auth: {
-                user: "chizugamessocial@gmail.com",
+                user: 'chizugamessocial@gmail.com',
                 pass: process.env.EMAIL_KEY,
             },
         });
-        console.log('se crea el transporter');
+        console.log('Transporter created');
 
         let mailOptions = {
-            from: "Chizu",
+            from: 'Chizu',
             to: user.email as string,
-            subject: "Gracias por tu Compra :3",
+            subject: 'Gracias por tu Compra :3',
             html: ReceiptEmailHtml({
                 date: new Date(),
                 email: user.email as string,
@@ -29,20 +34,14 @@ export async function POST(req: Request) {
                 Total: order.total as number,
             }),
         };
-        console.log('se configura el email');
+        console.log('Email configured');
 
         await transporter.sendMail(mailOptions);
-        console.log('se envía el email');
+        console.log('Email sent');
 
-        return NextResponse.json({ success: true });
-
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error("Error sending email:", error);
-            return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-        } else {
-            console.error("Error sending email:", error);
-            return NextResponse.json({ success: false, error: "Unknown error" }, { status: 500 });
-        }
+        return res.status(200).json({ success: true });
+    } catch (error: any) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({ success: false, error: error.message });
     }
 }
