@@ -9,7 +9,6 @@ import nodemailer from 'nodemailer'
 import {User,Order, Product} from '../payload-types'
 
 interface PaymentStatusProps {
-    user: User;
     order: Order;
     orderEmail: string;
     orderId: string;
@@ -17,15 +16,9 @@ interface PaymentStatusProps {
     isPaid: boolean;
 }
 
-const PaymentStatus = ({ user, order, orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
-    console.log("------------------------------USER------------------------------------")
-    console.log(user)
-    console.log("-----------------------------------------------------------------------")
-    console.log("------------------------------ORDER------------------------------------")
-    console.log(order)
-    console.log("-----------------------------------------------------------------------")
+const PaymentStatus = ({ order, orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
+
     const router = useRouter()
-    
     const { mutate: updateOrderStatus } = trpc.payment.updateOrderStatus.useMutation({
         onSuccess: async () => {
 
@@ -81,10 +74,34 @@ const PaymentStatus = ({ user, order, orderEmail, orderId, paymentId, isPaid }: 
     );
     useEffect(() => {
         if (data?.isPaid) {
+            console.log("Enviando email de confirmación de compra");
             router.refresh()
+            
+            fetch('/api/hello')
+                    .then(response => response.json())
+                    .then(data => console.log(data)) // { message: 'Hello, World!' }
+                    .catch(error => console.error('Error:', error));
             //#region Email receipt
+            // 
             const url = new URL("/api/email-receipt", window.location.origin);
-
+            url.searchParams.append("orderTotal", order.total.toString());
+            url.searchParams.append("orderEmail", orderEmail);
+            url.searchParams.append("orderId", orderId);           
+            url.searchParams.append("products", JSON.stringify(order.products));                       
+            console.log("url.toString()", url.toString());
+            fetch(url.toString())
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Email network response was not ok");
+                }
+                return res.json();
+            })
+            .catch((error) => {
+                setError("Failed to fetch email api");
+                console.error("Error fetching email api:", error);
+            });
+/*
+            const url = new URL("/api/email-receipt", window.location.origin);
             fetch(url.toString(), {
                 method: "POST",
                 headers: {
@@ -102,7 +119,7 @@ const PaymentStatus = ({ user, order, orderEmail, orderId, paymentId, isPaid }: 
             })
             .catch((err) => console.error("Error en la petición de email:", err));
             //#endregion 
-
+*/
             
         }
     }, [data?.isPaid, router])

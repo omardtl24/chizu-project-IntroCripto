@@ -88,7 +88,7 @@ export const ReceiptEmail = ({
             const { image } = product.images[0]
 
             return (
-              <Section key={product.id}>
+              <Section key={product.id}  style={productContainer}>
                 <Column style={{ width: '64px' }}>
                   {typeof image !== 'string' &&
                   image.url ? (
@@ -251,6 +251,9 @@ const informationTableValue = {
   padding: '0',
   lineHeight: 1.4,
 }
+const productContainer = {
+  marginTop: '1rem',
+};
 
 const productTitleTable = {
   ...informationTable,

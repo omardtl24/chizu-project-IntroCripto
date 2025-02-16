@@ -161,7 +161,6 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                         </div>
 
                         <PaymentStatus
-                            user={user}
                             order={orderPaymentStatus}
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
