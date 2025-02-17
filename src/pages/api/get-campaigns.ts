@@ -62,7 +62,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             max_price: campaign.max_price
         }));
 
-        return res.status(200).json({ campaigns: result });
+        const categories = await db.any(`
+            SELECT name 
+            FROM categorycampaign
+        `);
+
+        const categoryNames = categories.map(category => category.name);
+
+        return res.status(200).json({ campaigns: result, categories: categoryNames });
     } catch (error: any) {
         console.error('Database error:', error);
 

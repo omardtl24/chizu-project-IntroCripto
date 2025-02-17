@@ -15,7 +15,10 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [campaigns, setCampaigns] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const router = useRouter();
+  
   // Función para manejar el clic en el ProductCard
   const handleCardClick = (id: number) => {
     router.push(`/campaign/${id}`);
@@ -36,6 +39,8 @@ const Products = () => {
       if (Array.isArray(data.campaigns)) {
         console.log("Campaigns fetched:", data.campaigns);
         setCampaigns(data.campaigns as Product[]);
+        console.log("Categories fetched:", data.categories);
+        setCategories(data.categories as string[]);
       } else {
         console.error("Expected an array but received:", data);
         // Maneja el caso donde la respuesta no es un array
@@ -48,14 +53,27 @@ const Products = () => {
     }
   };
 
-
-
   useEffect(() => {
     fetchCampaigns();
   }, []);
 
+  const handleCategoryChange = (category: string, isChecked: boolean) => {
+    if (isChecked) {
+      setSelectedCategories(prev => [...prev, category]);
+    } else {
+      setSelectedCategories(prev => prev.filter(c => c !== category));
+    }
+  };
+
   const filteredAndSortedCampaigns = React.useMemo(() => {
     let filtered = Array.isArray(campaigns) ? campaigns : [];
+
+    // Aplicar filtro de categoría
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(campaign => 
+        selectedCategories.includes(campaign.category)
+      );
+    }
 
     // Aplicar búsqueda
     if (searchTerm) {
@@ -71,16 +89,26 @@ const Products = () => {
       const priceB = sortPrice === 'up' ? (b.min_price ?? 0) : (b.max_price ?? 0);
       return sortPrice === 'up' ? priceA - priceB : priceB - priceA;
     });
-  }, [campaigns, searchTerm, sortPrice]);
+  }, [campaigns, searchTerm, sortPrice, selectedCategories]);
 
-
-  // Datos de ejemplo para las categorías
-  const sampleCategories = [
-    { name: 'Categoría 1' },
-    { name: 'Categoría 2' },
-    { name: 'Categoría 3' },
-  ];
-
+  const renderCategoryCheckboxes = (isMobile: boolean) => {
+    return categories.map(category => (
+      <div key={category} className="flex items-center">
+        <Checkbox
+          id={`${isMobile ? 'mobile-' : ''}category-${category}`}
+          className='h-4 w-4 rounded border-gray-300'
+          checked={selectedCategories.includes(category)}
+          onCheckedChange={(checked) => handleCategoryChange(category, checked === true)}
+        />
+        <label 
+          htmlFor={`${isMobile ? 'mobile-' : ''}category-${category}`} 
+          className="ml-3 text-sm text-gray-600"
+        >
+          {category}
+        </label>
+      </div>
+    ));
+  };
 
   return (
     <div className="bg-white">
@@ -145,16 +173,7 @@ const Products = () => {
 
                           <DisclosurePanel className="pt-6">
                             <div className="space-y-6">
-                              {sampleCategories.map(category => (
-                                <div key={category.name} className="flex items-center">
-                                  <Checkbox
-                                    className='h-4 w-4 rounded border-gray-300'
-                                  />
-                                  <label className="ml-3 text-sm text-gray-600">
-                                    {category.name}
-                                  </label>
-                                </div>
-                              ))}
+                              {renderCategoryCheckboxes(true)}
                             </div>
                           </DisclosurePanel>
                         </>
@@ -263,16 +282,7 @@ const Products = () => {
                       </h3>
                       <DisclosurePanel className="pt-6">
                         <div className="space-y-4">
-                          {sampleCategories.map(category => (
-                            <div key={category.name} className="flex items-center">
-                              <Checkbox
-                                className='h-4 w-4 rounded border-gray-300'
-                              />
-                              <label className="ml-3 text-sm text-gray-600">
-                                {category.name}
-                              </label>
-                            </div>
-                          ))}
+                          {renderCategoryCheckboxes(false)}
                         </div>
                       </DisclosurePanel>
                     </>
