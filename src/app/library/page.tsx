@@ -77,7 +77,7 @@ function App() {
                 <div>
                     {activeTab === 'favoritos' && favoriteGames.length > 0 && (
                         <>
-                            <h2 className="text-xl font-bold mb-4">Juegos</h2>
+                            <h2 className="text-xl font-bold mb-8">Juegos</h2>
                             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8`}>
                                 {favoriteGames.map((game) => (
                                     <GameCard
@@ -93,7 +93,7 @@ function App() {
                     )}
                     {activeTab === 'favoritos' && favoriteCampaigns.length > 0 && (
                         <>
-                            <h2 className="text-xl font-bold mb-4">Campañas</h2>
+                            <h2 className="text-xl font-bold mb-8">Campañas</h2>
                             <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6`}>
                                 {favoriteCampaigns.map((campaign) => (
                                     <CampaignCard

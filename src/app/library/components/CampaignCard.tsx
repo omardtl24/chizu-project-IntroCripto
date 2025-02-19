@@ -21,7 +21,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ product, isFavorite,
                 <img
                     src={product.banner_filename}
                     alt={product.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover transform transition-transform duration-300"
                 />
                 <button
                     onClick={onToggleFavorite}

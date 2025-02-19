@@ -10,12 +10,12 @@ interface GameCardProps {
 }
 
 export const GameCard: React.FC<GameCardProps> = ({ game, isFavorite, onToggleFavorite, animationClass }) => (
-    <div className="group relative">
+    <div className="group relative transition-transform transition-all duration-300 ease-in-out transform hover:-translate-y-5">
         <div className="aspect-[3/4] overflow-hidden rounded-lg relative">
             <img
                 src={game.image}
                 alt={game.title}
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover transform transition-transform duration-300"
             />
             <button
                 onClick={onToggleFavorite}
