@@ -24,18 +24,19 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => (
             </a>
             <a
                 href="#"
-                onClick={() => setActiveTab('favoritos')}
-                className={`pb-2 ${activeTab === 'favoritos' ? 'text-black border-b-2 border-black' : 'text-gray-600 hover:text-black transition-colors'}`}
-            >
-                Favoritos
-            </a>
-            <a
-                href="#"
                 onClick={() => setActiveTab('campanas')}
                 className={`pb-2 ${activeTab === 'campanas' ? 'text-black border-b-2 border-black' : 'text-gray-600 hover:text-black transition-colors'}`}
             >
                 Campañas
             </a>
+            <a
+                href="#"
+                onClick={() => setActiveTab('favoritos')}
+                className={`pb-2 ${activeTab === 'favoritos' ? 'text-black border-b-2 border-black' : 'text-gray-600 hover:text-black transition-colors'}`}
+            >
+                Favoritos
+            </a>
+
         </nav>
     </header>
 );

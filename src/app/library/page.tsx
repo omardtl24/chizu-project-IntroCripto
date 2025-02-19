@@ -38,7 +38,7 @@ function App() {
     const favoriteCampaigns = getFavoriteItems().filter(item => item.type === 'campaign');
 
     return (
-        <div className="min-h-screen bg-white text-black p-6">
+        <div className="min-h-screen bg-[#FCFCFC] text-black p-6 px-32">
             <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
             {/* Filters for Favorites */}
