@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useState } from 'react';
 import { GamepadIcon, SparklesIcon } from 'lucide-react';
 import { Header } from './components/header';
@@ -35,17 +35,17 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-[#121212] text-white p-6">
+        <div className="min-h-screen bg-white text-black p-6">
             <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-            
+
             {/* Filters for Favorites */}
             {activeTab === 'favoritos' && (
                 <div className="flex items-center space-x-4 mb-6">
-                    <div className="flex items-center bg-white/5 rounded-lg p-1">
+                    <div className="flex items-center bg-gray-200 rounded-lg p-1">
                         <button
                             onClick={() => setFavoritesFilter('all')}
                             className={`px-4 py-2 rounded-md transition-colors ${
-                                favoritesFilter === 'all' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'
+                                favoritesFilter === 'all' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'
                             }`}
                         >
                             Todos
@@ -53,7 +53,7 @@ function App() {
                         <button
                             onClick={() => setFavoritesFilter('games')}
                             className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${
-                                favoritesFilter === 'games' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'
+                                favoritesFilter === 'games' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'
                             }`}
                         >
                             <GamepadIcon className="w-4 h-4" />
@@ -62,7 +62,7 @@ function App() {
                         <button // App.tsx (continuación del return statement)
                             onClick={() => setFavoritesFilter('campaigns')}
                             className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${
-                                favoritesFilter === 'campaigns' ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'
+                                favoritesFilter === 'campaigns' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'
                             }`}
                         >
                             <SparklesIcon className="w-4 h-4" />

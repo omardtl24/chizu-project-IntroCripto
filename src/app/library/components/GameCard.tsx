@@ -19,19 +19,19 @@ export const GameCard: React.FC<GameCardProps> = ({ game, isFavorite, onToggleFa
             />
             <button
                 onClick={onToggleFavorite}
-                className={`absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-all ${animationClass}`}
+                className={`absolute top-2 right-2 p-2 rounded-full bg-gray-300 hover:bg-gray-400 transition-all ${animationClass}`}
             >
                 {isFavorite ? (
                     <Heart className="w-5 h-5 text-red-500 fill-current" />
                 ) : (
-                    <HeartOff className="w-5 h-5 text-white" />
+                    <HeartOff className="w-5 h-5 text-black" />
                 )}
             </button>
         </div>
         <div className="mt-4">
             <h3 className="text-lg font-medium">{game.title}</h3>
-            <p className="text-gray-400 text-sm mt-1">{game.achievements}</p>
-            <button className="mt-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
+            <p className="text-gray-800 text-sm mt-1">{game.achievements}</p>
+            <button className="mt-2 text-sm text-blue-600 hover:text-blue-500 transition-colors">
                 {game.status}
             </button>
         </div>
