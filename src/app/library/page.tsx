@@ -34,6 +34,9 @@ function App() {
         return games;
     };
 
+    const favoriteGames = getFavoriteItems().filter(item => item.type === 'game');
+    const favoriteCampaigns = getFavoriteItems().filter(item => item.type === 'campaign');
+
     return (
         <div className="min-h-screen bg-white text-black p-6">
             <Header activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -44,26 +47,20 @@ function App() {
                     <div className="flex items-center bg-gray-200 rounded-lg p-1">
                         <button
                             onClick={() => setFavoritesFilter('all')}
-                            className={`px-4 py-2 rounded-md transition-colors ${
-                                favoritesFilter === 'all' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'
-                            }`}
+                            className={`px-4 py-2 rounded-md transition-colors ${favoritesFilter === 'all' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'}`}
                         >
                             Todos
                         </button>
                         <button
                             onClick={() => setFavoritesFilter('games')}
-                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${
-                                favoritesFilter === 'games' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'
-                            }`}
+                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${favoritesFilter === 'games' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'}`}
                         >
                             <GamepadIcon className="w-4 h-4" />
                             Juegos
                         </button>
-                        <button // App.tsx (continuación del return statement)
+                        <button
                             onClick={() => setFavoritesFilter('campaigns')}
-                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${
-                                favoritesFilter === 'campaigns' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'
-                            }`}
+                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${favoritesFilter === 'campaigns' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'}`}
                         >
                             <SparklesIcon className="w-4 h-4" />
                             Campañas
@@ -74,21 +71,54 @@ function App() {
 
             <SearchBar />
 
-            {activeTab === 'favoritos' && getFavoriteItems().length === 0 ? (
+            {activeTab === 'favoritos' && favoriteGames.length === 0 && favoriteCampaigns.length === 0 ? (
                 <EmptyFavorites setActiveTab={setActiveTab} />
             ) : (
-                <div className={`grid ${
-                    activeTab !== 'campanas' && activeTab !== 'favoritos'
-                        ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-5'
-                        : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                    } gap-6`}
-                >
+                <div>
+                    {activeTab === 'favoritos' && favoriteGames.length > 0 && (
+                        <>
+                            <h2 className="text-xl font-bold mb-4">Juegos</h2>
+                            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8`}>
+                                {favoriteGames.map((game) => (
+                                    <GameCard
+                                        key={game.id}
+                                        game={game}
+                                        isFavorite={favorites.includes(game.id)}
+                                        onToggleFavorite={() => toggleFavorite(game.id)}
+                                        animationClass={getAnimationClass(game.id)}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
+                    {activeTab === 'favoritos' && favoriteCampaigns.length > 0 && (
+                        <>
+                            <h2 className="text-xl font-bold mb-4">Campañas</h2>
+                            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6`}>
+                                {favoriteCampaigns.map((campaign) => (
+                                    <CampaignCard
+                                        key={campaign.id}
+                                        product={campaign}
+                                        isFavorite={favorites.includes(campaign.id)}
+                                        onToggleFavorite={() => toggleFavorite(campaign.id)}
+                                        animationClass={getAnimationClass(campaign.id)}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </div>
+            )}
+
+            {/* Display non-favorite games and campaigns */}
+            {activeTab !== 'favoritos' && (
+                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6`}>
                     {getFilteredItems().map((item) => {
-                        if ('description' in item) {
+                        if (item.type === 'campaign') {
                             return (
                                 <CampaignCard
                                     key={item.id}
-                                    campaign={item}
+                                    product={item}
                                     isFavorite={favorites.includes(item.id)}
                                     onToggleFavorite={() => toggleFavorite(item.id)}
                                     animationClass={getAnimationClass(item.id)}

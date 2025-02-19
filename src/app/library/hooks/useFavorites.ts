@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 
 export const useFavorites = () => {
-    const [favorites, setFavorites] = useState<string[]>([]);
-    const [animatingFavorite, setAnimatingFavorite] = useState<string | null>(null);
+    const [favorites, setFavorites] = useState<number[]>([]);
+    const [animatingFavorite, setAnimatingFavorite] = useState<number | null>(null);
     const [animationType, setAnimationType] = useState<'add' | 'remove' | null>(null);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export const useFavorites = () => {
         localStorage.setItem('gameFavorites', JSON.stringify(favorites));
     }, [favorites]);
 
-    const toggleFavorite = (id: string) => {
+    const toggleFavorite = (id: number) => {
         setAnimatingFavorite(id);
         setAnimationType(favorites.includes(id) ? 'remove' : 'add');
 
@@ -34,7 +34,7 @@ export const useFavorites = () => {
         });
     };
 
-    const getAnimationClass = (id: string) => {
+    const getAnimationClass = (id: number) => {
         if (id === animatingFavorite) {
             return animationType === 'add'
                 ? 'animate-bounce-once scale-125'

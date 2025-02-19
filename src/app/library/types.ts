@@ -1,19 +1,19 @@
 // types.ts
 export interface Game {
-    id: string;
+    id: number;
     title: string;
     image: string;
     achievements: string;
     status: string;
     type: 'game';
 }
-
 export interface Campaign {
-    id: string;
+    id: number
+    banner_filename: string;
+    status: string;
     title: string;
-    image: string;
-    description: string;
-    endDate: string;
+    user: string;
+    category: string;
     type: 'campaign';
 }
 

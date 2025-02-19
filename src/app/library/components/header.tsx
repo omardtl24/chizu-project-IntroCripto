@@ -20,7 +20,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => (
                 onClick={() => setActiveTab('todos')}
                 className={`pb-2 ${activeTab === 'todos' ? 'text-black border-b-2 border-black' : 'text-gray-600 hover:text-black transition-colors'}`}
             >
-                Todos
+                Juegos
             </a>
             <a
                 href="#"
