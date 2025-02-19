@@ -83,11 +83,12 @@ const PaymentStatus = ({ order, orderEmail, orderId, paymentId, isPaid }: Paymen
                     .catch(error => console.error('Error:', error));
             //#region Email receipt
             // 
+            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
+            console.log("Información que se envia a la api: ")
+            console.log(order.products);
             const url = new URL("/api/email-receipt", window.location.origin);
-            url.searchParams.append("orderTotal", order.total.toString());
             url.searchParams.append("orderEmail", orderEmail);
-            url.searchParams.append("orderId", orderId);           
-            url.searchParams.append("products", JSON.stringify(order.products));                       
+            url.searchParams.append("orderId", orderId);                           
             console.log("url.toString()", url.toString());
             fetch(url.toString())
             .then((res) => {
@@ -118,8 +119,9 @@ const PaymentStatus = ({ order, orderEmail, orderId, paymentId, isPaid }: Paymen
                 }
             })
             .catch((err) => console.error("Error en la petición de email:", err));
+            */
             //#endregion 
-*/
+
             
         }
     }, [data?.isPaid, router])

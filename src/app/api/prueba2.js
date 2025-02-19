@@ -17,7 +17,7 @@ const isProductValid = (product) => {
 
 const createPreference = async (req, res) => {
     try {
-        console.log("Llegaste al primer paso :)", req.body);
+        //console.log("Llegaste al primer paso :)", req.body);
 
         const isProduct = req.body[0].isProduct;
 

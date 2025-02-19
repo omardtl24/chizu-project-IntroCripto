@@ -86,20 +86,27 @@ export const ReceiptEmail = ({
           </Section>
           {products.map((product) => {
             const { image } = product.images[0]
-
             return (
               <Section key={product.id}  style={productContainer}>
                 <Column style={{ width: '64px' }}>
-                  {typeof image !== 'string' &&
-                  image.url ? (
-                    <Img
-                      src={image.url}
-                      width='64'
-                      height='64'
-                      alt='Product Image'
-                      style={productIcon}
-                    />
-                  ) : null}
+                  {typeof image !== 'string' && image.url ? (
+                    <>
+                      {console.log("------------------PRODUCTO DENTRO DE RECEIPT.TS------------------\n", product.name, ": ", image.url)}
+                      <Img
+                        src={image.url}
+                        width='64'
+                        height='64'
+                        alt='Product Image'
+                        style={productIcon}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {console.log("------------------ES NULL CON STRIPE DENTRO DE RECEIPT.TS------------------\n", product.name)}
+                      null
+                    </>
+                    
+                  )}
                 </Column>
                 <Column style={{ paddingLeft: '22px' }}>
                   <Text style={productTitle}>

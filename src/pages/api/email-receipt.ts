@@ -1,47 +1,55 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { ReceiptEmailHtml } from '@/components/email/Receipt';
-import { Order, Product, User } from '@/payload-types';
+import { Order, Product } from '@/payload-types';
+import { getPayloadClient } from '../../getPayload';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log('GET /api/email-receipt endpoint called');
 
     try {
+        // Obtener el cliente de PayLoad
+        const payload = await getPayloadClient()
         // Extraer los parámetros de la query correctamente
-        const { orderTotal, orderEmail, orderId, products } = req.query;
+        const { orderEmail, orderId } = req.query;
 
         // Validar que los valores sean strings (req.query puede devolver arrays)
         
-        const order_Total = Array.isArray(orderTotal) ? orderTotal[0] : orderTotal;
         const email_ = Array.isArray(orderEmail) ? orderEmail[0] : orderEmail;
         const order_Id = Array.isArray(orderId) ? orderId[0] : orderId;
+
+        const { docs: orders } = await payload.find({
+            collection: 'orders',
+            depth: 2,
+            where: {
+                id: {
+                    equals: order_Id,
+                },
+            },
+        })
+
+        const [order] = orders
         
         // Validar si los parámetros están presentes
-        if (!order_Total || !email_ || !order_Id || !products) {
+        if ( !email_ || !order_Id || !orders) {
             console.error('Missing required parameters');
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
-        // Parsear el JSON de `products`
-        let parsedProducts;
-        try {
-            parsedProducts = JSON.parse(Array.isArray(products) ? products[0] : products);
-        } catch (error) {
-            console.error('Error parsing products:', error);
-            return res.status(400).json({ error: 'Invalid JSON format for products' });
-        }
-
-        console.log('Parsed data:', { email_, order_Id, parsedProducts });
-
+        
+        console.log("Información en la api: ")
+        //console.log('Parsed data:', { email_, order_Id, parsedProducts });
+        
         //#region EMAIL HANDLER
         let transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            auth: {
-                user: 'chizugamessocial@gmail.com',
-                pass: process.env.EMAIL_KEY,
-            },
-        }); 
+                host: 'smtp.gmail.com', //secure : true,
+                port: 587,
+                auth: {
+                    user: 'chizugamessocial@gmail.com',
+                    pass: process.env.EMAIL_KEY,
+                },
+        });
+
         console.log('Transporter created');
         let mailOptions = {
             from: 'Chizu',
@@ -51,65 +59,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 date: new Date(),
                 email: email_ as string,
                 orderId: order_Id as string,
-                products: parsedProducts as Product[],
-                Total: parseFloat(order_Total),
-            }),
-        };
-        console.log('Email configured');
-
-        await transporter.sendMail(mailOptions);
-        console.log('Email sent');
-        //#endregion 
-
-        return res.status(200).json({ success: true, orderEmail: email_, orderId, products: parsedProducts });
-    } catch (error) {
-        console.error('Error processing request:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    
-
-    /*
-    try {
-        //const { user, order, orderId } = req.body;
-        console.log('Request body:', req.body);
-        if (!user || !order || !orderId) {
-            return res.status(400).json({ error: 'Missing required parameters' });
-        }
-
-        let transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            auth: {
-                user: 'chizugamessocial@gmail.com',
-                pass: process.env.EMAIL_KEY,
-            },
-        });
-        console.log('Transporter created');
-
-        let mailOptions = {
-            from: 'Chizu',
-            to: user.email as string,
-            subject: 'Gracias por tu Compra :3',
-            html: ReceiptEmailHtml({
-                date: new Date(),
-                email: user.email as string,
-                orderId,
                 products: order.products as Product[],
                 Total: order.total as number,
             }),
         };
         console.log('Email configured');
 
-        await transporter.sendMail(mailOptions);
-        console.log('Email sent');
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.error('Error sending email:', error);
+                return res.status(500).json({ error });
+            } else {
+                console.log('Email sent:', info.response);
+                return res.status(200).json({ data: info.response });
+            }
+        });
 
-        return res.status(200).json({ success: true });
-    } catch (error: any) {
-        console.error('Error sending email:', error);
-        return res.status(500).json({ success: false, error: error.message });
+        console.log('Email sent');
+        //#endregion 
+
+    } catch (error) {
+        res.status(500).json({ error });
     }
-    
-    return res.status(200).json({ success: true });   
-    */
 
 }
