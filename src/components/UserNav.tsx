@@ -51,6 +51,12 @@ const UserNav = ({ user }: { user: User }) => {
             </Link>
           </DropdownMenuItem>
 
+          <DropdownMenuItem asChild>
+            <Link href='/statistics'>
+              Estadísticas productos
+            </Link>
+          </DropdownMenuItem>
+          
           <DropdownMenuItem  
             onClick={handleDeleteClick} 
             disabled={isSuccess}
