@@ -40,9 +40,6 @@ function App() {
     return (
         <div className="min-h-screen bg-[#FCFCFC] text-black p-6 sm:px-6 lg:px-12 xl:px-32">
             <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-
-
-
             <div className="flex items-baseline justify-end border-b border-gray-400 py-6 mb-6">
                 <div className="flex items-center">
                     {/* Barra de búsqueda */}
