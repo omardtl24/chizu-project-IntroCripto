@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { GamepadIcon, SparklesIcon } from 'lucide-react';
+import { GamepadIcon, ListFilter, Search, SparklesIcon } from 'lucide-react';
 import { Header } from './components/header';
 import { SearchBar } from './components/SearchBar';
 import { GameCard } from './components/GameCard';
@@ -38,29 +38,59 @@ function App() {
     const favoriteCampaigns = getFavoriteItems().filter(item => item.type === 'campaign');
 
     return (
-        <div className="min-h-screen bg-[#FCFCFC] text-black p-6 px-32">
+        <div className="min-h-screen bg-[#FCFCFC] text-black p-6 sm:px-6 lg:px-12 xl:px-32">
             <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
+
+
+            <div className="flex items-baseline justify-end border-b border-gray-400 py-6 mb-6">
+                <div className="flex items-center">
+                    {/* Barra de búsqueda */}
+                    <div className="relative w-full text-gray-700">
+                        <input
+                            type="search"
+                            name="search"
+                            value={"dsa"}
+                            onChange={(e) => { }}
+                            placeholder="Busca tu campaña  :)"
+                            className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
+                        />
+                        <div className='absolute -left-8 top-0 mt-2 mr-4'>
+                            <Search
+                                aria-hidden='true'
+                                className='h-6 w-6 flex-shrink-0 text-gray-600'
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                        onClick={() => { }}
+                    >
+                    </button>
+                </div>
+            </div>
             {/* Filters for Favorites */}
             {activeTab === 'favoritos' && (
-                <div className="flex items-center space-x-4 mb-6">
-                    <div className="flex items-center bg-gray-200 rounded-lg p-1">
+                <div className="flex items-center my-6">
+                    <div className="flex items-center rounded-lg">
                         <button
                             onClick={() => setFavoritesFilter('all')}
-                            className={`px-4 py-2 rounded-md transition-colors ${favoritesFilter === 'all' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'}`}
+                            className={`px-4 py-2 rounded-md transition-colors ${favoritesFilter === 'all' ? 'bg-gray-200 text-black' : 'text-gray-600 hover:text-black'}`}
                         >
                             Todos
                         </button>
                         <button
                             onClick={() => setFavoritesFilter('games')}
-                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${favoritesFilter === 'games' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'}`}
+                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${favoritesFilter === 'games' ? 'bg-gray-200 text-black' : 'text-gray-600 hover:text-black'}`}
                         >
                             <GamepadIcon className="w-4 h-4" />
                             Juegos
                         </button>
                         <button
                             onClick={() => setFavoritesFilter('campaigns')}
-                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${favoritesFilter === 'campaigns' ? 'bg-gray-300 text-black' : 'text-gray-600 hover:text-black'}`}
+                            className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${favoritesFilter === 'campaigns' ? 'bg-gray-200 text-black' : 'text-gray-600 hover:text-black'}`}
                         >
                             <SparklesIcon className="w-4 h-4" />
                             Campañas
@@ -68,8 +98,6 @@ function App() {
                     </div>
                 </div>
             )}
-
-            <SearchBar />
 
             {activeTab === 'favoritos' && favoriteGames.length === 0 && favoriteCampaigns.length === 0 ? (
                 <EmptyFavorites setActiveTab={setActiveTab} />

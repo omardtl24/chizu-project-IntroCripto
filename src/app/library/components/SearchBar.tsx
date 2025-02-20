@@ -2,12 +2,20 @@ import React from 'react';
 import { Search } from 'lucide-react';
 
 export const SearchBar: React.FC = () => (
-    <div className="relative mb-8">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 w-5 h-5" />
+    <div className="relative w-full text-gray-700">
         <input
-            type="text"
-            placeholder="Título"
-            className="w-full bg-gray-200 rounded-lg pl-12 pr-4 py-3 text-black placeholder-gray-600 outline-none focus:ring-2 focus:ring-gray-400"
+            type="search"
+            name="search"
+            value={"static"}
+            onChange={(e) => (e.target.value)}
+            placeholder="Busca tu campaña  :)"
+            className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
         />
+        <div className='absolute -left-8 top-0 mt-2 mr-4'>
+            <Search
+                aria-hidden='true'
+                className='h-6 w-6 flex-shrink-0 text-gray-600'
+            />
+        </div>
     </div>
 );

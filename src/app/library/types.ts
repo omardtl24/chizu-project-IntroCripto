@@ -3,7 +3,7 @@ export interface Game {
     id: number;
     title: string;
     image: string;
-    achievements: string;
+    Creator: string;
     status: string;
     type: 'game';
 }

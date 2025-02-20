@@ -8,13 +8,13 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => (
-    <header className="mb-8">
+    <header className="">
         <div className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-bold flex items-center gap-2">
                 Biblioteca
             </h1>
         </div>
-        <nav className="flex items-center space-x-6 mb-6">
+        <nav className="flex items-center space-x-6">
             <a
                 href="#"
                 onClick={() => setActiveTab('todos')}
