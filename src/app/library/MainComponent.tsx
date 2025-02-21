@@ -1,16 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { redirect } from "next/navigation";
 import { GamepadIcon, ListFilter, Search, SparklesIcon } from 'lucide-react';
 import { Header } from './components/header';
-import { SearchBar } from './components/SearchBar';
 import { GameCard } from './components/GameCard';
 import { CampaignCard } from './components/CampaignCard';
 import { EmptyFavorites } from './components/EmptyFavorites';
 import { useFavorites } from './hooks/useFavorites';
 import { games, campaigns } from './data/items';
 import { ActiveTab, FavoritesFilter } from './types';
-import App from 'next/app';
 
 interface MainComponentLibraryProps {
     id_user: string;

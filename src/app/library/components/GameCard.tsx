@@ -30,9 +30,9 @@ export const GameCard: React.FC<GameCardProps> = ({ game, isFavorite, onToggleFa
         </div>
         <div className="mt-4">
             <h3 className="text-lg font-medium">{game.title}</h3>
-            <p className="text-gray-800 text-sm mt-1">Por {game.Creator}</p>
+            <p className="text-gray-800 text-sm mt-1">Por {game.creator}</p>
             <button className="mt-2 text-sm text-blue-600 hover:text-blue-500 transition-colors">
-                {game.status}
+                Descargar
             </button>
         </div>
     </div>

@@ -3,8 +3,7 @@ export interface Game {
     id: number;
     title: string;
     image: string;
-    Creator: string;
-    status: string;
+    creator: string;
     type: 'game';
 }
 export interface Campaign {
