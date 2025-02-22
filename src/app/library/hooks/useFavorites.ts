@@ -1,8 +1,12 @@
-// hooks/useFavorites.ts
 import { useState, useEffect } from 'react';
 
+interface Favorite {
+    id: number;
+    type: 'game' | 'campaign';
+}
+
 export const useFavorites = () => {
-    const [favorites, setFavorites] = useState<number[]>([]);
+    const [favorites, setFavorites] = useState<Favorite[]>([]);
     const [animatingFavorite, setAnimatingFavorite] = useState<number | null>(null);
     const [animationType, setAnimationType] = useState<'add' | 'remove' | null>(null);
 
@@ -17,9 +21,10 @@ export const useFavorites = () => {
         localStorage.setItem('gameFavorites', JSON.stringify(favorites));
     }, [favorites]);
 
-    const toggleFavorite = (id: number) => {
+    const toggleFavorite = (id: number, type: 'game' | 'campaign') => {
+        console.log("Toggling favorite:", id, type); // Depuración
         setAnimatingFavorite(id);
-        setAnimationType(favorites.includes(id) ? 'remove' : 'add');
+        setAnimationType(favorites.some(fav => fav.id === id && fav.type === type) ? 'remove' : 'add');
 
         setTimeout(() => {
             setAnimatingFavorite(null);
@@ -27,10 +32,12 @@ export const useFavorites = () => {
         }, 500);
 
         setFavorites(prev => {
-            if (prev.includes(id)) {
-                return prev.filter(itemId => itemId !== id);
+            const isAlreadyFavorite = prev.some(fav => fav.id === id && fav.type === type);
+            console.log("Is already favorite:", isAlreadyFavorite); // Depuración
+            if (isAlreadyFavorite) {
+                return prev.filter(fav => !(fav.id === id && fav.type === type));
             }
-            return [...prev, id];
+            return [...prev, { id, type }];
         });
     };
 

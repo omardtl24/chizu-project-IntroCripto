@@ -70,11 +70,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             title: row.name,
             image: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.media_filename}`,
             creator: row.creator_username,
-            status: "game",
+            type: "game",
         }));
 
         // Devuelve los productos únicos con los detalles de los creadores y el filename
-        return res.status(200).json({ products: productsWithCreator });
+        return res.status(200).json({ games: productsWithCreator });
 
     } catch (error: any) {
         console.error('Database error:', error);

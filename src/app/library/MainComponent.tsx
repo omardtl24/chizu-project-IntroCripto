@@ -1,13 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GamepadIcon, ListFilter, Search, SparklesIcon } from 'lucide-react';
 import { Header } from './components/header';
 import { GameCard } from './components/GameCard';
 import { CampaignCard } from './components/CampaignCard';
 import { EmptyFavorites } from './components/EmptyFavorites';
 import { useFavorites } from './hooks/useFavorites';
-import { games, campaigns } from './data/items';
-import { ActiveTab, FavoritesFilter } from './types';
+import { games as initialGames, campaigns } from './data/items';
+import { ActiveTab, FavoritesFilter, Game } from './types';
 
 interface MainComponentLibraryProps {
     id_user: string;
@@ -17,15 +17,45 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
     const [activeTab, setActiveTab] = useState<ActiveTab>('todos');
     const [favoritesFilter, setFavoritesFilter] = useState<FavoritesFilter>('all');
     const { favorites, toggleFavorite, getAnimationClass } = useFavorites();
-    const getFavoriteItems = () => {
-        const favoriteGames = games.filter(game => favorites.includes(game.id));
-        const favoriteCampaigns = campaigns.filter(campaign => favorites.includes(campaign.id));
+    const [games, setGames] = useState(initialGames);
 
-        if (favoritesFilter === 'games') return favoriteGames;
-        if (favoritesFilter === 'campaigns') return favoriteCampaigns;
+    const getFavoriteItems = () => {
+        const favoriteGames = games.filter(game => favorites.some(fav => fav.id === game.id && fav.type === 'game'));
+        const favoriteCampaigns = campaigns.filter(campaign => favorites.some(fav => fav.id === campaign.id && fav.type === 'campaign'));
+
+        
+        if (favoritesFilter == 'games') return favoriteGames;
+        if (favoritesFilter == 'campaigns') return favoriteCampaigns;
+        
+        console.log("Filtered favorite games in get prev:", favoriteGames); // Depuración
         return [...favoriteGames, ...favoriteCampaigns];
-    };
-    console.log("id_user", id_user);
+    }
+
+    useEffect(() => {
+        const fetchLibrary = async () => {
+            try {
+                const url = new URL("/api/get-library", window.location.origin);
+                url.searchParams.append("id_user", id_user);
+                const response = await fetch(url.toString());
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+                // Asegúrate de que 'data.games' es un array
+                if (Array.isArray(data.games)) {
+                    setGames(data.games as Game[]);
+                } else {
+                    console.error("Expected an array but received:", data);
+                }
+            } catch (error) {
+                console.error("Error fetching library:", error);
+            }
+        };
+
+        fetchLibrary();
+    }, [id_user]);
+
     const getFilteredItems = () => {
         if (activeTab === 'favoritos') {
             return getFavoriteItems();
@@ -35,30 +65,8 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
         }
         return games;
     };
-    const fetchLibrary = async () => {
-        try {
-            const url = new URL("/api/get-library", window.location.origin);
-            url.searchParams.append("id_user", id_user);
-            const response = await fetch(url.toString());
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
 
-            const data = await response.json();
-            // Asegúrate de que 'data.campaigns' es un array
-            if (true) {
-                console.log("Campaigns fetched:", data);
-            } else {
-                console.error("Expected an array but received:", data);
-                // Maneja el caso donde la respuesta no es un array
 
-            }
-        } catch (error) {
-            console.error("Error fetching campaigns:", error);
-        } finally {
-
-        }
-    };
 
     const favoriteGames = getFavoriteItems().filter(item => item.type === 'game');
     const favoriteCampaigns = getFavoriteItems().filter(item => item.type === 'campaign');
@@ -94,7 +102,6 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                     </button>
                 </div>
             </div>
-            <button onClick={fetchLibrary}>Fetch Library</button>
             {/* Filters for Favorites */}
             {activeTab === 'favoritos' && (
                 <div className="flex items-center my-6">
@@ -122,7 +129,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                     </div>
                 </div>
             )}
-
+            
             {activeTab === 'favoritos' && favoriteGames.length === 0 && favoriteCampaigns.length === 0 ? (
                 <EmptyFavorites setActiveTab={setActiveTab} />
             ) : (
@@ -135,8 +142,8 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                                     <GameCard
                                         key={game.id}
                                         game={game}
-                                        isFavorite={favorites.includes(game.id)}
-                                        onToggleFavorite={() => toggleFavorite(game.id)}
+                                        isFavorite={favorites.some(fav => fav.id === game.id && fav.type === 'game')}
+                                        onToggleFavorite={() => toggleFavorite(game.id, 'game')}
                                         animationClass={getAnimationClass(game.id)}
                                     />
                                 ))}
@@ -151,8 +158,8 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                                     <CampaignCard
                                         key={campaign.id}
                                         product={campaign}
-                                        isFavorite={favorites.includes(campaign.id)}
-                                        onToggleFavorite={() => toggleFavorite(campaign.id)}
+                                        isFavorite={favorites.some(fav => fav.id === campaign.id && fav.type === 'campaign')}
+                                        onToggleFavorite={() => toggleFavorite(campaign.id, 'campaign')}
                                         animationClass={getAnimationClass(campaign.id)}
                                     />
                                 ))}
@@ -162,7 +169,6 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                 </div>
             )}
 
-            {/* Display non-favorite games and campaigns */}
             {activeTab !== 'favoritos' && (
                 <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6`}>
                     {getFilteredItems().map((item) => {
@@ -171,8 +177,8 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                                 <CampaignCard
                                     key={item.id}
                                     product={item}
-                                    isFavorite={favorites.includes(item.id)}
-                                    onToggleFavorite={() => toggleFavorite(item.id)}
+                                    isFavorite={favorites.some(fav => fav.id === item.id && fav.type === 'campaign')}
+                                    onToggleFavorite={() => toggleFavorite(item.id, 'campaign')}
                                     animationClass={getAnimationClass(item.id)}
                                 />
                             );
@@ -181,8 +187,8 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                                 <GameCard
                                     key={item.id}
                                     game={item}
-                                    isFavorite={favorites.includes(item.id)}
-                                    onToggleFavorite={() => toggleFavorite(item.id)}
+                                    isFavorite={favorites.some(fav => fav.id === item.id && fav.type === 'game')}
+                                    onToggleFavorite={() => toggleFavorite(item.id, 'game')}
                                     animationClass={getAnimationClass(item.id)}
                                 />
                             );
@@ -192,4 +198,4 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
             )}
         </div>
     );
-}
+};

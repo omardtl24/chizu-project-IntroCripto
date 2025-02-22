@@ -15,7 +15,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game, isFavorite, onToggleFa
             <img
                 src={game.image}
                 alt={game.title}
-                className="w-full h-full object-cover transform transition-transform duration-300"
+                className="w-full h-full object-contain transform transition-transform duration-300"
             />
             <button
                 onClick={onToggleFavorite}
