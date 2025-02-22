@@ -55,7 +55,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
 
             <div className="hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
                 <Image fill
-                    src='/thank-you.webp'
+                    src='/tier-thank-you.webp'
                     className='h-full w-full object-cover object-center'
                     alt='Thank you for your Order :)' />
             </div>
