@@ -26,8 +26,6 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
         
         if (favoritesFilter == 'games') return favoriteGames;
         if (favoritesFilter == 'campaigns') return favoriteCampaigns;
-        
-        console.log("Filtered favorite games in get prev:", favoriteGames); // Depuración
         return [...favoriteGames, ...favoriteCampaigns];
     }
 
@@ -44,6 +42,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                 const data = await response.json();
                 // Asegúrate de que 'data.games' es un array
                 if (Array.isArray(data.games)) {
+                    console.log("Received games:", data.games); // Depuración
                     setGames(data.games as Game[]);
                 } else {
                     console.error("Expected an array but received:", data);

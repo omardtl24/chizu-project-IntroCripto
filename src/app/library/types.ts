@@ -4,6 +4,7 @@ export interface Game {
     title: string;
     image: string;
     creator: string;
+    order_id: number;
     type: 'game';
 }
 export interface Campaign {

@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import pgPromise, { IDatabase } from 'pg-promise';
 import dotenv from 'dotenv';
-import { title } from 'process';
 
 dotenv.config();
 
@@ -43,12 +42,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const db = getDatabaseInstance();
 
-        // Consulta optimizada utilizando JOINs para reducir el número de consultas y devolver productos únicos
+        // Consulta optimizada utilizando JOINs para reducir el número de consultas y devolver productos únicos con ID de orden
         const result = await db.any(`
-            SELECT DISTINCT 
+            SELECT DISTINCT ON (p.id) 
                 p.id AS product_id, p.name,
                 u.id AS creator_id, u.username AS creator_username,
-                m.filename AS media_filename
+                m.filename AS media_filename,
+                o.id AS order_id
             FROM orders_rels or1
             JOIN orders o ON or1.parent_id = o.id
             JOIN orders_rels or2 ON o.id = or2.parent_id
@@ -71,6 +71,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             image: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.media_filename}`,
             creator: row.creator_username,
             type: "game",
+            order_id: row.order_id, // Añadir el ID de la orden
         }));
 
         // Devuelve los productos únicos con los detalles de los creadores y el filename

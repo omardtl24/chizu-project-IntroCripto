@@ -22,7 +22,6 @@ export const useFavorites = () => {
     }, [favorites]);
 
     const toggleFavorite = (id: number, type: 'game' | 'campaign') => {
-        console.log("Toggling favorite:", id, type); // Depuración
         setAnimatingFavorite(id);
         setAnimationType(favorites.some(fav => fav.id === id && fav.type === type) ? 'remove' : 'add');
 
@@ -33,7 +32,6 @@ export const useFavorites = () => {
 
         setFavorites(prev => {
             const isAlreadyFavorite = prev.some(fav => fav.id === id && fav.type === type);
-            console.log("Is already favorite:", isAlreadyFavorite); // Depuración
             if (isAlreadyFavorite) {
                 return prev.filter(fav => !(fav.id === id && fav.type === type));
             }
