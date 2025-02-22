@@ -37,6 +37,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                 if (Array.isArray(data.games)) {
                     setGames(data.games);
                 }
+                console.log('data:', data);
                 if (Array.isArray(data.campaigns)) {
                     setCampaigns(data.campaigns);
                 }

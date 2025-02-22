@@ -773,5 +773,15 @@ export const Users: CollectionConfig = {
         description: 'Lista de productos favoritos del usuario.'
       },
     },
+    {
+      name: 'favoriteCampaings',
+      label: 'Campañas Favoritos',
+      type: 'relationship',
+      relationTo: 'campaigns',
+      hasMany: true,
+      admin: {
+        description: 'Lista de campaigns favoritos del usuario.'
+      },
+    },
   ]
 }

@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const db = getDatabaseInstance();
 
         // Consulta para obtener los productos y los datos relacionados
-        const result = await db.any(`
+        const productsQuery = `
             SELECT DISTINCT ON (p.id) 
                 p.id AS product_id, p.name,
                 u.id AS creator_id, u.username AS creator_username,
@@ -63,14 +63,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             LEFT JOIN media m ON pr_logo.media_id = m.id
             LEFT JOIN users_rels ur ON ur.parent_id = $1 AND ur.path = 'favorites' AND ur.products_id = p.id
             WHERE or1.path = 'user' AND or1.users_id = $1 AND o._ispaid = true AND or2.path = 'products' AND pr.path = 'user'
-        `, [userId]);
+        `;
+        
+        const tiersQuery = `
+            SELECT DISTINCT ON (t.id) 
+                t.id, t.title, t.price, t.description, t.updated_at, t.created_at
+            FROM orders_rels or1
+            JOIN orders o ON or1.parent_id = o.id
+            JOIN orders_rels or2 ON o.id = or2.parent_id
+            JOIN tiers t ON or2.tiers_id = t.id
+            WHERE or1.path = 'user' AND or1.users_id = $1 AND or2.path = 'tiers' AND or2.tiers_id IS NOT NULL
+        `;
 
-        if (result.length === 0) {
+        const [productsResult, tiersResult] = await Promise.all([
+            db.any(productsQuery, [userId]),
+            db.any(tiersQuery, [userId])
+        ]);
+
+        if (productsResult.length === 0 && tiersResult.length === 0) {
             return res.status(404).json({ error: 'No results found for this user' });
         }
 
-        // Mapear los resultados para estructurar la respuesta
-        const productsWithCreator = result.map(row => ({
+        // Mapear los resultados para estructurar la respuesta de productos
+        const productsWithCreator = productsResult.map(row => ({
             id: row.product_id,
             title: row.name,
             image: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.media_filename}`,
@@ -81,7 +96,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }));
 
         // Devuelve los productos únicos con los detalles de los creadores y el filename
-        return res.status(200).json({ games: productsWithCreator });
+        return res.status(200).json({ 
+            games: productsWithCreator,
+            tiers: tiersResult // Añadir los resultados de tiers
+        });
 
     } catch (error: any) {
         console.error('Database error:', error);
