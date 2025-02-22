@@ -17,7 +17,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
     const [activeTab, setActiveTab] = useState<ActiveTab>('todos');
     const [favoritesFilter, setFavoritesFilter] = useState<FavoritesFilter>('all');
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const { toggleFavorite, getAnimationClass } = useFavorites(id_user);
+    const { startAnimation, getAnimationClass } = useFavorites();
     const [games, setGames] = useState<Game[]>(initialGames);
     const [campaigns, setCampaigns] = useState<Campaign[]>(initialCampaigns);
 
@@ -79,30 +79,62 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
         return items;
     };
 
-    // Handle favorite toggle with state update
     const handleToggleFavorite = async (id: number, type: 'game' | 'campaign') => {
         const item = type === 'game' 
             ? games.find(g => g.id === id)
             : campaigns.find(c => c.id === id);
-
+    
         if (!item) return;
-
-        const success = await toggleFavorite(id, type, item.isFavorite);
-        
-        if (success) {
+    
+        // Iniciamos la animación
+        startAnimation(id, !item.isFavorite);
+        if (type === 'game') {
+            setGames(prevGames => prevGames.map(game => 
+                game.id === id 
+                    ? { ...game, isFavorite: !game.isFavorite }
+                    : game
+            ));
+        } else {
+            setCampaigns(prevCampaigns => prevCampaigns.map(campaign => 
+                campaign.id === id 
+                    ? { ...campaign, isFavorite: !campaign.isFavorite }
+                    : campaign
+            ));
+        }
+    
+        try {
+            // Hacemos la petición en segundo plano
+            const response = await fetch(`/api/toggle_favorite_game?id_user=${id_user}&id_game=${id}`, {
+                method: 'GET'
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to toggle favorite');
+            }
+    
+            // No necesitamos actualizar el estado aquí porque ya lo hicimos
+            // Solo necesitamos manejar el error si ocurre
+    
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
+            
+            // En caso de error, revertimos el cambio
             if (type === 'game') {
                 setGames(prevGames => prevGames.map(game => 
                     game.id === id 
-                        ? { ...game, isFavorite: !game.isFavorite }
+                        ? { ...game, isFavorite: !game.isFavorite } // Revertimos el cambio
                         : game
                 ));
             } else {
                 setCampaigns(prevCampaigns => prevCampaigns.map(campaign => 
                     campaign.id === id 
-                        ? { ...campaign, isFavorite: !campaign.isFavorite }
+                        ? { ...campaign, isFavorite: !campaign.isFavorite } // Revertimos el cambio
                         : campaign
                 ));
             }
+    
+            // Opcionalmente, mostrar un mensaje al usuario
+            // toast.error('No se pudo actualizar el favorito');
         }
     };
 

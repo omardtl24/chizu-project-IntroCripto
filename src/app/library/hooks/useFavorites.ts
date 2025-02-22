@@ -1,40 +1,17 @@
 import { useState, useEffect } from 'react';
 
-interface Favorite {
-    id: number;
-    type: 'game' | 'campaign';
-}
-
-export const useFavorites = (id_user: string) => {
+export const useFavorites = () => {
     const [animatingFavorite, setAnimatingFavorite] = useState<number | null>(null);
     const [animationType, setAnimationType] = useState<'add' | 'remove' | null>(null);
 
-    const toggleFavorite = async (id: number, type: 'game' | 'campaign', currentValue: boolean) => {
-        // Start animation
+    const startAnimation = (id: number, isAdding: boolean) => {
         setAnimatingFavorite(id);
-        setAnimationType(currentValue ? 'remove' : 'add');
+        setAnimationType(isAdding ? 'add' : 'remove');
 
-        try {
-            const url = new URL("/api/toggle_favorite_game", window.location.origin);
-            url.searchParams.append("id_user", id_user);
-            url.searchParams.append("id_game", id.toString());
-
-            const response = await fetch(url.toString());
-            if (!response.ok) {
-                throw new Error("Failed to toggle favorite");
-            }
-
-            // Animation cleanup
-            setTimeout(() => {
-                setAnimatingFavorite(null);
-                setAnimationType(null);
-            }, 500);
-
-            return true;
-        } catch (error) {
-            console.error("Error toggling favorite:", error);
-            return false;
-        }
+        setTimeout(() => {
+            setAnimatingFavorite(null);
+            setAnimationType(null);
+        }, 500);
     };
 
     const getAnimationClass = (id: number) => {
@@ -47,7 +24,7 @@ export const useFavorites = (id_user: string) => {
     };
 
     return {
-        toggleFavorite,
+        startAnimation,
         getAnimationClass
     };
 };
