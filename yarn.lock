@@ -1841,6 +1841,46 @@
   dependencies:
     glob "10.3.10"
 
+"@next/swc-darwin-arm64@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.1.4.tgz"
+  integrity sha512-ubmUkbmW65nIAOmoxT1IROZdmmJMmdYvXIe8211send9ZYJu+SqxSnJM4TrPj9wmL6g9Atvj0S/2cFmMSS99jg==
+
+"@next/swc-darwin-x64@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-14.1.4.tgz"
+  integrity sha512-b0Xo1ELj3u7IkZWAKcJPJEhBop117U78l70nfoQGo4xUSvv0PJSTaV4U9xQBLvZlnjsYkc8RwQN1HoH/oQmLlQ==
+
+"@next/swc-linux-arm64-gnu@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-linux-arm64-gnu/-/swc-linux-arm64-gnu-14.1.4.tgz"
+  integrity sha512-457G0hcLrdYA/u1O2XkRMsDKId5VKe3uKPvrKVOyuARa6nXrdhJOOYU9hkKKyQTMru1B8qEP78IAhf/1XnVqKA==
+
+"@next/swc-linux-arm64-musl@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-linux-arm64-musl/-/swc-linux-arm64-musl-14.1.4.tgz"
+  integrity sha512-l/kMG+z6MB+fKA9KdtyprkTQ1ihlJcBh66cf0HvqGP+rXBbOXX0dpJatjZbHeunvEHoBBS69GYQG5ry78JMy3g==
+
+"@next/swc-linux-x64-gnu@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-14.1.4.tgz"
+  integrity sha512-BapIFZ3ZRnvQ1uWbmqEGJuPT9cgLwvKtxhK/L2t4QYO7l+/DxXuIGjvp1x8rvfa/x1FFSsipERZK70pewbtJtw==
+
+"@next/swc-linux-x64-musl@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-14.1.4.tgz"
+  integrity sha512-mqVxTwk4XuBl49qn2A5UmzFImoL1iLm0KQQwtdRJRKl21ylQwwGCxJtIYo2rbfkZHoSKlh/YgztY0qH3wG1xIg==
+
+"@next/swc-win32-arm64-msvc@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-win32-arm64-msvc/-/swc-win32-arm64-msvc-14.1.4.tgz"
+  integrity sha512-xzxF4ErcumXjO2Pvg/wVGrtr9QQJLk3IyQX1ddAC/fi6/5jZCZ9xpuL9Tzc4KPWMFq8GGWFVDMshZOdHGdkvag==
+
+"@next/swc-win32-ia32-msvc@14.1.4":
+  version "14.1.4"
+  resolved "https://registry.npmjs.org/@next/swc-win32-ia32-msvc/-/swc-win32-ia32-msvc-14.1.4.tgz"
+  integrity sha512-WZiz8OdbkpRw6/IU/lredZWKKZopUMhcI2F+XiMAcPja0uZYdMTZQRoQ0WZcvinn9xZAidimE7tN9W5v9Yyfyw==
+
 "@next/swc-win32-x64-msvc@14.1.4":
   version "14.1.4"
   resolved "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.1.4.tgz"
@@ -10666,6 +10706,64 @@ uuid@9.0.1:
   version "9.0.1"
   resolved "https://registry.npmjs.org/uuid/-/uuid-9.0.1.tgz"
   integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
+
+"uwuteca2@file:":
+  version "0.1.0"
+  resolved "file:"
+  dependencies:
+    "@fortawesome/fontawesome-svg-core" "^6.7.2"
+    "@fortawesome/free-brands-svg-icons" "^6.7.2"
+    "@fortawesome/free-solid-svg-icons" "^6.7.2"
+    "@fortawesome/react-fontawesome" "^0.2.2"
+    "@headlessui/react" "^2.0.3"
+    "@heroicons/react" "2.0.18"
+    "@hookform/resolvers" "^3.3.4"
+    "@material-tailwind/react" "^2.1.10"
+    "@mercadopago/sdk-react" "^0.0.23"
+    "@payloadcms/bundler-webpack" "^1.0.6"
+    "@payloadcms/db-mongodb" "^1.4.4"
+    "@payloadcms/db-postgres" "^0.8.10"
+    "@payloadcms/richtext-slate" "^1.5.0"
+    "@radix-ui/react-alert-dialog" "^1.1.6"
+    "@radix-ui/react-checkbox" "^1.0.4"
+    "@radix-ui/react-dialog" "^1.0.5"
+    "@radix-ui/react-dropdown-menu" "^2.0.6"
+    "@radix-ui/react-label" "^2.0.2"
+    "@radix-ui/react-scroll-area" "^1.0.5"
+    "@radix-ui/react-separator" "^1.0.3"
+    "@radix-ui/react-slot" "^1.0.2"
+    "@react-email/components" "^0.0.19"
+    "@tanstack/react-query" "4.36.1"
+    "@trpc/client" "^10.45.2"
+    "@trpc/next" "^10.45.2"
+    "@trpc/react-query" "^10.45.2"
+    "@trpc/server" "^10.45.2"
+    "@types/express" "^4.17.21"
+    class-variance-authority "^0.7.0"
+    clsx "^2.1.0"
+    cross-env "^7.0.3"
+    dotenv "^16.4.5"
+    express "^4.19.2"
+    firebase "^11.1.0"
+    framer-motion "^11.16.4"
+    lucide-react "^0.475.0"
+    mercadopago "^2.3.0"
+    next "14.1.4"
+    nodemailer "^6.9.13"
+    payload "2.30.4"
+    pg "^8.13.3"
+    pg-promise "^11.10.2"
+    react "^18"
+    react-dom "^18"
+    react-hook-form "^7.54.2"
+    sonner "^1.7.4"
+    stripe "^15.7.0"
+    swiper "^11.1.1"
+    tailwind-merge "^2.2.2"
+    tailwindcss-animate "^1.0.7"
+    uwuteca2 "file:"
+    zod "^3.22.4"
+    zustand "^4.5.2"
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"

@@ -1,13 +1,16 @@
-import { Product } from "../../payload-types"
+import { Product, User } from "../../payload-types"
 import { BeforeChangeHook } from "payload/dist/globals/config/types"
 import { Access, CollectionConfig } from "payload/types"
 import { stripe } from '../../lib/stripe'
 
-const adminAndUser: Access = ({ req: { user } }) => {
-  if (user.role === 'admin') return true
+const adminAndUser = (): Access => async ({ req }) => {
+  const user = req.user as User | undefined
+
+  if (!user){ return false }
+  if (user.role === 'admin'){ return true }
 
   return {
-    id: { equals: user.id, },
+    user: { equals: req.user.id, },
   }
 }
 
@@ -29,10 +32,14 @@ export const Products: CollectionConfig = {
     },
 
     access: {
-        create: adminAndUser,
-        delete: adminAndUser,
-        update: adminAndUser,
-        read: adminAndUser,
+        read: async ({req}) => {
+          const refer = req.headers.referer
+    
+          if ( !req.user || !refer?.includes('panel') ){ return true }
+          return await adminAndUser()({req})
+        },
+        update: adminAndUser(),
+        delete: ({ req }) => req.user.role === 'admin',
     },
 
     hooks: {
@@ -282,7 +289,7 @@ export const Products: CollectionConfig = {
             name: 'approvedForSale',
             label: 'Estado',
             type: 'select',
-            defaultValue: 'pending',
+            defaultValue: 'approved',
             options: [
                 { value: 'pending', label: 'En Revision' },
                 { value: 'approved', label: 'Aprovado' },
