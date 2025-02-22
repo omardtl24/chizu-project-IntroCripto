@@ -5,38 +5,36 @@ interface Favorite {
     type: 'game' | 'campaign';
 }
 
-export const useFavorites = () => {
-    const [favorites, setFavorites] = useState<Favorite[]>([]);
+export const useFavorites = (id_user: string) => {
     const [animatingFavorite, setAnimatingFavorite] = useState<number | null>(null);
     const [animationType, setAnimationType] = useState<'add' | 'remove' | null>(null);
 
-    useEffect(() => {
-        const savedFavorites = localStorage.getItem('gameFavorites');
-        if (savedFavorites) {
-            setFavorites(JSON.parse(savedFavorites));
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('gameFavorites', JSON.stringify(favorites));
-    }, [favorites]);
-
-    const toggleFavorite = (id: number, type: 'game' | 'campaign') => {
+    const toggleFavorite = async (id: number, type: 'game' | 'campaign', currentValue: boolean) => {
+        // Start animation
         setAnimatingFavorite(id);
-        setAnimationType(favorites.some(fav => fav.id === id && fav.type === type) ? 'remove' : 'add');
+        setAnimationType(currentValue ? 'remove' : 'add');
 
-        setTimeout(() => {
-            setAnimatingFavorite(null);
-            setAnimationType(null);
-        }, 500);
+        try {
+            const url = new URL("/api/toggle_favorite_game", window.location.origin);
+            url.searchParams.append("id_user", id_user);
+            url.searchParams.append("id_game", id.toString());
 
-        setFavorites(prev => {
-            const isAlreadyFavorite = prev.some(fav => fav.id === id && fav.type === type);
-            if (isAlreadyFavorite) {
-                return prev.filter(fav => !(fav.id === id && fav.type === type));
+            const response = await fetch(url.toString());
+            if (!response.ok) {
+                throw new Error("Failed to toggle favorite");
             }
-            return [...prev, { id, type }];
-        });
+
+            // Animation cleanup
+            setTimeout(() => {
+                setAnimatingFavorite(null);
+                setAnimationType(null);
+            }, 500);
+
+            return true;
+        } catch (error) {
+            console.error("Error toggling favorite:", error);
+            return false;
+        }
     };
 
     const getAnimationClass = (id: number) => {
@@ -49,7 +47,6 @@ export const useFavorites = () => {
     };
 
     return {
-        favorites,
         toggleFavorite,
         getAnimationClass
     };

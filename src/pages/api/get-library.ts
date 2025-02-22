@@ -42,13 +42,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const db = getDatabaseInstance();
 
-        // Consulta optimizada utilizando JOINs para reducir el número de consultas y devolver productos únicos con ID de orden
+        // Consulta para obtener los productos y los datos relacionados
         const result = await db.any(`
             SELECT DISTINCT ON (p.id) 
                 p.id AS product_id, p.name,
                 u.id AS creator_id, u.username AS creator_username,
                 m.filename AS media_filename,
-                o.id AS order_id
+                o.id AS order_id,
+                CASE 
+                    WHEN ur.path = 'favorites' AND ur.products_id = p.id THEN true 
+                    ELSE false 
+                END AS is_favorite
             FROM orders_rels or1
             JOIN orders o ON or1.parent_id = o.id
             JOIN orders_rels or2 ON o.id = or2.parent_id
@@ -57,6 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             JOIN users u ON pr.users_id = u.id
             LEFT JOIN products_rels pr_logo ON pr_logo.parent_id = p.id AND pr_logo.path = 'image_logo'
             LEFT JOIN media m ON pr_logo.media_id = m.id
+            LEFT JOIN users_rels ur ON ur.parent_id = $1 AND ur.path = 'favorites' AND ur.products_id = p.id
             WHERE or1.path = 'user' AND or1.users_id = $1 AND o._ispaid = true AND or2.path = 'products' AND pr.path = 'user'
         `, [userId]);
 
@@ -72,6 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             creator: row.creator_username,
             type: "game",
             order_id: row.order_id, // Añadir el ID de la orden
+            isFavorite: row.is_favorite // Añadir el campo isFavorite
         }));
 
         // Devuelve los productos únicos con los detalles de los creadores y el filename

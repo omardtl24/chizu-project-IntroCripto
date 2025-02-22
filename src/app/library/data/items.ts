@@ -7,6 +7,7 @@ export const games: Game[] = [
         title: "Marvel's Spider-Man 2",
         image: "https://images.unsplash.com/photo-1608889175123-8ee362201f81?auto=format&fit=crop&q=80&w=400",
         creator: "Juan P",
+        isFavorite: true,
         type: 'game',
         order_id: 51
     },
@@ -15,6 +16,7 @@ export const games: Game[] = [
         title: "Marvel's Spider-Man: Miles Morales",
         image: "https://images.unsplash.com/photo-1608889175250-c3b0c1667d3a?auto=format&fit=crop&q=80&w=400",
         creator: "NoobMaster69",
+        isFavorite: true,
         type: 'game',
         order_id: 51
     },
@@ -23,6 +25,7 @@ export const games: Game[] = [
         title: "Hell Let Loose",
         image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400",
         creator: "Thor",
+        isFavorite: true,
         type: 'game',
         order_id: 51
     }
@@ -36,6 +39,7 @@ export const campaigns: Campaign[] = [
         status: "activa",
         user: "Juan P",
         category: "Juegos",
+        isFavorite: true,
         type: 'campaign'
     },
     {
@@ -44,6 +48,7 @@ export const campaigns: Campaign[] = [
         banner_filename: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=400",
         status: "activa",
         user: "Juan 12",
+        isFavorite: false,
         category: "Individual",
         type: 'campaign'
     }

@@ -5,6 +5,7 @@ export interface Game {
     image: string;
     creator: string;
     order_id: number;
+    isFavorite: boolean;
     type: 'game';
 }
 export interface Campaign {
@@ -14,6 +15,7 @@ export interface Campaign {
     title: string;
     user: string;
     category: string;
+    isFavorite: boolean;
     type: 'campaign';
 }
 
