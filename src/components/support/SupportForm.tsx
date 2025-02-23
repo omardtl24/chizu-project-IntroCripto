@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "../ui/button"
 import SupportFormModal from "./SupportFormModal"
 import { toast } from "sonner"
+import { MessageCircleQuestion } from "lucide-react"
 
 export default function SupportButton() {
     const [showModal, setShowModal] = useState(false)
@@ -52,7 +53,8 @@ export default function SupportButton() {
 
     return (
         <>
-            <Button onClick={handleOpenModal} variant="outline" className="text-red-600">
+            <Button onClick={handleOpenModal} variant="ghost" className="text-red-600 mt-1 ">
+                <MessageCircleQuestion className='h-5 w-5 mr-2' />
                 Enviar Mensaje de Soporte
             </Button>
 

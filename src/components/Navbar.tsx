@@ -13,7 +13,7 @@ import MobileMenu from './NavbarMobile'
 const Navbar = async () => {
     const cookie = cookies()
     const { user } = await getServerUser(cookie)
-    
+
     return (
         <div className='bg-transparent sticky z-50 top-0 inset-x-0 h-20'>
             <header className='relative bg-[#FCFCFC] backdrop-blur-sm bg-opacity-30'>
@@ -26,29 +26,32 @@ const Navbar = async () => {
                             <div className='hidden lg:block ml-8 self-stretch'>
                                 <NavItems />
                             </div>
+                                <Link href='/campaigns' className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
+                                    Campañas
+                                </Link>
                         </div>
 
                         {/* Desktop Navigation */}
                         <div className='hidden lg:flex items-center space-x-6'>
-                            <Link href='/products' className={buttonVariants({variant: 'ghost', size: 'sm'})}>
+                            {/* <Link href='/products' className={buttonVariants({variant: 'ghost', size: 'sm'})}>
                                 Catalogo
-                            </Link>
-                            
+                            </Link> */}
+
                             {!user ? (
                                 <>
                                     <span className='h-6 w-px bg-gray-300' />
-                                    <Link href='/sign-in' className={buttonVariants({variant: 'default', size: 'sm'})}>
+                                    <Link href='/sign-in' className={buttonVariants({ variant: 'default', size: 'sm' })}>
                                         Iniciar Sesion
                                     </Link>
                                     <span className='h-6 w-px bg-gray-300' />
-                                    <Link href='/sign-up' className={buttonVariants({variant: 'ghost', size: 'sm'})}>
+                                    <Link href='/sign-up' className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
                                         Registrarse
                                     </Link>
                                 </>
                             ) : (
                                 <UserNav user={user} />
                             )}
-                            
+
                             <span className='h-6 w-px bg-gray-300' />
                             <Cart />
                         </div>

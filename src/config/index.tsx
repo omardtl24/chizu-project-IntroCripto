@@ -1,6 +1,6 @@
 export const PRODUCT_CATEGORIES = [
   {
-      label: 'Destacados',
+      label: 'Juegos',
       value: 'select' as const,
       featured: [
           {
@@ -16,20 +16,20 @@ export const PRODUCT_CATEGORIES = [
       ],
   },
 
-  {
-      label: 'Campañas',
-      value: 'popular' as const,
-      featured: [
-          {
-              name: 'Favoritas',
-              href: '/campaigns',
-              imageSrc: '/nav/fav/img1.jpg',
-          },
-          {
-              name: 'Recomendados',
-              href: `/campaigns?category=Chizu Selected`,
-              imageSrc: '/nav/fav/img2.png',
-          },
-      ],
-  },
+//   {
+//       label: 'Campañas',
+//       value: 'popular' as const,
+//       featured: [
+//           {
+//               name: 'Favoritas',
+//               href: '/campaigns',
+//               imageSrc: '/nav/fav/img1.jpg',
+//           },
+//           {
+//               name: 'Recomendados',
+//               href: `/campaigns?category=Chizu Selected`,
+//               imageSrc: '/nav/fav/img2.png',
+//           },
+//       ],
+//   },
 ]
