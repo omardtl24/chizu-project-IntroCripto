@@ -1,6 +1,6 @@
 import APIError from "payload/dist/errors/APIError";
 import { Access, CollectionConfig } from "payload/types";
-import { number } from "zod";
+import { boolean, number } from "zod";
 
 const adminAndUser: Access = ({ req: { user } }) => {
   if (user.role === 'admin') return true
@@ -761,6 +761,26 @@ export const Users: CollectionConfig = {
       admin: {
           readOnly: true,
           position: 'sidebar',
+      },
+    },
+    {
+      name: 'favoriteProducts',
+      label: 'Productos Favoritos',
+      type: 'relationship',
+      relationTo: 'products',
+      hasMany: true,
+      admin: {
+        description: 'Lista de productos favoritos del usuario.'
+      },
+    },
+    {
+      name: 'favoriteTiers',
+      label: 'Tiers Favoritos',
+      type: 'relationship',
+      relationTo: 'tiers',
+      hasMany: true,
+      admin: {
+        description: 'Lista de tiers favoritos del usuario.'
       },
     },
   ]
