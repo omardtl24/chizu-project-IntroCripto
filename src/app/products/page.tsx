@@ -4,9 +4,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { trpc } from '../../trpc/client';
 import { Button } from '../../components/ui/button';
 import ProductReel from '../../components/ProductReel';
-import { Dialog, Disclosure, Menu, Transition, TransitionChild, DialogPanel, MenuButton, DisclosureButton, DisclosurePanel, MenuItem, MenuItems } from '@headlessui/react'
-import { Plus, X, Minus, ChevronDown, ListFilter, Search, CircleArrowDown, CircleArrowUp } from 'lucide-react'
+import { Dialog, Disclosure, Menu, Transition, TransitionChild, DialogPanel, MenuButton, DisclosureButton, DisclosurePanel, MenuItem, MenuItems } from '@headlessui/react';
+import { Plus, X, Minus, ChevronDown, ListFilter, Search, CircleArrowDown, CircleArrowUp } from 'lucide-react';
 import React, { useState, useEffect, Fragment } from 'react';
+import { FaWindows, FaLinux } from "react-icons/fa";
+
 
 interface Category {
   name: string;
@@ -224,7 +226,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                   name="search"
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  placeholder="Busca tu Juego  :)"
+                  placeholder="Busca por Juego  :)"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
 
@@ -340,53 +342,49 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                       <DisclosurePanel className="pt-6">
                         <div className="space-y-4">
 
-                          <div key="precio-mayor" className="flex items-center">
-                            <button onClick={ () => { 
-                              setOsFilter(osFilter === 'windows' ? 'empty' : 'windows');
-                            } } >
-                              <img src="/svg/windows.svg" className={`h-5 w-5 ${osFilter === 'windows' ? 'text-teal-700' : 'text-gray-500'}`} />
+                          <div key="windows" className="flex items-center">
+                            <button onClick={() => setOsFilter(osFilter === 'windows' ? 'empty' : 'windows')} >
+                              <FaWindows className={`h-5 w-5 ${osFilter === 'windows' ? 'text-teal-700' : 'text-gray-500'}`} />
                             </button>
                             <label className="ml-3 text-sm text-gray-600">
                               Windows
                             </label>
                           </div>
 
-                          <div key="precio-menor" className="flex items-center">
-                          <button onClick={ () => { 
-                              setOsFilter(osFilter === 'linux' ? 'empty' : 'linux');
-                            } } >
-                              <img src='/svg/linux.svg' className={`h-5 w-5 ${osFilter === 'linux' ? 'text-teal-700' : 'text-gray-500'}`} />
-                            </button>
-                            <label className="ml-3 text-sm text-gray-600">
-                              Linux
-                            </label>
-                          </div>
-
+                          <div key="linux" className="flex items-center">
+                            <button onClick={() => setOsFilter(osFilter === 'linux' ? 'empty' : 'linux') } >
+                            <FaLinux className={`h-5 w-5 ${osFilter === 'linux' ? 'text-teal-700' : 'text-gray-500'}`} />
+                          </button>
+                          <label className="ml-3 text-sm text-gray-600">
+                            Linux
+                          </label>
                         </div>
-                      </DisclosurePanel>
-                    </>
-                  )}
-                </Disclosure>
-              </div>
 
-              {/* Product grid */}
-              <div className="lg:col-span-3">
-                <ProductReel
-                  query={{
-                    category: selectedCategories.length === 0 ? allCategories?.map(cat => cat.name) : selectedCategories.map(cat => cat.name),
-                    limit: 20,
-                    sort: sortPrice,
-                    searchTerm,
-                    developerTerm,
-                    osFilter
-                  }}
-                />
-              </div>
+                      </div>
+                    </DisclosurePanel>
+                </>
+                  )}
+              </Disclosure>
             </div>
-          </section>
-        </main>
-      </div>
+
+            {/* Product grid */}
+            <div className="lg:col-span-3">
+              <ProductReel
+                query={{
+                  category: selectedCategories.length === 0 ? allCategories?.map(cat => cat.name) : selectedCategories.map(cat => cat.name),
+                  limit: 20,
+                  sort: sortPrice,
+                  searchTerm,
+                  developerTerm,
+                  osFilter
+                }}
+              />
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
+    </div >
   )
 }
 
