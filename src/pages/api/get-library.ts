@@ -116,6 +116,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const tiersWithRewards = tiersResult.map(row => ({
             id: row.id,
+            order_id: row.order_id,
             title: row.title,
             status: row.campaign_status,
             user: row.campaign_username,

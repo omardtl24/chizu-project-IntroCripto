@@ -9,7 +9,8 @@ export interface Game {
     type: 'game';
 }
 export interface Campaign {
-    id: number
+    id: number;
+    order_id: number;
     title: string;
     status: string;
     user: string;
