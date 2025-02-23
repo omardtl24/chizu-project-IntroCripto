@@ -48,7 +48,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
 
     const orderTotal = order.total as number
     const tier = order.tiers as Tier
-    const rewards = tier.rewards as Reward[]
+    const rewards = tier.rewards
 
     return (
         <main className="relative lg:min-h-full">
@@ -89,11 +89,12 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                         </div>
 
                         <ul className='mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-muted-foreground'>
-                            {(rewards).map((reward) => {
+                            {rewards && rewards.map((reward) => {
                                 const reward_info = reward.reward
+                                if (!reward_info) { return null; }
 
-                                const label = reward_info.label as string
-                                const downloadUrl = reward_info.url as string
+                                const label = typeof reward_info !== 'string' ? reward_info.label : ''
+                                const downloadUrl = typeof reward_info !== 'string' ? reward_info.url : ''
 
                                 return (<li key={reward.id} className='flex space-x-6 py-6'>
                                     <div className='flex-auto flex flex-col justify-between'>
@@ -110,7 +111,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
 
                                         {/* descargar rewards*/}
                                         {order._isPaid ? (
-                                            <a href={downloadUrl}
+                                            <a href={downloadUrl as string}
                                                 download={label}
                                                 className='text-teal-700 hover:underline-offset-2 mt-3'>
                                                 Descargar Recompensa
