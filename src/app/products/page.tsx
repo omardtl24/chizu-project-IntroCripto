@@ -30,6 +30,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
   const [sortPrice, setSortPrice] = useState<'price' | '-price'>('price');
   const [searchTerm, setSearchTerm] = useState('');
   const [developerTerm, setDeveloperTerm] = useState('');
+  const [osFilter, setOsFilter] = useState<'windows' | 'linux' | 'empty'>('empty');
 
   const { data: allCategories } = trpc.getAllCategories.useQuery({ limit: 100 });
 
@@ -281,12 +282,13 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                     </>
                   )}
                 </Disclosure>
+
                 <Disclosure as="div" key="valores" className="border-b border-gray-400 py-6" defaultOpen>
                   {({ open }) => (
                     <>
                       <h3 className="-my-3 flow-root">
                         <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-600">
-                          <span className="font-medium text-gray-900">Valor</span>
+                          <span className="font-medium text-gray-900">Precio</span>
                           <span className="ml-6 flex items-center">
                             {open ? (
                               <Minus className="h-5 w-5" aria-hidden="true" />
@@ -319,6 +321,52 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                     </>
                   )}
                 </Disclosure>
+
+                <Disclosure as="div" key="os" className="border-b border-gray-400 py-6" defaultOpen>
+                  {({ open }) => (
+                    <>
+                      <h3 className="-my-3 flow-root">
+                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-600">
+                          <span className="font-medium text-gray-900">OS</span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <Minus className="h-5 w-5" aria-hidden="true" />
+                            ) : (
+                              <Plus className="h-5 w-5" aria-hidden="true" />
+                            )}
+                          </span>
+                        </DisclosureButton>
+                      </h3>
+                      <DisclosurePanel className="pt-6">
+                        <div className="space-y-4">
+
+                          <div key="precio-mayor" className="flex items-center">
+                            <button onClick={ () => { 
+                              setOsFilter(osFilter === 'windows' ? 'empty' : 'windows');
+                            } } >
+                              <img src="/svg/windows.svg" className={`h-5 w-5 ${osFilter === 'windows' ? 'text-teal-700' : 'text-gray-500'}`} />
+                            </button>
+                            <label className="ml-3 text-sm text-gray-600">
+                              Windows
+                            </label>
+                          </div>
+
+                          <div key="precio-menor" className="flex items-center">
+                          <button onClick={ () => { 
+                              setOsFilter(osFilter === 'linux' ? 'empty' : 'linux');
+                            } } >
+                              <img src='/svg/linux.svg' className={`h-5 w-5 ${osFilter === 'linux' ? 'text-teal-700' : 'text-gray-500'}`} />
+                            </button>
+                            <label className="ml-3 text-sm text-gray-600">
+                              Linux
+                            </label>
+                          </div>
+
+                        </div>
+                      </DisclosurePanel>
+                    </>
+                  )}
+                </Disclosure>
               </div>
 
               {/* Product grid */}
@@ -330,6 +378,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                     sort: sortPrice,
                     searchTerm,
                     developerTerm,
+                    osFilter
                   }}
                 />
               </div>

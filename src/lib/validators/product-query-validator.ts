@@ -6,6 +6,7 @@ export const productQueryValidator = z.object({
   limit: z.number().optional(),
   searchTerm: z.string().optional(), 
   developerTerm: z.string().optional(),
+  osFilter: z.string().optional(),
 })
 
 export type TypeProductQueryValidator = z.infer<typeof productQueryValidator>
