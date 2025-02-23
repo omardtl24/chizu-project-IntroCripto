@@ -120,7 +120,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             status: row.campaign_status,
             user: row.campaign_username,
             category: row.category,
-            banner_filename: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.campaign_bannerImage}`,
+            banner_filename: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.campaign_bannerimage}`,
             isFavorite: row.is_favorite,
             rewards: row.reward_filenames.map((filename: any) => `${process.env.NEXT_PUBLIC_SERVER_URL}/product_files/${filename}`),
             type: "campaign"

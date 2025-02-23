@@ -37,7 +37,6 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                 if (Array.isArray(data.games)) {
                     setGames(data.games);
                 }
-                console.log('data:', data);
                 if (Array.isArray(data.tiers)) {
                     setCampaigns(data.tiers);
                 }
@@ -116,7 +115,6 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                 const response = await fetch(`/api/toggle_favorite_tier?id_user=${id_user}&tier_id=${id}`, {
                     method: 'GET'
                 });
-                console.log('response:', response.body);
                 if (!response.ok) {
                     throw new Error('Failed to toggle favorite');
                 }
