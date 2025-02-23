@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React from "react";
 import { Download, X, DownloadCloud } from "lucide-react";
 import { FileItem } from "../types";
 
@@ -13,12 +13,10 @@ const DownloadDialog: React.FC<DownloadDialogProps> = ({ isOpen, onClose, files 
     if (!isOpen) return null;
 
     // Generar IDs automáticamente si no existen
-    const processedFiles = useMemo(() => {
-        return files.map(file => ({
-            ...file,
-            id: file.id ?? crypto.randomUUID(), // Asigna un ID si no tiene
-        }));
-    }, [files]);
+    const processedFiles = files.map(file => ({
+        ...file,
+        id: file.id ?? crypto.randomUUID(), // Asigna un ID si no tiene
+    }));
 
     // Función para descargar un archivo
     const handleDownload = (url: string, name: string) => {
