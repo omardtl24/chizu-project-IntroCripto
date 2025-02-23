@@ -96,7 +96,7 @@ const Products = () => {
       const priceB = sortPrice === 'up' ? (b.min_price ?? 0) : (b.max_price ?? 0);
       return sortPrice === 'up' ? priceA - priceB : priceB - priceA;
     });
-  }, [campaigns, searchTerm, sortPrice, selectedCategories]);
+  }, [campaigns, searchTerm, developerFilter, sortPrice, selectedCategories]);
 
   const renderCategoryCheckboxes = (isMobile: boolean) => {
     return categories.map(category => (

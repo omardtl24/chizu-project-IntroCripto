@@ -192,7 +192,7 @@ export const Products: CollectionConfig = {
             fields: [
                 {
                     name: 'os',
-                    label: 'Sistema Operativo',
+                    label: 'Sistema Operativo - Incluya Windows, Linux o Mac OS',
                     type: 'text',
                     required: true,
                     defaultValue: 'Windows 7',
