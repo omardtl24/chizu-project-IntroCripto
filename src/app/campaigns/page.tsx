@@ -84,11 +84,11 @@ const Products = () => {
         campaign.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    // if (developerFilter) {
-    //   filtered = filtered.filter(campaign =>
-    //     campaign.user.username.toLowerCase().includes(developerFilter.toLowerCase())
-    //   );
-    // }
+    if (developerFilter) {
+      filtered = filtered.filter(campaign =>
+        campaign.user.toLowerCase().includes(developerFilter.toLowerCase())
+      );
+    }
 
     // Ordenar por precio
     return filtered.sort((a, b) => {
