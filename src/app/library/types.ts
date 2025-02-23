@@ -10,12 +10,13 @@ export interface Game {
 }
 export interface Campaign {
     id: number
-    banner_filename: string;
-    status: string;
     title: string;
+    status: string;
     user: string;
     category: string;
+    banner_filename: string;
     isFavorite: boolean;
+    rewards: string[];
     type: 'campaign';
 }
 

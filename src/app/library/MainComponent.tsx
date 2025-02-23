@@ -28,7 +28,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                 const url = new URL("/api/get-library", window.location.origin);
                 url.searchParams.append("id_user", id_user);
                 const response = await fetch(url.toString());
-                
+
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
@@ -38,8 +38,8 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                     setGames(data.games);
                 }
                 console.log('data:', data);
-                if (Array.isArray(data.campaigns)) {
-                    setCampaigns(data.campaigns);
+                if (Array.isArray(data.tiers)) {
+                    setCampaigns(data.tiers);
                 }
             } catch (error) {
                 console.error("Error fetching library:", error);
@@ -61,7 +61,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
         } else if (activeTab === 'favoritos') {
             if (favoritesFilter === 'all') {
                 items = [...games.filter(game => game.isFavorite),
-                        ...campaigns.filter(campaign => campaign.isFavorite)];
+                ...campaigns.filter(campaign => campaign.isFavorite)];
             } else if (favoritesFilter === 'games') {
                 items = games.filter(game => game.isFavorite);
             } else {
@@ -72,7 +72,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
         // Then apply search filter if there's a search term
         if (searchTerm.trim()) {
             const searchLower = searchTerm.toLowerCase();
-            return items.filter(item => 
+            return items.filter(item =>
                 item.title.toLowerCase().includes(searchLower)
             );
         }
@@ -81,76 +81,81 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
     };
 
     const handleToggleFavorite = async (id: number, type: 'game' | 'campaign') => {
-        const item = type === 'game' 
+        const item = type === 'game'
             ? games.find(g => g.id === id)
             : campaigns.find(c => c.id === id);
-    
+
         if (!item) return;
-    
+
         // Iniciamos la animación
         startAnimation(id, !item.isFavorite);
         if (type === 'game') {
-            setGames(prevGames => prevGames.map(game => 
-                game.id === id 
+            setGames(prevGames => prevGames.map(game =>
+                game.id === id
                     ? { ...game, isFavorite: !game.isFavorite }
                     : game
             ));
         } else {
-            setCampaigns(prevCampaigns => prevCampaigns.map(campaign => 
-                campaign.id === id 
+            setCampaigns(prevCampaigns => prevCampaigns.map(campaign =>
+                campaign.id === id
                     ? { ...campaign, isFavorite: !campaign.isFavorite }
                     : campaign
             ));
         }
-    
+
         try {
             // Hacemos la petición en segundo plano
-            const response = await fetch(`/api/toggle_favorite_game?id_user=${id_user}&id_game=${id}`, {
-                method: 'GET'
-            });
-    
-            if (!response.ok) {
-                throw new Error('Failed to toggle favorite');
+            if (type === 'game') {
+                const response = await fetch(`/api/toggle_favorite_game?id_user=${id_user}&id_game=${id}`, {
+                    method: 'GET'
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to toggle favorite');
+                }
+            } else if (type === 'campaign') {
+                const response = await fetch(`/api/toggle_favorite_tier?id_user=${id_user}&tier_id=${id}`, {
+                    method: 'GET'
+                });
+                console.log('response:', response.body);
+                if (!response.ok) {
+                    throw new Error('Failed to toggle favorite');
+                }
             }
-    
-            // No necesitamos actualizar el estado aquí porque ya lo hicimos
-            // Solo necesitamos manejar el error si ocurre
-    
         } catch (error) {
             console.error('Error toggling favorite:', error);
-            
+
             // En caso de error, revertimos el cambio
             if (type === 'game') {
-                setGames(prevGames => prevGames.map(game => 
-                    game.id === id 
+                setGames(prevGames => prevGames.map(game =>
+                    game.id === id
                         ? { ...game, isFavorite: !game.isFavorite } // Revertimos el cambio
                         : game
                 ));
             } else {
-                setCampaigns(prevCampaigns => prevCampaigns.map(campaign => 
-                    campaign.id === id 
+                setCampaigns(prevCampaigns => prevCampaigns.map(campaign =>
+                    campaign.id === id
                         ? { ...campaign, isFavorite: !campaign.isFavorite } // Revertimos el cambio
                         : campaign
                 ));
             }
-    
+
             // Opcionalmente, mostrar un mensaje al usuario
             // toast.error('No se pudo actualizar el favorito');
         }
     };
 
     const filteredItems = getFilteredItems();
-    const favoriteGames = filteredItems.filter((item): item is Game => 
+    const favoriteGames = filteredItems.filter((item): item is Game =>
         'type' in item && item.type === 'game' && item.isFavorite
     );
-    const favoriteCampaigns = filteredItems.filter((item): item is Campaign => 
+    const favoriteCampaigns = filteredItems.filter((item): item is Campaign =>
         'type' in item && item.type === 'campaign' && item.isFavorite
     );
 
     return (
         <div className="min-h-screen bg-[#FCFCFC] text-black p-6 sm:px-6 lg:px-12 xl:px-32">
             <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-            
+
             {/* Search Bar */}
             <div className="flex items-baseline justify-end border-b border-gray-400 py-6 mb-6">
                 <div className="flex items-center">
@@ -200,7 +205,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                     </div>
                 </div>
             )}
-            
+
             {/* Content Display */}
             {activeTab === 'favoritos' && favoriteGames.length === 0 && favoriteCampaigns.length === 0 ? (
                 <EmptyFavorites setActiveTab={setActiveTab} />
