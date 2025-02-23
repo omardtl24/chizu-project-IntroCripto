@@ -13,13 +13,13 @@ from flask import jsonify
 import functions_framework 
 
 # Configuración de la base de datos
-DB_URI = "postgres://ChizuBd:LaCocacolaRomanica@chizu.ctemo60e6apu.us-east-1.rds.amazonaws.com:5432/chizudb?sslmode=require"
+DB_URI = "postgres://[instance name]:[password]@[RDS URL]:5432/[db name]?sslmode=require"
 
 # Configuración del servidor de correo
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_SENDER = "chizugamessocial@gmail.com"
-EMAIL_PASSWORD = "afoo rjqy tmng dysr"
+EMAIL_SENDER = "your.email@gmail.com"
+EMAIL_PASSWORD = "your pswd"
 
 def get_last_week_sales():
     """Consulta la base de datos y obtiene las ventas de la última semana."""
