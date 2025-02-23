@@ -774,13 +774,13 @@ export const Users: CollectionConfig = {
       },
     },
     {
-      name: 'favoriteCampaings',
-      label: 'Campañas Favoritos',
+      name: 'favoriteTiers',
+      label: 'Tiers Favoritos',
       type: 'relationship',
-      relationTo: 'campaigns',
+      relationTo: 'tiers',
       hasMany: true,
       admin: {
-        description: 'Lista de campaigns favoritos del usuario.'
+        description: 'Lista de tiers favoritos del usuario.'
       },
     },
   ]

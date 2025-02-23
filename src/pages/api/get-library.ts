@@ -42,7 +42,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const db = getDatabaseInstance();
 
-        // Consulta para obtener los productos y los datos relacionados
         const productsQuery = `
             SELECT DISTINCT ON (p.id) 
                 p.id AS product_id, p.name,
@@ -66,13 +65,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         `;
         
         const tiersQuery = `
-            SELECT DISTINCT ON (t.id) 
-                t.id, t.title, t.price, t.description, t.updated_at, t.created_at
+            SELECT 
+                t.id,
+                o.id as order_id,
+                t.title,
+                c.status AS campaign_status,
+                u.username AS campaign_username,
+                m.filename AS campaign_bannerImage,
+                array_agg(re.filename) as reward_filenames
             FROM orders_rels or1
-            JOIN orders o ON or1.parent_id = o.id
+            JOIN orders o ON or1.parent_id = o.id AND o._isPaid = true
             JOIN orders_rels or2 ON o.id = or2.parent_id
             JOIN tiers t ON or2.tiers_id = t.id
+            JOIN tiers_rels tr ON t.id = tr.parent_id
+            JOIN campaigns c ON tr.campaigns_id = c.id AND tr.path = 'campaign'
+            LEFT JOIN campaigns_rels cr_user ON c.id = cr_user.parent_id AND cr_user.path = 'user'
+            LEFT JOIN users u ON cr_user.users_id = u.id
+            LEFT JOIN campaigns_rels cr_banner ON c.id = cr_banner.parent_id AND cr_banner.path = 'bannerImage'
+            LEFT JOIN media m ON cr_banner.media_id = m.id
+            JOIN tiers_rels tr2 ON t.id = tr2.parent_id AND tr2.path LIKE 'rewards.%'
+            JOIN rewards re ON re.id = tr2.rewards_id
             WHERE or1.path = 'user' AND or1.users_id = $1 AND or2.path = 'tiers' AND or2.tiers_id IS NOT NULL
+            AND tr2.parent_id = t.id
+            GROUP BY t.id, o.id, t.title, c.status, u.username, m.filename;
         `;
 
         const [productsResult, tiersResult] = await Promise.all([
@@ -84,21 +99,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ error: 'No results found for this user' });
         }
 
-        // Mapear los resultados para estructurar la respuesta de productos
         const productsWithCreator = productsResult.map(row => ({
             id: row.product_id,
             title: row.name,
             image: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.media_filename}`,
             creator: row.creator_username,
             type: "game",
-            order_id: row.order_id, // Añadir el ID de la orden
-            isFavorite: row.is_favorite // Añadir el campo isFavorite
+            order_id: row.order_id,
+            isFavorite: row.is_favorite
         }));
 
-        // Devuelve los productos únicos con los detalles de los creadores y el filename
+        const tiersWithRewards = tiersResult.map(row => ({
+            id: row.id,
+            title: row.title,
+            status: row.campaign_status,
+            user: row.campaign_username,
+            category: "category",
+            banner_filename: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.campaign_bannerImage}`,
+            rewards: row.reward_filenames,
+            type: "campaign"
+        }));
+
         return res.status(200).json({ 
             games: productsWithCreator,
-            tiers: tiersResult // Añadir los resultados de tiers
+            tiers: tiersWithRewards
         });
 
     } catch (error: any) {
