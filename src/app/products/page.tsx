@@ -247,7 +247,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
 
                 <input
                   type="search"
-                  name="search"
+                  name="author"
                   value={developerTerm}
                   onChange={handleDeveloperChange}
                   placeholder="Busca por Desarrollador"

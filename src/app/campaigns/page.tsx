@@ -82,7 +82,7 @@ const Products = () => {
       filtered = filtered.filter(campaign =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+    );
     }
     if (developerFilter) {
       filtered = filtered.filter(campaign =>
@@ -243,7 +243,7 @@ const Products = () => {
 
                 <input
                   type="search"
-                  name="search"
+                  name="author"
                   value={developerFilter}
                   onChange={(e) => setDeveloperFilter(e.target.value)}
                   placeholder="Busca por Desarrollador"

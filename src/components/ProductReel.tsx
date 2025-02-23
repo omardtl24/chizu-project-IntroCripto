@@ -34,13 +34,13 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
   }
   if (products) {
     products = products.filter(product =>
-      product.user.username.toLowerCase().includes((query.developerTerm ?? '').toLowerCase())
+      (product.user as { username: string }).username.toLowerCase().includes((query.developerTerm ?? '').toLowerCase())
     );
   }
   if (products) {
     if (query.osFilter !== 'empty'){
       products = products.filter(product =>
-        product.requirements_min.os.toLowerCase().includes((query.osFilter ?? '').toLowerCase())
+        ( product.requirements_min as {os:string} ).os.toLowerCase().includes((query.osFilter ?? '').toLowerCase())
       );
     }
   }
