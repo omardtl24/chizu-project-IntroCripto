@@ -32,6 +32,11 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
       product.name.toLowerCase().includes((query.searchTerm ?? '').toLowerCase())
     );
   }
+  if (products) {
+    products = products.filter(product =>
+      product.user.username.toLowerCase().includes((query.developerTerm ?? '').toLowerCase())
+    );
+  }
   let products_map: (Product | null)[] = [];
 
   if (products && products.length > 0) {

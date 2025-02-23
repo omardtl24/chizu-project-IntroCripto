@@ -29,11 +29,12 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortPrice, setSortPrice] = useState<'price' | '-price'>('price');
   const [searchTerm, setSearchTerm] = useState('');
+  const [developerTerm, setDeveloperTerm] = useState('');
 
   const { data: allCategories } = trpc.getAllCategories.useQuery({ limit: 100 });
 
-  const [selectedCategories, setSelectedCategories] = useState< Category[] >( () => { 
-      return defaultCategory ? [{ name: defaultCategory }] : []
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>(() => {
+    return defaultCategory ? [{ name: defaultCategory }] : []
   });
 
   const handleCategoryToggle = (categoryName: string) => {
@@ -47,7 +48,10 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-  
+  const handleDeveloperChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDeveloperTerm(event.target.value);
+  };
+
 
   return (
     <div className="bg-white">
@@ -199,17 +203,29 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                 <input
                   type="search"
                   name="search"
+                  value={developerTerm}
+                  onChange={handleDeveloperChange}
+                  placeholder="Busca por Desarrollador"
+                  className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
+                />
+                <div className='absolute -left-8 top-0 mt-2 mr-4'>
+                  <Search
+                    aria-hidden='true'
+                    className='h-6 w-6 flex-shrink-0 text-gray-600'
+                  />
+                </div>
+
+              </div>
+              <div className="relative w-full text-gray-700 ml-4">
+
+                <input
+                  type="search"
+                  name="search"
                   value={searchTerm}
                   onChange={handleSearchChange}
                   placeholder="Busca tu Juego  :)"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
-                <div className='absolute -left-8 top-0 mt-2 mr-4'>
-                    <Search 
-                        aria-hidden = 'true' 
-                        className='h-6 w-6 flex-shrink-0 text-gray-600'
-                    />
-                </div>
 
               </div>
 
@@ -313,6 +329,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                     limit: 20,
                     sort: sortPrice,
                     searchTerm,
+                    developerTerm,
                   }}
                 />
               </div>
