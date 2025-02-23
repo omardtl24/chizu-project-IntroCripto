@@ -73,6 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 u.username AS campaign_username,
                 m.filename AS campaign_bannerImage,
                 array_agg(re.filename) as reward_filenames,
+                array_agg(re.label) as reward_labels,
                 CASE WHEN ur.path = 'favorite_tier' AND ur.tiers_id = t.id THEN true ELSE false END AS is_favorite,
                 cc.name AS category
             FROM orders_rels or1
@@ -124,6 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             banner_filename: `${process.env.NEXT_PUBLIC_SERVER_URL}/media/${row.campaign_bannerimage}`,
             isFavorite: row.is_favorite,
             rewards: row.reward_filenames.map((filename: any) => `${process.env.NEXT_PUBLIC_SERVER_URL}/product_files/${filename}`),
+            reward_labels: row.reward_labels,
             type: "campaign"
         }));
         return res.status(200).json({ 

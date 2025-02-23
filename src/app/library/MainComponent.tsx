@@ -7,7 +7,8 @@ import { CampaignCard } from './components/CampaignCard';
 import { EmptyFavorites } from './components/EmptyFavorites';
 import { useFavorites } from './hooks/useFavorites';
 import { games as initialGames, campaigns as initialCampaigns } from './data/items';
-import { ActiveTab, FavoritesFilter, Game, Campaign } from './types';
+import { ActiveTab, FavoritesFilter, Game, Campaign, FileItem } from './types';
+import DownloadDialog from './components/DownloadingDialog';
 
 interface MainComponentLibraryProps {
     id_user: string;
@@ -21,6 +22,13 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
     const [games, setGames] = useState<Game[]>(initialGames);
     const [campaigns, setCampaigns] = useState<Campaign[]>(initialCampaigns);
 
+    const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
+    const [filesToDownload, setFilesToDownload] = useState<FileItem[]>([]);
+
+    const openDownloadDialog = (files: FileItem[]) => {
+        setFilesToDownload(files);
+        setIsDownloadDialogOpen(true);
+    };
     // Fetch library data on component mount
     useEffect(() => {
         const fetchLibrary = async () => {
@@ -152,8 +160,10 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
 
     return (
         <div className="min-h-screen bg-[#FCFCFC] text-black p-6 sm:px-6 lg:px-12 xl:px-32">
-            <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+            {/* Renderiza el diálogo globalmente */}
+            <DownloadDialog isOpen={isDownloadDialogOpen} onClose={() => setIsDownloadDialogOpen(false)} files={filesToDownload} />
 
+            <Header activeTab={activeTab} setActiveTab={setActiveTab} />
             {/* Search Bar */}
             <div className="flex items-baseline justify-end border-b border-gray-400 py-6 mb-6">
                 <div className="flex items-center">
@@ -232,14 +242,21 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                         <>
                             <h2 className="text-xl font-bold mb-8">Campañas</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                                {favoriteCampaigns.map((campaign) => (
+                                {favoriteCampaigns.map((item) => (
                                     <CampaignCard
-                                        key={campaign.id}
-                                        product={campaign}
-                                        isFavorite={campaign.isFavorite}
-                                        onToggleFavorite={() => handleToggleFavorite(campaign.id, 'campaign')}
-                                        animationClass={getAnimationClass(campaign.id)}
-                                    />
+                                    key={item.id}
+                                    product={item}
+                                    isFavorite={item.isFavorite}
+                                    onToggleFavorite={() => handleToggleFavorite(item.id, 'campaign')}
+                                    animationClass={getAnimationClass(item.id)}
+                                    onDownloadClick={() => openDownloadDialog(
+                                        item.rewards.map((url, index) => ({
+                                            name: item.reward_labels[index] || `Recompensa ${index + 1}`, // Nombre del archivo
+                                            url: url, // URL del archivo
+                                        }))
+                                    )}
+                                />
+                                
                                 ))}
                             </div>
                         </>
@@ -259,7 +276,14 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                                     isFavorite={item.isFavorite}
                                     onToggleFavorite={() => handleToggleFavorite(item.id, 'campaign')}
                                     animationClass={getAnimationClass(item.id)}
+                                    onDownloadClick={() => openDownloadDialog(
+                                        item.rewards.map((url, index) => ({
+                                            name: item.reward_labels[index] || `Recompensa ${index + 1}`, // Nombre del archivo
+                                            url: url, // URL del archivo
+                                        }))
+                                    )}
                                 />
+
                             );
                         } else {
                             return (

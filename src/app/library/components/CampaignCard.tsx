@@ -8,9 +8,10 @@ interface CampaignCardProps {
     isFavorite: boolean;
     onToggleFavorite: () => void;
     animationClass: string;
+    onDownloadClick: () => void; // Nuevo prop
 }
 
-export const CampaignCard: React.FC<CampaignCardProps> = ({ product, isFavorite, onToggleFavorite, animationClass }) => {
+export const CampaignCard: React.FC<CampaignCardProps> = ({ product, isFavorite, onToggleFavorite, animationClass, onDownloadClick  }) => {
     
     const cardStyle = 'bg-gradient-to-br from-[#007373] via-[#007373] to-[#007373] p-4 rounded-lg text-white shadow-[0_0_10px_rgba(0,115,115,0.3)] stars-bg hover:shadow-[0_0_16px_rgba(0,115,115,0.5)] hover:scale-[1.03] transition-shadow transition-transform transition-all duration-300 ease-in-out transform hover:-translate-y-1';
     const titleStyle = 'text-lg font-bold my-2 text-[#007373]';
@@ -49,7 +50,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ product, isFavorite,
                     {product.status}
                 </span>
             </div>
-            <button onClick={handleDownloadClick} className="mt-2 text-sm text-blue-600 hover:text-blue-500 transition-colors">
+            <button onClick={onDownloadClick} className="mt-2 text-sm text-blue-600 hover:text-blue-500 transition-colors">
                 Descargar
             </button>
         </div>

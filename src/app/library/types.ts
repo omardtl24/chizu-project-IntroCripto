@@ -18,9 +18,14 @@ export interface Campaign {
     banner_filename: string;
     isFavorite: boolean;
     rewards: string[];
+    reward_labels: string[];
     type: 'campaign';
 }
-
+export interface FileItem {
+    id?: string;
+    name: string;
+    url: string;
+}
 export type ViewMode = 'grid' | 'list';
 export type ActiveTab = 'todos' | 'favoritos' | 'campanas';
 export type FavoritesFilter = 'all' | 'games' | 'campaigns';
