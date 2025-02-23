@@ -1,12 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import pgPromise from 'pg-promise';
+import pgPromise, { IDatabase } from 'pg-promise';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const pgp = pgPromise();
 
-// Validación de variables de entorno
 const requiredEnvVars = ['DB_HOST', 'DB_DATABASE', 'DB_USER', 'DB_PASSWORD'];
 for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
@@ -14,14 +13,21 @@ for (const envVar of requiredEnvVars) {
     }
 }
 
-const db = pgp({
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-    database: process.env.DB_DATABASE,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    ssl: { rejectUnauthorized: false },
-});
+let dbInstance: IDatabase<any> | null = null;
+
+function getDatabaseInstance(): IDatabase<any> {
+    if (!dbInstance) {
+        dbInstance = pgp({
+            host: process.env.DB_HOST,
+            port: parseInt(process.env.DB_PORT || '5432', 10),
+            database: process.env.DB_DATABASE,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            ssl: { rejectUnauthorized: false },
+        });
+    }
+    return dbInstance!;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
@@ -29,6 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
+        const db = getDatabaseInstance();
+
         const campaigns = await db.any(`
             SELECT 
                 c.id AS campaign_id, 
@@ -62,7 +70,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             max_price: campaign.max_price
         }));
 
-        return res.status(200).json({ campaigns: result });
+        const categories = await db.any(`
+            SELECT name 
+            FROM categorycampaign
+        `);
+
+        const categoryNames = categories.map(category => category.name);
+        return res.status(200).json({ campaigns: result, categories: categoryNames });
     } catch (error: any) {
         console.error('Database error:', error);
 
@@ -74,8 +88,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             error: userMessage,
             details: process.env.NODE_ENV === 'development' ? error : undefined
         });
-    } finally {
-        // Opcional: cerrar la conexión a la base de datos
-        // await db.$pool.end();
     }
 }
