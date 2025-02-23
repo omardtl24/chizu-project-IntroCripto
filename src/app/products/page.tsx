@@ -261,6 +261,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                 </div>
 
               </div>
+              
               <div className="relative w-full text-gray-700 ml-4">
 
                 <input

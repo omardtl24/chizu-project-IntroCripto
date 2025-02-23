@@ -17,8 +17,10 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [developerFilter, setDeveloperFilter] = useState('');
+
   const router = useRouter();
-  
+
   // Función para manejar el clic en el ProductCard
   const handleCardClick = (id: number) => {
     router.push(`/campaign/${id}`);
@@ -70,7 +72,7 @@ const Products = () => {
 
     // Aplicar filtro de categoría
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(campaign => 
+      filtered = filtered.filter(campaign =>
         selectedCategories.includes(campaign.category)
       );
     }
@@ -82,6 +84,11 @@ const Products = () => {
         campaign.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    // if (developerFilter) {
+    //   filtered = filtered.filter(campaign =>
+    //     campaign.user.username.toLowerCase().includes(developerFilter.toLowerCase())
+    //   );
+    // }
 
     // Ordenar por precio
     return filtered.sort((a, b) => {
@@ -100,8 +107,8 @@ const Products = () => {
           checked={selectedCategories.includes(category)}
           onCheckedChange={(checked) => handleCategoryChange(category, checked === true)}
         />
-        <label 
-          htmlFor={`${isMobile ? 'mobile-' : ''}category-${category}`} 
+        <label
+          htmlFor={`${isMobile ? 'mobile-' : ''}category-${category}`}
           className="ml-3 text-sm text-gray-600"
         >
           {category}
@@ -233,12 +240,13 @@ const Products = () => {
             <div className="flex items-center">
               {/* Barra de búsqueda */}
               <div className="relative w-full text-gray-700">
+
                 <input
                   type="search"
                   name="search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Busca tu campaña  :)"
+                  value={developerFilter}
+                  onChange={(e) => setDeveloperFilter(e.target.value)}
+                  placeholder="Busca por Desarrollador"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
                 <div className='absolute -left-8 top-0 mt-2 mr-4'>
@@ -247,6 +255,19 @@ const Products = () => {
                     className='h-6 w-6 flex-shrink-0 text-gray-600'
                   />
                 </div>
+
+              </div>
+
+              <div className="relative w-full text-gray-700 ml-4">
+                <input
+                  type="search"
+                  name="search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Busca por Campaña  :)"
+                  className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
+                />
+
               </div>
 
               <button
