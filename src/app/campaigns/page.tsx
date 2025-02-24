@@ -16,7 +16,9 @@ const Products = () => {
   const [campaigns, setCampaigns] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
+  const [status, setStatus] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [developerFilter, setDeveloperFilter] = useState('');
 
   const router = useRouter();
@@ -39,11 +41,17 @@ const Products = () => {
       const data = await response.json();
       // Asegúrate de que 'data.campaigns' es un array
       if (Array.isArray(data.campaigns)) {
-        console.log("Campaigns fetched:", data.campaigns);
         setCampaigns(data.campaigns as Product[]);
-        console.log("Categories fetched:", data.categories);
         setCategories(data.categories as string[]);
-      } else {
+        (data.campaigns as Product[]).forEach((c: Product) => {
+          setStatus((prev: string[]) => {
+            const newStatus = new Set(prev);
+            newStatus.add(c.status);
+            return Array.from(newStatus);
+          });
+        });
+      } 
+      else {
         console.error("Expected an array but received:", data);
         // Maneja el caso donde la respuesta no es un array
         setCampaigns([]);
@@ -66,6 +74,13 @@ const Products = () => {
       setSelectedCategories(prev => prev.filter(c => c !== category));
     }
   };
+  const handleStatusChange = (status: string, isChecked: boolean) => {
+    if (isChecked) {
+      setSelectedStatus(prev => [...prev, status]);
+    } else {
+      setSelectedStatus(prev => prev.filter(s => s !== status));
+    }
+  };
 
   const filteredAndSortedCampaigns = React.useMemo(() => {
     let filtered = Array.isArray(campaigns) ? campaigns : [];
@@ -77,12 +92,19 @@ const Products = () => {
       );
     }
 
+    // Aplicar filtro de status
+    if (selectedStatus.length > 0) {
+      filtered = filtered.filter(campaign =>
+        selectedStatus.includes(campaign.status)
+      );
+    }
+
     // Aplicar búsqueda
     if (searchTerm) {
       filtered = filtered.filter(campaign =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         campaign.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+      );
     }
     if (developerFilter) {
       filtered = filtered.filter(campaign =>
@@ -96,7 +118,7 @@ const Products = () => {
       const priceB = sortPrice === 'up' ? (b.min_price ?? 0) : (b.max_price ?? 0);
       return sortPrice === 'up' ? priceA - priceB : priceB - priceA;
     });
-  }, [campaigns, searchTerm, developerFilter, sortPrice, selectedCategories]);
+  }, [campaigns, searchTerm, developerFilter, sortPrice, selectedCategories, selectedStatus]);
 
   const renderCategoryCheckboxes = (isMobile: boolean) => {
     return categories.map(category => (
@@ -112,6 +134,24 @@ const Products = () => {
           className="ml-3 text-sm text-gray-600"
         >
           {category}
+        </label>
+      </div>
+    ));
+  };
+  const renderStatusCheckboxes = (isMobile: boolean) => {
+    return status.map(stat => (
+      <div key={stat} className="flex items-center">
+        <Checkbox
+          id={`${isMobile ? 'mobile-' : ''}category-${stat}`}
+          className='h-4 w-4 rounded border-gray-300'
+          checked={selectedStatus.includes(stat)}
+          onCheckedChange={(checked) => handleStatusChange(stat, checked === true)}
+        />
+        <label
+          htmlFor={`${isMobile ? 'mobile-' : ''}category-${stat}`}
+          className="ml-3 text-sm text-gray-600"
+        >
+          {stat}
         </label>
       </div>
     ));
@@ -181,6 +221,31 @@ const Products = () => {
                           <DisclosurePanel className="pt-6">
                             <div className="space-y-6">
                               {renderCategoryCheckboxes(true)}
+                            </div>
+                          </DisclosurePanel>
+                        </>
+                      )}
+                    </Disclosure>
+
+                    <Disclosure as="div" key="status-movil" className="border-t border-gray-400 px-4 py-6">
+                      {({ open }) => (
+                        <>
+                          <h3 className="-mx-2 -my-3 flow-root">
+                            <DisclosureButton className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                              <span className="font-medium text-gray-900">Estado</span>
+                              <span className="ml-6 flex items-center">
+                                {open ? (
+                                  <Minus className="h-5 w-5" aria-hidden="true" />
+                                ) : (
+                                  <Plus className="h-5 w-5" aria-hidden="true" />
+                                )}
+                              </span>
+                            </DisclosureButton>
+                          </h3>
+
+                          <DisclosurePanel className="pt-6">
+                            <div className="space-y-6">
+                              {renderStatusCheckboxes(true)}
                             </div>
                           </DisclosurePanel>
                         </>
@@ -304,6 +369,30 @@ const Products = () => {
                       <DisclosurePanel className="pt-6">
                         <div className="space-y-4">
                           {renderCategoryCheckboxes(false)}
+                        </div>
+                      </DisclosurePanel>
+                    </>
+                  )}
+                </Disclosure>
+
+                <Disclosure as="div" key="status" className="border-b border-gray-400 py-6" defaultOpen>
+                  {({ open }) => (
+                    <>
+                      <h3 className="-my-3 flow-root">
+                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-600">
+                          <span className="font-medium text-gray-900">Estados</span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <Minus className="h-5 w-5" aria-hidden="true" />
+                            ) : (
+                              <Plus className="h-5 w-5" aria-hidden="true" />
+                            )}
+                          </span>
+                        </DisclosureButton>
+                      </h3>
+                      <DisclosurePanel className="pt-6">
+                        <div className="space-y-4">
+                          {renderStatusCheckboxes(false)}
                         </div>
                       </DisclosurePanel>
                     </>
