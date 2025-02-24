@@ -33,12 +33,13 @@ export const ReceiptEmail = ({
         <Container style={container}>
           <Section>
             <Column>
+            {/*
               <Img
                 src={`${process.env.NEXT_PUBLIC_SERVER_URL}/logo.png`}
                 width='100'
                 height='100'
                 alt='Chizu'
-              />
+              /> */}
             </Column>
 
             <Column align='right' style={tableCell}>
@@ -85,13 +86,13 @@ export const ReceiptEmail = ({
             <Text style={productsTitle}>Resumen de la Compra</Text>
           </Section>
           {products.map((product) => {
-            const { image } = product.images[0]
+            //const { image } = product.images[0]
             return (
               <Section key={product.id}  style={productContainer}>
+                {/*
                 <Column style={{ width: '64px' }}>
                   {typeof image !== 'string' && image.url ? (
                     <>
-                      {console.log("------------------PRODUCTO DENTRO DE RECEIPT.TS------------------\n", product.name, ": ", image.url)}
                       <Img
                         src={image.url}
                         width='64'
@@ -102,12 +103,11 @@ export const ReceiptEmail = ({
                     </>
                   ) : (
                     <>
-                      {console.log("------------------ES NULL CON STRIPE DENTRO DE RECEIPT.TS------------------\n", product.name)}
                       null
                     </>
                     
                   )}
-                </Column>
+                </Column> */}
                 <Column style={{ paddingLeft: '22px' }}>
                   <Text style={productTitle}>
                     {product.name}
