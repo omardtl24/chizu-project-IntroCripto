@@ -58,7 +58,7 @@ const UserNav = ({ user }: { user: User }) => {
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href='/statistics'>
+            <Link href='/user-games'>
               Estadísticas productos
             </Link>
           </DropdownMenuItem>

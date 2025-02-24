@@ -8,6 +8,11 @@ interface DataPoint {
   name: string;
   value: number;
 }
+interface UrlProps {
+  params: {
+    productId: string;
+  }
+}
 
 type RangeType = "total" | "year" | "month" | "week";
 type ChartType = "bar" | "line";
