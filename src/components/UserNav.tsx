@@ -44,7 +44,7 @@ const UserNav = ({ user }: { user: User }) => {
 
           <DropdownMenuItem asChild>
             <Link href='/library'>
-              Librería
+              Biblioteca
             </Link>
           </DropdownMenuItem>
 

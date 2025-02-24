@@ -159,7 +159,7 @@ export const MainComponentLibrary: React.FC<MainComponentLibraryProps> = ({ id_u
                             name="search"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Busca tu campaña :)"
+                            placeholder="Buscar :)"
                             className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                         />
                         <div className='absolute -left-8 top-0 mt-2 mr-4'>
