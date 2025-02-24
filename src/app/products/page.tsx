@@ -7,7 +7,7 @@ import ProductReel from '../../components/ProductReel';
 import { Dialog, Disclosure, Menu, Transition, TransitionChild, DialogPanel, MenuButton, DisclosureButton, DisclosurePanel, MenuItem, MenuItems } from '@headlessui/react';
 import { Plus, X, Minus, ChevronDown, ListFilter, Search, CircleArrowDown, CircleArrowUp } from 'lucide-react';
 import React, { useState, useEffect, Fragment } from 'react';
-import { FaWindows, FaLinux } from "react-icons/fa";
+import { FaWindows, FaLinux, FaApple } from "react-icons/fa";
 
 
 interface Category {
@@ -32,7 +32,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
   const [sortPrice, setSortPrice] = useState<'price' | '-price'>('price');
   const [searchTerm, setSearchTerm] = useState('');
   const [developerTerm, setDeveloperTerm] = useState('');
-  const [osFilter, setOsFilter] = useState<'windows' | 'linux' | 'empty'>('empty');
+  const [osFilter, setOsFilter] = useState<'windows' | 'linux' | 'mac' | 'empty'>('empty');
 
   const { data: allCategories } = trpc.getAllCategories.useQuery({ limit: 100 });
 
@@ -188,7 +188,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                       )}
                     </Disclosure>
 
-                    <Disclosure as="div" key="os-movil" className="border-b border-gray-400 py-6" defaultOpen>
+                    <Disclosure as="div" key="os-movil" className="border-t border-gray-400 px-4 py-6" defaultOpen>
                       {({ open }) => (
                         <>
                           <h3 className="-my-3 flow-root">
@@ -206,7 +206,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                           <DisclosurePanel className="pt-6">
                             <div className="space-y-4">
 
-                              <div key="windows" className="flex items-center">
+                              <div key="windows-movil" className="flex items-center">
                                 <button onClick={() => setOsFilter(osFilter === 'windows' ? 'empty' : 'windows')} >
                                   <FaWindows className={`h-5 w-5 ${osFilter === 'windows' ? 'text-teal-700' : 'text-gray-500'}`} />
                                 </button>
@@ -215,12 +215,21 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                                 </label>
                               </div>
 
-                              <div key="linux" className="flex items-center">
+                              <div key="linux-movil" className="flex items-center">
                                 <button onClick={() => setOsFilter(osFilter === 'linux' ? 'empty' : 'linux')} >
                                   <FaLinux className={`h-5 w-5 ${osFilter === 'linux' ? 'text-teal-700' : 'text-gray-500'}`} />
                                 </button>
                                 <label className="ml-3 text-sm text-gray-600">
                                   Linux
+                                </label>
+                              </div>
+
+                              <div key="mac-movil" className="flex items-center">
+                                <button onClick={() => setOsFilter(osFilter === 'mac' ? 'empty' : 'mac')} >
+                                  <FaApple className={`h-5 w-5 ${osFilter === 'mac' ? 'text-teal-700' : 'text-gray-500'}`} />
+                                </button>
+                                <label className="ml-3 text-sm text-gray-600">
+                                  Mac OS
                                 </label>
                               </div>
 
@@ -239,11 +248,11 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-400 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Catalogo</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 hidden md:block">Juegos</h1>
             <div className="flex items-center">
 
               {/* BARRITA DE BUSQUEDA */}
-              <div className="relative w-full text-gray-700">
+              <div className="relative text-gray-700 w-full">
 
                 <input
                   type="search"
@@ -253,7 +262,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                   placeholder="Busca por Desarrollador"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
-                <div className='absolute -left-8 top-0 mt-2 mr-4'>
+                <div className='absolute top-0 mt-2 mr-4 -left-8 hidden md:block'>
                   <Search
                     aria-hidden='true'
                     className='h-6 w-6 flex-shrink-0 text-gray-600'
@@ -261,7 +270,7 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                 </div>
 
               </div>
-              
+
               <div className="relative w-full text-gray-700 ml-4">
 
                 <input
@@ -400,6 +409,15 @@ const Products = ({ searchParams, }: ProductsPageProps) => {
                             </button>
                             <label className="ml-3 text-sm text-gray-600">
                               Linux
+                            </label>
+                          </div>
+
+                          <div key="mac" className="flex items-center">
+                            <button onClick={() => setOsFilter(osFilter === 'mac' ? 'empty' : 'mac')} >
+                              <FaApple className={`h-5 w-5 ${osFilter === 'mac' ? 'text-teal-700' : 'text-gray-500'}`} />
+                            </button>
+                            <label className="ml-3 text-sm text-gray-600">
+                              Mac OS
                             </label>
                           </div>
 
