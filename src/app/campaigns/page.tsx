@@ -301,7 +301,7 @@ const Products = () => {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-400 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Campañas</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 hidden md:block">Campañas</h1>
             <div className="flex items-center">
               {/* Barra de búsqueda */}
               <div className="relative w-full text-gray-700">
@@ -317,7 +317,7 @@ const Products = () => {
                 <div className='absolute -left-8 top-0 mt-2 mr-4'>
                   <Search
                     aria-hidden='true'
-                    className='h-6 w-6 flex-shrink-0 text-gray-600'
+                    className='h-6 w-6 flex-shrink-0 text-gray-600 hidden md:block'
                   />
                 </div>
 
