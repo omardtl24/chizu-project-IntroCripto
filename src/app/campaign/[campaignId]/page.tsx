@@ -18,6 +18,7 @@ import { getServerUser } from '@/lib/payload-utils'
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import CampaignClientComponent from '../../../components/campaign/campaign-client';
 import { useState } from "react";
+import { DialogWrapper } from "@/components/campaign/DialogWrapper";
 
 
 interface UrlProps {
@@ -71,53 +72,6 @@ const Page = async ({ params }: UrlProps) => {
   const bannerImage = campaignData.bannerImage as Media;
   const author = campaignData.user as User;
 
-  //#region ---- MercadoPago Truco ----
-
-  // const [preferenceId, setPreferenceId] = useState<string | null>(null);
-  // const createPreference = async (tier: Tier) => {
-  //   try {
-  //     const products = [
-  //       {
-  //         user_id: "10", //user.id,
-  //         id: tier.id,
-  //         title: tier.title,
-  //         quantity: 1,
-  //         unit_price: tier.price,
-  //         picture_url: bannerImage?.url || "/default-banner.jpg",
-  //         isProduct: false,
-  //       }
-  //     ];
-
-  //     const response = await fetch("/api/create_preference", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(products),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Error en la respuesta del servidor");
-  //     }
-
-  //     const data = await response.json();
-  //     const { id } = data;
-  //     return id;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleBuy = async (tier: Tier) => {
-  //   const id = await createPreference(tier);
-  //   if (id) {
-  //     setPreferenceId(id);
-  //   }
-  // };
-
-  //#endregion ---- MercadoPago Truco ----
-
-
   return (
     <div className="min-h-screen bg-radial-gradient flex items-center justify-center p-6">
       <div className="max-w-6xl w-full backdrop-blur-xl bg-white/10 rounded-3xl p-8 shadow-2xl border border-white/20">
@@ -169,54 +123,11 @@ const Page = async ({ params }: UrlProps) => {
                     </ul>
                   </div>
 
-                  <AlertDialog>
-
-                    <AlertDialogTrigger asChild>
-                      <button className="w-full py-3 rounded-xl bg-[#007373] hover:bg-[#009c9c] text-white transition-all">
-                        Seleccionar Plan
-                      </button>
-                    </AlertDialogTrigger>
-
-
-                    <AlertDialogContent>
-
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Suscribirse a {tier.title}</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Si desea continuar, porfavor seleccione en Aceptar y sera redirigido a la pasarela de pagos.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-
-                      <AlertDialogFooter>
-
-
-                        <AlertDialogCancel>
-                          Cancelar
-                        </AlertDialogCancel>
-
-                        {/* <AlertDialogAction onClick={() => handleBuy(tier)}>
-                          Aceptar
-                          {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts: { valueProp: 'smart_option' } }} />}
-                        </AlertDialogAction> */}
-
-
-                        <AlertDialogAction asChild>
-                          <CampaignClientComponent
-                            user={user}
-                            bannerImageUrl={bannerImage?.url || "/default-banner.jpg"}
-                            tier={tier}
-                          />
-                        </AlertDialogAction>
-
-
-
-                      </AlertDialogFooter>
-
-                    </AlertDialogContent>
-
-
-                  </AlertDialog>
-
+                  <DialogWrapper
+                    tier={tier}
+                    user={user}
+                    bannerImageUrl={bannerImage?.url || "/default-banner.jpg"}
+                  />
 
                 </div>
               </div>
