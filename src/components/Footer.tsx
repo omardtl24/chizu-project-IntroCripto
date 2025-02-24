@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { CircleDollarSign, Compass, TextSearch, Instagram, Twitter, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -16,6 +16,7 @@ const Footer = () => {
         '/pswd-reset',
         '/thank-you',
     ]
+    const router = useRouter()
 
     return (
         <footer className='bg-[#FCFCFC] flex-grow-0'>
@@ -121,13 +122,17 @@ const Footer = () => {
                                 </div>
                             </div>
                         )}
-                        <SupportButton/>  
+                        <SupportButton />
                     </div>
-                    <div className='mt-4 md:mt-0 flex items-center justify-center'>
+                    <div className='mt-4 md:mt-0 flex flex-col items-end justify-center'>
+                        <Button variant="link" className='text-gray-100 pr-0' onClick={() => router.push('/about-us')}>
+                            <span className='text-gray-700'>Sobre nosotros</span>
+                        </Button>
                         <p className='text-sm text-gray-600'>
                             &copy; {new Date().getFullYear()} All Rights Reserved
                         </p>
                     </div>
+
                 </div>
             </div>
         </footer>

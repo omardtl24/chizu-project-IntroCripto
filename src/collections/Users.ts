@@ -773,5 +773,15 @@ export const Users: CollectionConfig = {
         description: 'Lista de productos favoritos del usuario.'
       },
     },
+    {
+      name: 'favoriteTiers',
+      label: 'Tiers Favoritos',
+      type: 'relationship',
+      relationTo: 'tiers',
+      hasMany: true,
+      admin: {
+        description: 'Lista de tiers favoritos del usuario.'
+      },
+    },
   ]
 }

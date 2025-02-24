@@ -25,14 +25,14 @@ const UserNav = ({ user }: { user: User }) => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className='overflow-visible'>
-        <button  className={`px-4 py-2 font-medium text-left hover:bg-accent rounded-md sm:text-md md:text-sm hover:text-accent-foreground`}>
+          <button className={`px-4 py-2 font-medium text-left hover:bg-accent rounded-md sm:text-md md:text-sm hover:text-accent-foreground`}>
             Cuenta
-            </button>
+          </button>
         </DropdownMenuTrigger>
-        
+
         <DropdownMenuContent className='bg-white w-60' align='start'>
 
-            <div className='flex items-left justify-start gap-2 p-2'>
+          <div className='flex items-left justify-start gap-2 p-2'>
             <div className='flex flex-col space-y-0.5 leading-none'>
               <p className='font-medium text-sm text-black'>
                 {user.username}
@@ -41,6 +41,12 @@ const UserNav = ({ user }: { user: User }) => {
           </div>
 
           <DropdownMenuSeparator />
+
+          <DropdownMenuItem asChild>
+            <Link href='/library'>
+              Librería
+            </Link>
+          </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
             <Link href='/panel'>
@@ -64,7 +70,7 @@ const UserNav = ({ user }: { user: User }) => {
             Eliminar cuenta
           </DropdownMenuItem>
 
-          <DropdownMenuItem 
+          <DropdownMenuItem
             className='cursor-pointer'
             onClick={signOut}
           >

@@ -32,24 +32,5 @@ export const games: Game[] = [
 ];
 
 export const campaigns: Campaign[] = [
-    {
-        id: 4,
-        title: "Campaña de Verano",
-        banner_filename: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?auto=format&fit=crop&q=80&w=400",
-        status: "activa",
-        user: "Juan P",
-        category: "Juegos",
-        isFavorite: true,
-        type: 'campaign'
-    },
-    {
-        id: 5,
-        title: "Juegos Indie",
-        banner_filename: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=400",
-        status: "activa",
-        user: "Juan 12",
-        isFavorite: false,
-        category: "Individual",
-        type: 'campaign'
-    }
+
 ];
