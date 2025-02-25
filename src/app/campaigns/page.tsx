@@ -16,9 +16,13 @@ const Products = () => {
   const [campaigns, setCampaigns] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
+  const [status, setStatus] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+  const [developerFilter, setDeveloperFilter] = useState('');
+
   const router = useRouter();
-  
+
   // Función para manejar el clic en el ProductCard
   const handleCardClick = (id: number) => {
     router.push(`/campaign/${id}`);
@@ -37,11 +41,17 @@ const Products = () => {
       const data = await response.json();
       // Asegúrate de que 'data.campaigns' es un array
       if (Array.isArray(data.campaigns)) {
-        console.log("Campaigns fetched:", data.campaigns);
         setCampaigns(data.campaigns as Product[]);
-        console.log("Categories fetched:", data.categories);
         setCategories(data.categories as string[]);
-      } else {
+        (data.campaigns as Product[]).forEach((c: Product) => {
+          setStatus((prev: string[]) => {
+            const newStatus = new Set(prev);
+            newStatus.add(c.status);
+            return Array.from(newStatus);
+          });
+        });
+      } 
+      else {
         console.error("Expected an array but received:", data);
         // Maneja el caso donde la respuesta no es un array
         setCampaigns([]);
@@ -64,14 +74,28 @@ const Products = () => {
       setSelectedCategories(prev => prev.filter(c => c !== category));
     }
   };
+  const handleStatusChange = (status: string, isChecked: boolean) => {
+    if (isChecked) {
+      setSelectedStatus(prev => [...prev, status]);
+    } else {
+      setSelectedStatus(prev => prev.filter(s => s !== status));
+    }
+  };
 
   const filteredAndSortedCampaigns = React.useMemo(() => {
     let filtered = Array.isArray(campaigns) ? campaigns : [];
 
     // Aplicar filtro de categoría
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(campaign => 
+      filtered = filtered.filter(campaign =>
         selectedCategories.includes(campaign.category)
+      );
+    }
+
+    // Aplicar filtro de status
+    if (selectedStatus.length > 0) {
+      filtered = filtered.filter(campaign =>
+        selectedStatus.includes(campaign.status)
       );
     }
 
@@ -82,6 +106,11 @@ const Products = () => {
         campaign.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    if (developerFilter) {
+      filtered = filtered.filter(campaign =>
+        campaign.user.toLowerCase().includes(developerFilter.toLowerCase())
+      );
+    }
 
     // Ordenar por precio
     return filtered.sort((a, b) => {
@@ -89,7 +118,7 @@ const Products = () => {
       const priceB = sortPrice === 'up' ? (b.min_price ?? 0) : (b.max_price ?? 0);
       return sortPrice === 'up' ? priceA - priceB : priceB - priceA;
     });
-  }, [campaigns, searchTerm, sortPrice, selectedCategories]);
+  }, [campaigns, searchTerm, developerFilter, sortPrice, selectedCategories, selectedStatus]);
 
   const renderCategoryCheckboxes = (isMobile: boolean) => {
     return categories.map(category => (
@@ -100,11 +129,29 @@ const Products = () => {
           checked={selectedCategories.includes(category)}
           onCheckedChange={(checked) => handleCategoryChange(category, checked === true)}
         />
-        <label 
-          htmlFor={`${isMobile ? 'mobile-' : ''}category-${category}`} 
+        <label
+          htmlFor={`${isMobile ? 'mobile-' : ''}category-${category}`}
           className="ml-3 text-sm text-gray-600"
         >
           {category}
+        </label>
+      </div>
+    ));
+  };
+  const renderStatusCheckboxes = (isMobile: boolean) => {
+    return status.map(stat => (
+      <div key={stat} className="flex items-center">
+        <Checkbox
+          id={`${isMobile ? 'mobile-' : ''}category-${stat}`}
+          className='h-4 w-4 rounded border-gray-300'
+          checked={selectedStatus.includes(stat)}
+          onCheckedChange={(checked) => handleStatusChange(stat, checked === true)}
+        />
+        <label
+          htmlFor={`${isMobile ? 'mobile-' : ''}category-${stat}`}
+          className="ml-3 text-sm text-gray-600"
+        >
+          {stat}
         </label>
       </div>
     ));
@@ -180,6 +227,31 @@ const Products = () => {
                       )}
                     </Disclosure>
 
+                    <Disclosure as="div" key="status-movil" className="border-t border-gray-400 px-4 py-6">
+                      {({ open }) => (
+                        <>
+                          <h3 className="-mx-2 -my-3 flow-root">
+                            <DisclosureButton className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                              <span className="font-medium text-gray-900">Estado</span>
+                              <span className="ml-6 flex items-center">
+                                {open ? (
+                                  <Minus className="h-5 w-5" aria-hidden="true" />
+                                ) : (
+                                  <Plus className="h-5 w-5" aria-hidden="true" />
+                                )}
+                              </span>
+                            </DisclosureButton>
+                          </h3>
+
+                          <DisclosurePanel className="pt-6">
+                            <div className="space-y-6">
+                              {renderStatusCheckboxes(true)}
+                            </div>
+                          </DisclosurePanel>
+                        </>
+                      )}
+                    </Disclosure>
+
                     <Disclosure as="div" key="valores-movil" className="border-t border-gray-400 px-4 py-6" defaultOpen>
                       {({ open }) => (
                         <>
@@ -229,24 +301,38 @@ const Products = () => {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-400 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Campañas</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 hidden md:block">Campañas</h1>
             <div className="flex items-center">
               {/* Barra de búsqueda */}
               <div className="relative w-full text-gray-700">
+
                 <input
                   type="search"
-                  name="search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Busca tu campaña  :)"
+                  name="author"
+                  value={developerFilter}
+                  onChange={(e) => setDeveloperFilter(e.target.value)}
+                  placeholder="Busca por Desarrollador"
                   className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
                 />
                 <div className='absolute -left-8 top-0 mt-2 mr-4'>
                   <Search
                     aria-hidden='true'
-                    className='h-6 w-6 flex-shrink-0 text-gray-600'
+                    className='h-6 w-6 flex-shrink-0 text-gray-600 hidden md:block'
                   />
                 </div>
+
+              </div>
+
+              <div className="relative w-full text-gray-700 ml-4">
+                <input
+                  type="search"
+                  name="search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Busca por Campaña  :)"
+                  className="bg-white h-10 px-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-400 hover:border-gray-700 focus:border-gray-700"
+                />
+
               </div>
 
               <button
@@ -283,6 +369,30 @@ const Products = () => {
                       <DisclosurePanel className="pt-6">
                         <div className="space-y-4">
                           {renderCategoryCheckboxes(false)}
+                        </div>
+                      </DisclosurePanel>
+                    </>
+                  )}
+                </Disclosure>
+
+                <Disclosure as="div" key="status" className="border-b border-gray-400 py-6" defaultOpen>
+                  {({ open }) => (
+                    <>
+                      <h3 className="-my-3 flow-root">
+                        <DisclosureButton className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-600">
+                          <span className="font-medium text-gray-900">Estados</span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <Minus className="h-5 w-5" aria-hidden="true" />
+                            ) : (
+                              <Plus className="h-5 w-5" aria-hidden="true" />
+                            )}
+                          </span>
+                        </DisclosureButton>
+                      </h3>
+                      <DisclosurePanel className="pt-6">
+                        <div className="space-y-4">
+                          {renderStatusCheckboxes(false)}
                         </div>
                       </DisclosurePanel>
                     </>

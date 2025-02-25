@@ -1,4 +1,4 @@
-import { Product } from '@/payload-types'
+import { Product, User } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from './ui/skeleton'
 import Link from 'next/link'
@@ -30,6 +30,8 @@ const PlaceHolder = () => {
 
 const ProductListing = (props : Props) => {
     const { product, index, category } = props
+    const user = product?.user as User
+    
     const [isVisible, setIsVisible] = useState(false)
     useEffect(() => {
 
@@ -67,7 +69,7 @@ const ProductListing = (props : Props) => {
 
                     <p className='mt-1 text-sm text-gray-500'>
                         {/* @ts-ignore */}
-                        {category ?? 'Estrenos'}
+                        {user.username} • {category ?? 'Estrenos'} 
                     </p>
 
                     <p className='mt-1 font-medium text-sm text-gray-900'>
