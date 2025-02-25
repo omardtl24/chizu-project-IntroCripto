@@ -41,7 +41,7 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
     products_map = new Array<null>(query.limit ?? 4).fill(null);
   }
 
-  const [category] = query.category ?? ['Estrenos'];
+  const [category] = ['Estrenos'];
 
   return (
     <section className="py-0">
@@ -61,7 +61,7 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
               href={href}
               className="hidden text-sm font-medium text-[#30AEB6] hover:text-[#37C8D1] md:block"
             >
-              Explorar {query.category} <span aria-hidden="true">&rarr;</span>
+              Explorar {category} <span aria-hidden="true">&rarr;</span>
             </Link>
           ) : null}
         </div>

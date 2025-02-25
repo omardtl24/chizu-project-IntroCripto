@@ -69,11 +69,11 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                     {order._isPaid ? <p className='mt-2 text-base text-gray-700'>
                         Su subscripción ha sido exitosa y ya puede acceder a sus recompensas. Le hemos enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
-                        <span className='font-medium text-gray-900'>
-                            {(order.user as User).email}
-                        </span>
+                            <span className='font-medium text-gray-900'>
+                                {(order.user as User).email}
+                            </span>
                         ) : null}
-                        
+
                     </p> : (<p className='mt-2 text-base text-gray-700'>
                         Estamos procesando su Subscripcion, esto tomará cerca de{' '}
                         <span className='font-medium text-gray-900'>30 segundos</span>. Le enviaremos una confirmación a su correo al finalizar.
@@ -136,9 +136,9 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                         <PaymentStatus
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
-                            orderId={String(order.id)} 
+                            orderId={String(order.id)}
                             paymentId={Array.isArray(paymentId) ? paymentId[0] : paymentId || ''}
-                        />
+                            order={order} />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>
                             <Link href='/products' className='text-sm font-medium text-teal-700 hover:text-teal-600'>

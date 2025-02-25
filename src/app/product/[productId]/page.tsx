@@ -362,7 +362,7 @@ const Page = async ({ params }: UrlProps) => {
             </div>
           </div>
 
-          <div className="mt-4 lg:col-span-3">
+          {/* <div className="mt-4 lg:col-span-3">
             <div className="dark:bg-gray-900 rounded-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                 Últimas Reseñas (2)
@@ -388,7 +388,7 @@ const Page = async ({ params }: UrlProps) => {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="py-6 space-y-6 lg:col-span-3">
             <ProductReel
