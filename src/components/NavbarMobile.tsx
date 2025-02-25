@@ -25,7 +25,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
             </button>
 
             {isOpen && (
-                <div className="absolute left-0 right-0 bg-white pb-6 shadow-lg text-left">
+                <div className="absolute left-0 right-0 bg-[#FCFCFC] mt-2 pb-6 shadow-lg text-left">
                     <div className='flex flex-col space-y-4 px-4 pt-4'>
                         <NavItems />
                         {/* <Link href='/products' className={`${buttonVariants({ variant: 'ghost', size: 'sm' })} text-left items-left justify-left`}> */}
