@@ -30,7 +30,8 @@ const Page = async ({ params }: UrlProps) => {
     const { docs: ordersProduct } = await payload.find({
       collection: 'orders',
       where: {
-              'products.id' : {in : [statisticsId]}, 
+              'products.id' : {in : [statisticsId]},
+              '_isPaid' : { equals: true }, 
       },
   });
   //console.log("ordersProduct", ordersProduct)
