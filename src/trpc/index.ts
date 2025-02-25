@@ -1,4 +1,5 @@
 import { productQueryValidator } from "../lib/validators/product-query-validator"
+import { userProductQueryValidator } from "../lib/validators/user-product-query-validator"
 import { authRouter } from "./auth-router"
 import { z } from 'zod'
 import { publicProcedure, router } from "./trpc"
@@ -59,6 +60,39 @@ export const appRouter = router({
       
       return categories
     }),
+
+    getUserProducts: publicProcedure.input( z.object({
+      userID: z.number(),
+      limit: z.number().min(1).max(100),
+      cursor: z.number().nullish(), // ultimo elemento retornado, puede servir para incluir paginacion
+      query: userProductQueryValidator,
+      })
+      ).query( async ({ input }) => {
+
+      const { query, cursor } = input
+      const { sort, limit, userID } = query 
+
+      const payload = await getPayloadClient()
+
+      const page = cursor || 1
+
+      const { docs: items, hasNextPage, nextPage, } = await payload.find( {
+
+        collection: 'products',
+        depth: 1,
+        limit,
+        where: {
+          'user.id' : {in : [userID]}, 
+        },
+        sort: sort,
+        page,
+
+      })
+
+return { items, nextPage: hasNextPage ? nextPage : null, }
+
+}),
+
 
 })
 

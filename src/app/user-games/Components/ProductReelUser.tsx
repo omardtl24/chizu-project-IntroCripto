@@ -1,23 +1,24 @@
 'use client'
 
-import { Category, Product } from '../payload-types'
-import { TypeProductQueryValidator } from '../lib/validators/product-query-validator'
-import { trpc } from '../trpc/client'
+import { Category, Product } from '../../../payload-types'
+import { TypeUserProductQueryValidator } from '../../../lib/validators/user-product-query-validator'
+import { trpc } from '../../../trpc/client'
 import Link from 'next/link'
 import React from 'react'
-import ProductListing from './ProductList'
+import ProductListing from './ProductListUser'
 
 interface Props {
   title?: string;
   subtitle?: string;
   href?: string;
-  query: TypeProductQueryValidator;
+  query: TypeUserProductQueryValidator;
   classNamesSlider?: string;
 }
 
 const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNamesSlider }) => {
-  const { data: items, isLoading } = trpc.getMainProducts.useInfiniteQuery(
+  const { data: items, isLoading } = trpc.getUserProducts.useInfiniteQuery(
     {
+      userID: query.userID ?? 0,
       limit: query.limit ?? 4,
       query,
     },
@@ -89,16 +90,16 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
         </div>
       </div>
       {products_map.length === 0 && !isLoading && (
-                <div>
+        <div>
           
-                <div className='flex h-full flex-col items-center justify-center space-y-1'>
-                  <img src='/verify/error.webp' height={280} width={280} alt='empty shopping cart meow'/>
-                </div>
-              <div className='text-center text-l font-semibold text-gray-700'>
-                No se han encontrado juegos que <br/>
-                cumplan con los criterios de búsqueda
-              </div>
+            <div className='flex h-full flex-col items-center justify-center space-y-1'>
+              <img src='/cart/empty-cart.webp' height={280} width={280} alt='empty shopping cart meow'/>
             </div>
+          <div className='text-center text-l font-semibold text-gray-700'>
+            Meow esta dormido. <br/>
+            Regresa cuando publiques un juego
+          </div>
+        </div>
       )}
     </section>
   );
