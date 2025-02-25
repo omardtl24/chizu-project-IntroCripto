@@ -16,7 +16,7 @@ const teamMembers: TeamMemberData[] = [
         id: '1',
         name: 'Juan Gomez',
         role: 'Backend/Database Developer',
-        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400',
+        image: 'https://storage.googleapis.com/chizu-email-artifacts/juan.webp',
         linkedin: 'https://www.linkedin.com/in/juan-pablo-g%C3%B3mez-rangel-91720928b',
         github: 'https://github.com/flash1001',
         email: 'jugomezra@unal.edu.co'
@@ -43,7 +43,7 @@ const teamMembers: TeamMemberData[] = [
         id: '4',
         name: 'Julian Osorio',
         role: 'Payload Development Enthusiast',
-        image: 'https://media.licdn.com/dms/image/v2/D4E03AQHmTDX5Z9J8VQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1708362012601?e=1746057600&v=beta&t=ytlunmFjSGBXOzO9Kicy2YQkPIu0iGCbtd2AqGUGA0U',
+        image: 'https://storage.googleapis.com/chizu-email-artifacts/julian.webp',
         linkedin: 'https://www.linkedin.com/in/julian-david-osorio-789301288/',
         github: 'https://github.com/Juosorioca420',
         email: 'juosorioca@unal.edu.co'

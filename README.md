@@ -24,11 +24,9 @@ Chizu es un aplicativo web para la compra, venta y promoción de videojuegos. Lo
 
 ## Propósito.
 ### Visión.
-Para el 2032, seremos reconocidos como una de las plataformas más influyentes en América Latina para la venta de videojuegos, junto a la financiación colaborativa y promoción de videojuegos independientes, destacándonos por nuestra pasión por el aprendizaje continuo, nuestro compromiso con la innovación, y la constancia como base para construir relaciones sólidas y sostenibles entre desarrolladores y jugadores. 
-
+Para el 2032, seremos de las plataformas más influyentes para la venta,  financiación y promoción de videojuegos independientes, caracterizandonos por nuestra pasión por el aprendizaje e innovación.  
 ### Misión.
-Ofrecer una plataforma accesible en donde los desarrolladores puedan publicar y financiar sus proyectos, mientras los jugadores descubren, compran y disfrutan una amplia variedad de videojuegos, tanto independientes como convencionales. Conectamos día a día a creadores y jugadores, brindando herramientas claras y asegurando una experiencia confiable y enriquecedora, fomentando la visibilidad de Chizu entre nuevos jugadores. 
-
+Visibilizar a los creadores de videojuegos independientes a través de una plataforma que permite la venta, financiación y refinamiento de sus proyectos por medio de la interacción con los jugadores, para potenciar la creatividad e innovación de los desarrolladores.
 ### Modelo de Negocio.
 ![ModeloCanvas](https://github.com/user-attachments/assets/1f2333b3-4c22-4e08-954c-8a0f82992694)
 
@@ -36,12 +34,11 @@ Ofrecer una plataforma accesible en donde los desarrolladores puedan publicar y 
 ## Requerimientos.
 ### Funcionales.
 1. Tienda de juegos publicados: Permitir al usuario subir un juego o comprarlo y descargarlo dentro de la tienda.
-2. Reseñas usuarios y Reportes de Bugs: Permitir que los usuarios dejen reseñas y calificaciones de los juegos comprados, ayudando a otros usuarios a tomar decisiones de compra informadas. Adicionalmente, permitir que los usuarios puedan reportar fallos que quieran ver corregidos en los juegos que han adquirido.
-3. Creacion de campañas de recaudación: Los usuarios que estén desarrollando un juego podrán crear campañas para recibir apoyo en el desarrollo de dicho juego, esto mediante la creación de niveles de suscripción con diferentes recompensas incrementales. Los demás usuarios de la plataforma que deseen apoyar a los desarrolladores podrán pagar por estas suscripciones.
-4. Facilitar diferentes tipos de Recompensas: Permitir a los usuarios desarrolladores ofrecer arte, acceso adelantado a videojuegos, entre otros tipos de recompensas las cuales puedan asociar a sus niveles de subscripción con la cual captar la atención de otros posibles usuarios que deseen apoyarlos.
-5. Autenticación con Google: Permitir a los usuarios registrarse e iniciar sesión usando su cuenta de google por conveniencia y facilidad.
-6. Biblioteca de juegos: Ofrecer una biblioteca en la que los usuarios puedan acceder a todos los juegos que han adquirido.
-7. Panel de Perfil de Usuario: Ofrecer al usuario un panel donde pueda editar y actualizar su información personal.
+2. Creacion de campañas de recaudación: Los usuarios que estén desarrollando un juego podrán crear campañas para recibir apoyo en el desarrollo de dicho juego, esto mediante la creación de niveles de suscripción con diferentes recompensas incrementales. Los demás usuarios de la plataforma que deseen apoyar a los desarrolladores podrán pagar por estas suscripciones.
+3. Facilitar diferentes tipos de Recompensas: Permitir a los usuarios desarrolladores ofrecer arte, acceso adelantado a videojuegos, entre otros tipos de recompensas las cuales puedan asociar a sus niveles de subscripción con la cual captar la atención de otros posibles usuarios que deseen apoyarlos.
+4. Autenticación con Google: Permitir a los usuarios registrarse e iniciar sesión usando su cuenta de google por conveniencia y facilidad.
+5. Biblioteca de juegos: Ofrecer una biblioteca en la que los usuarios puedan acceder a todos los juegos que han adquirido.
+6. Panel de Perfil de Usuario: Ofrecer al usuario un panel donde pueda editar y actualizar su información personal.
 
 ### No Funcionales.
 1. Diseño responsivo: La plataforma será responsiva para dispositivos móviles, asegurando una experiencia de usuario de alta calidad en smartphones y tablets, así como en computadoras de escritorio.

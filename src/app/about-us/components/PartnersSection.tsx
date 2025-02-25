@@ -12,17 +12,17 @@ interface Partner {
 const partners: Partner[] = [
     {
         id: '1',
+        name: 'LimitLess',
+        logo: 'https://storage.googleapis.com/chizu-email-artifacts/image.webp',
+        url: 'https://www.limitlessholdings.site/',
+        description: 'Mejoras técnicas'
+    },
+    {
+        id: '1',
         name: 'PlanifiKlub',
         logo: 'https://planifiklub.netlify.app/static/media/LogoGolden.2a1c1634119241956d17.gif',
         url: 'https://planifiklub.netlify.app',
         description: 'Apoyo en la gestión del proyecto'
-    },
-    {
-        id: '1',
-        name: 'LimitLess',
-        logo: 'https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=200&fit=crop&q=80',
-        url: 'https://example.com/designstudio',
-        description: ''
     },
     {
         id: '3',
@@ -43,7 +43,7 @@ const PartnersSection: React.FC = () => {
                     </h2>
                     <p className="text-gray-600 max-w-2xl mx-auto">
                         Agradecemos a todas las personas y grupos que han contribuido al éxito de este proyecto
-                        con su experiencia y recomendaciones, especialmente a .
+                        con su experiencia y recomendaciones, especialmente a: 
                     </p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 justify-center">
