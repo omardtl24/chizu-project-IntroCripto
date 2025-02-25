@@ -3,7 +3,7 @@
 import { useCart } from "@/hooks/use-cart"
 import { cn } from "@/lib/utils"
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { formatPrice } from "@/lib/utils"
 import { Button, buttonVariants } from "../../components/ui/button";
@@ -14,9 +14,10 @@ import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import {User} from '../../payload-types'
+import { set } from "zod"
 
 
-initMercadoPago('TEST-7dddc6b8-125e-4830-b457-5077f5c23b9d');
+initMercadoPago('APP_USR-93cf7930-b88d-4a34-84c2-760b75083b99');
 const CartClient = ({user} : { user : User}) => {
     
 
@@ -66,12 +67,18 @@ const CartClient = ({user} : { user : User}) => {
         }
     };
     
+    useEffect(() => {
+        setPreferenceId(null);
+        handleBuy();
+    }
+    , []);
 
     const handleBuy = async () => {
         const id = await createPreference();
         if (id) {
             setPreferenceId(id);
         }
+        console.log(preferenceId)
     }
     const router = useRouter()
 
@@ -294,7 +301,7 @@ const CartClient = ({user} : { user : User}) => {
                             </Button>
 
                             
-                            <Button className='w-full mt-4' size='lg' onClick={handleBuy}> Comprar con Mercado Pago</Button>
+                            {/* <Button className='w-full mt-4' size='lg' onClick={handleBuy}> Comprar con Mercado Pago</Button> */}
                             {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts:{ valueProp: 'smart_option'}}} />}
                             
                         </div>

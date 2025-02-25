@@ -163,20 +163,20 @@ export const AboutEvent: React.FC = () => {
 
 const STATS: StatInfo[] = [
     {
-        count: "Financiación",
-        title: "Apoya juegos en desarrollo y obtén recompensas exclusivas",
+        count: "Recaudación",
+        title: "Apoya juegos en desarrollo y obtén recompensas exclusivas, por medio de suscripciones que apoyan a los creadores",
     },
     {
         count: "Conexión",
-        title: "Jugadores y creadores colaborando en un mismo espacio",
+        title: "Jugadores y creadores colaborando en fomentar una comunidad de videojuegos independientes y de calidad",
     },
     {
-        count: "Apoyo a Indies",
-        title: "Publica y financia tus proyectos fácilmente",
+        count: "Apoyo a Independientes",
+        title: "Ofrecemos un espacio para que los desarrolladores independientes puedan mostrar su trabajo y recibir apoyo de la comunidad",
     },
     {
         count: "Baja Comisión",
-        title: "Solo el 10% para maximizar los ingresos de los desarrolladores",
+        title: "Solo el 10% de las ventas de juegos y suscripciones, permitiendo que los desarrolladores maximicen sus ingresos",
     },
 ];
 
@@ -203,7 +203,7 @@ export const OurStats: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {STATS.map((props, key) => (
                     <ScrollAnimation key={key} animation="zoomIn">
-                        <div className="bg-gray-100 rounded-xl shadow-md p-6 flex flex-col gap-2">
+                        <div className="bg-gray-100 rounded-xl shadow-md m-2 p-6 flex flex-col gap-2">
                             <Typography className="text-2xl font-bold" color="blue-gray" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                 {props.count}
                             </Typography>

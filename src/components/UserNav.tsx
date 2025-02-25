@@ -57,8 +57,14 @@ const UserNav = ({ user }: { user: User }) => {
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={handleDeleteClick}
+          <DropdownMenuItem asChild>
+            <Link href='/user-games'>
+              Estadísticas productos
+            </Link>
+          </DropdownMenuItem>
+          
+          <DropdownMenuItem  
+            onClick={handleDeleteClick} 
             disabled={isSuccess}
           >
             Eliminar cuenta

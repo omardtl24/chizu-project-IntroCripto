@@ -6,16 +6,15 @@ import { AlertDialogAction } from '@radix-ui/react-alert-dialog';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Button, buttonVariants } from "@/components/ui/button";
 
-
-
 interface ClientComponentProps {
     user: any;
     bannerImageUrl: string;
     tier: Tier;
+    onClose: () => void;
 }
 
-initMercadoPago('TEST-7dddc6b8-125e-4830-b457-5077f5c23b9d');
-const CampaignClientComponent: React.FC<ClientComponentProps> = ({ user, bannerImageUrl, tier }) => {
+initMercadoPago('APP_USR-93cf7930-b88d-4a34-84c2-760b75083b99');
+const CampaignClientComponent: React.FC<ClientComponentProps> = ({ user, bannerImageUrl, tier, onClose }) => {
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
     const createPreference = async (tier: Tier) => {
@@ -61,12 +60,31 @@ const CampaignClientComponent: React.FC<ClientComponentProps> = ({ user, bannerI
     };
 
     return (
-        <>
-            <Button variant="default" onClick={() => handleBuy(tier)}>
-                Aceptar
-            </Button>
-            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts: { valueProp: 'smart_option' } }} />}
-        </>
+        <div className="flex flex-col">
+            <div className="flex gap-4 justify-end">
+                <Button 
+                    variant="outline" 
+                    onClick={onClose}
+                >
+                    Cancelar
+                </Button>
+                <Button 
+                    variant="default" 
+                    onClick={() => handleBuy(tier)}
+                >
+                    Aceptar
+                </Button>
+            </div>
+            
+            {preferenceId && (
+                
+                    <Wallet 
+                        initialization={{ preferenceId: preferenceId }} 
+                        customization={{ texts: { valueProp: 'smart_option' } }} 
+                    />
+                
+            )}
+        </div>
     );
 };
 

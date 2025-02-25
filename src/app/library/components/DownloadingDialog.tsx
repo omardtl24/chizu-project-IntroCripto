@@ -31,7 +31,6 @@ const DownloadDialog: React.FC<DownloadDialogProps> = ({ isOpen, onClose, files 
     // Función para descargar todos los archivos
     const handleDownloadAll = () => {
         processedFiles.forEach(file => handleDownload(file.url, file.name));
-        console.log("Descargando todos los archivos...");
         onClose();
     };
 

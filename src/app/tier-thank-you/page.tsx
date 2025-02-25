@@ -141,7 +141,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                             orderEmail={(order.user as User).email}
                             orderId={String(order.id)}
                             paymentId={Array.isArray(paymentId) ? paymentId[0] : paymentId || ''}
-                        />
+                            order={order} />
 
                         <div className='mt-10 border-t border-gray-200 py-6 text-right'>
                             <Link href='/products' className='text-sm font-medium text-teal-700 hover:text-teal-600'>

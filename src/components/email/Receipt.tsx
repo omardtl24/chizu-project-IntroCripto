@@ -33,12 +33,13 @@ export const ReceiptEmail = ({
         <Container style={container}>
           <Section>
             <Column>
+            {/*
               <Img
                 src={`${process.env.NEXT_PUBLIC_SERVER_URL}/logo.png`}
                 width='100'
                 height='100'
                 alt='Chizu'
-              />
+              /> */}
             </Column>
 
             <Column align='right' style={tableCell}>
@@ -85,22 +86,28 @@ export const ReceiptEmail = ({
             <Text style={productsTitle}>Resumen de la Compra</Text>
           </Section>
           {products.map((product) => {
-            const { image } = product.images[0]
-
+            //const { image } = product.images[0]
             return (
-              <Section key={product.id}>
+              <Section key={product.id}  style={productContainer}>
+                {/*
                 <Column style={{ width: '64px' }}>
-                  {typeof image !== 'string' &&
-                  image.url ? (
-                    <Img
-                      src={image.url}
-                      width='64'
-                      height='64'
-                      alt='Product Image'
-                      style={productIcon}
-                    />
-                  ) : null}
-                </Column>
+                  {typeof image !== 'string' && image.url ? (
+                    <>
+                      <Img
+                        src={image.url}
+                        width='64'
+                        height='64'
+                        alt='Product Image'
+                        style={productIcon}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      null
+                    </>
+                    
+                  )}
+                </Column> */}
                 <Column style={{ paddingLeft: '22px' }}>
                   <Text style={productTitle}>
                     {product.name}
@@ -251,6 +258,9 @@ const informationTableValue = {
   padding: '0',
   lineHeight: 1.4,
 }
+const productContainer = {
+  marginTop: '1rem',
+};
 
 const productTitleTable = {
   ...informationTable,
