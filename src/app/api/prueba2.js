@@ -4,7 +4,7 @@ const { MercadoPagoConfig, Preference } = require("mercadopago");
 const { any } = require("zod");
 
 const client = new MercadoPagoConfig({
-    accessToken: "TEST-3524539752788201-012515-593b32ee2e6253a6732d1eb2fb893aa2-1107696534",
+    accessToken: "APP_USR-3524539752788201-012515-cdf91f454b8edc4ac8621478a879ca14-1107696534",
     options: { timeout: 5000, idempotencyKey: 'abc' }
 });
 

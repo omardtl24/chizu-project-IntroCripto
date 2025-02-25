@@ -13,7 +13,7 @@ interface ClientComponentProps {
     onClose: () => void;
 }
 
-initMercadoPago('TEST-7dddc6b8-125e-4830-b457-5077f5c23b9d');
+initMercadoPago('APP_USR-93cf7930-b88d-4a34-84c2-760b75083b99');
 const CampaignClientComponent: React.FC<ClientComponentProps> = ({ user, bannerImageUrl, tier, onClose }) => {
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
