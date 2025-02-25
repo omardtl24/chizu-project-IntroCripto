@@ -4,17 +4,21 @@ import { trpc } from "@/trpc/client";
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { ReceiptEmailHtml } from '@/components/email/Receipt'
+import nodemailer from 'nodemailer'
+import {User,Order, Product} from '../payload-types'
 
 interface PaymentStatusProps {
+    order: Order;
     orderEmail: string;
     orderId: string;
     paymentId: string;
     isPaid: boolean;
 }
 
-const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
-    const router = useRouter()
+const PaymentStatus = ({ order, orderEmail, orderId, paymentId, isPaid }: PaymentStatusProps) => {
 
+    const router = useRouter()
     const { mutate: updateOrderStatus } = trpc.payment.updateOrderStatus.useMutation({
         onSuccess: async () => {
 
@@ -69,8 +73,58 @@ const PaymentStatus = ({ orderEmail, orderId, paymentId, isPaid }: PaymentStatus
         }
     );
     useEffect(() => {
-        if (data?.isPaid) router.refresh()
-      }, [data?.isPaid, router])
+        if (data?.isPaid) {
+            console.log("Enviando email de confirmación de compra");
+            router.refresh()
+            
+            fetch('/api/hello')
+                    .then(response => response.json())
+                    .then(data => console.log(data)) // { message: 'Hello, World!' }
+                    .catch(error => console.error('Error:', error));
+            //#region Email receipt
+            // 
+            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")	
+            console.log("Información que se envia a la api: ")
+            console.log(order.products);
+            const url = new URL("/api/email-receipt", window.location.origin);
+            url.searchParams.append("orderEmail", orderEmail);
+            url.searchParams.append("orderId", orderId);                           
+            console.log("url.toString()", url.toString());
+            fetch(url.toString())
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error("Email network response was not ok");
+                }
+                return res.json();
+            })
+            .catch((error) => {
+                setError("Failed to fetch email api");
+                console.error("Error fetching email api:", error);
+            });
+/*
+            const url = new URL("/api/email-receipt", window.location.origin);
+            fetch(url.toString(), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user, order, orderId }),
+            })
+            .then((res) => res.json())
+            .then((response) => {
+                if (response.success) {
+                    console.log("Email enviado correctamente");
+                } else {
+                    console.error("Error enviando email:", response.error);
+                }
+            })
+            .catch((err) => console.error("Error en la petición de email:", err));
+            */
+            //#endregion 
+
+            
+        }
+    }, [data?.isPaid, router])
 
 
     return (
