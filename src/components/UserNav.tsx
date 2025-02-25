@@ -25,14 +25,14 @@ const UserNav = ({ user }: { user: User }) => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className='overflow-visible'>
-        <button  className={`px-4 py-2 font-medium text-left hover:bg-accent rounded-md sm:text-md md:text-sm hover:text-accent-foreground`}>
+          <button className={`px-4 py-2 font-medium text-left hover:bg-accent rounded-md sm:text-md md:text-sm hover:text-accent-foreground`}>
             Cuenta
-            </button>
+          </button>
         </DropdownMenuTrigger>
-        
+
         <DropdownMenuContent className='bg-white w-60' align='start'>
 
-            <div className='flex items-left justify-start gap-2 p-2'>
+          <div className='flex items-left justify-start gap-2 p-2'>
             <div className='flex flex-col space-y-0.5 leading-none'>
               <p className='font-medium text-sm text-black'>
                 {user.username}
@@ -43,6 +43,12 @@ const UserNav = ({ user }: { user: User }) => {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem asChild>
+            <Link href='/library'>
+              Biblioteca
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
             <Link href='/panel'>
               {user.role === 'admin'
                 ? (<b className='text-blue-800'>Panel de Administrador</b>)
@@ -51,14 +57,14 @@ const UserNav = ({ user }: { user: User }) => {
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem  
-            onClick={handleDeleteClick} 
+          <DropdownMenuItem
+            onClick={handleDeleteClick}
             disabled={isSuccess}
           >
             Eliminar cuenta
           </DropdownMenuItem>
 
-          <DropdownMenuItem 
+          <DropdownMenuItem
             className='cursor-pointer'
             onClick={signOut}
           >

@@ -48,13 +48,14 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
 
     const orderTotal = order.total as number
     const tier = order.tiers as Tier
+    const rewards = tier.rewards
 
     return (
         <main className="relative lg:min-h-full">
 
             <div className="hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12">
                 <Image fill
-                    src='/thank-you.webp'
+                    src='/tier-thank-you.webp'
                     className='h-full w-full object-cover object-center'
                     alt='Thank you for your Order :)' />
             </div>
@@ -69,11 +70,11 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                     {order._isPaid ? <p className='mt-2 text-base text-gray-700'>
                         Su subscripción ha sido exitosa y ya puede acceder a sus recompensas. Le hemos enviamos un correo con los detalles a {' '}
                         {typeof order.user !== 'string' ? (
-                        <span className='font-medium text-gray-900'>
-                            {(order.user as User).email}
-                        </span>
+                            <span className='font-medium text-gray-900'>
+                                {(order.user as User).email}
+                            </span>
                         ) : null}
-                        
+
                     </p> : (<p className='mt-2 text-base text-gray-700'>
                         Estamos procesando su Subscripcion, esto tomará cerca de{' '}
                         <span className='font-medium text-gray-900'>30 segundos</span>. Le enviaremos una confirmación a su correo al finalizar.
@@ -88,12 +89,14 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                         </div>
 
                         <ul className='mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-muted-foreground'>
-                            {(tier.rewards as Reward[]).map((reward) => {
-                                const label = reward.label //label del reward
-                                const downloadUrl = reward.url as string
+                            {rewards && rewards.map((reward) => {
+                                const reward_info = reward.reward
+                                if (!reward_info) { return null; }
+
+                                const label = typeof reward_info !== 'string' ? reward_info.label : ''
+                                const downloadUrl = typeof reward_info !== 'string' ? reward_info.url : ''
 
                                 return (<li key={reward.id} className='flex space-x-6 py-6'>
-
                                     <div className='flex-auto flex flex-col justify-between'>
                                         <div className='space-y-1'>
                                             <h3 className='text-gray-900'>
@@ -101,17 +104,17 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                                                 {label}
                                             </h3>
 
-                                            <p className='my-1'>
-                                                Tier: {tier.title}
+                                            <p className='-mt-1 text-xs'>
+                                                Del paquete {tier.title}
                                             </p>
                                         </div>
-                                        {/* descargar imgs*/}
+
+                                        {/* descargar rewards*/}
                                         {order._isPaid ? (
-                                            <a href={downloadUrl}
+                                            <a href={downloadUrl as string}
                                                 download={label}
-                                                className='text-teal-700 hover:underline-offset-2'>
-                                                Descargar archivo
-                                                {downloadUrl}
+                                                className='text-teal-700 hover:underline-offset-2 mt-3'>
+                                                Descargar Recompensa
                                             </a>
                                         ) : null}
                                     </div>
@@ -136,7 +139,7 @@ const TierThankYouPage = async ({ searchParams }: PageProps) => {
                         <PaymentStatus
                             isPaid={Boolean(order._isPaid)}
                             orderEmail={(order.user as User).email}
-                            orderId={String(order.id)} 
+                            orderId={String(order.id)}
                             paymentId={Array.isArray(paymentId) ? paymentId[0] : paymentId || ''}
                         />
 
