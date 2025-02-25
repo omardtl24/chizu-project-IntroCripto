@@ -89,7 +89,16 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
         </div>
       </div>
       {products_map.length === 0 && !isLoading && (
-        <p className="mt-4 text-gray-600 text-center">No se encontraron Productos</p>
+                <div>
+          
+                <div className='flex h-full flex-col items-center justify-center space-y-1'>
+                  <img src='/verify/error.webp' height={280} width={280} alt='empty shopping cart meow'/>
+                </div>
+              <div className='text-center text-l font-semibold text-gray-700'>
+                No se han encontrado juegos que <br/>
+                cumplan con los criterios de búsqueda
+              </div>
+            </div>
       )}
     </section>
   );

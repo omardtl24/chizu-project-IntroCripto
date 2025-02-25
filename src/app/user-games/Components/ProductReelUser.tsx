@@ -91,6 +91,7 @@ const ProductReel: React.FC<Props> = ({ title, subtitle, href, query, classNames
       </div>
       {products_map.length === 0 && !isLoading && (
         <div>
+          
             <div className='flex h-full flex-col items-center justify-center space-y-1'>
               <img src='/cart/empty-cart.webp' height={280} width={280} alt='empty shopping cart meow'/>
             </div>
