@@ -72,7 +72,7 @@ export default function Statistics({ id_user, statisticsId, searchParams, userPr
       <div className="flex flex-col md:flex-row gap-4 mt-6">
         {/* Ventas Totales */}
         <div className="flex-1 border rounded-lg shadow-md p-4">
-          <h2 className="text-lg font-semibold mb-4">Ventas de {productName}</h2>
+          <h2 className="text-lg font-semibold mb-4">Ventas de {productName} </h2>
           <p className="text-xl font-semibold text-center">Ventas Totales: {totalSales}</p>
           <div className="flex gap-4 my-4">
             <select className="p-2 border rounded-md" value={range} onChange={(e) => setRange(e.target.value as RangeType)}>
@@ -114,10 +114,15 @@ export default function Statistics({ id_user, statisticsId, searchParams, userPr
         
         {/* Popularidad */}
         <div className="flex-1 border rounded-lg shadow-md p-4">
-          <h2 className="text-lg font-semibold mb-4">Popularidad del Producto</h2>
-          <p className="text-xl font-semibold text-center">
-            {gamePopularity !== null ? `Ranking: #${gamePopularity}` : "Cargando..."}
-          </p>
+          <h2 className="text-lg font-semibold">Popularidad del Producto</h2>
+          {gamePopularity !== null ? (
+            <div className="flex flex-col items-center justify-center -mt-4 h-full">
+              <p className="text-xl">Ranking:</p>
+              <p className="text-8xl font-bold">#{gamePopularity}</p>
+            </div>
+          ) : (
+            <p className="text-xl font-semibold text-center">Cargando...</p>
+          )}
         </div>
       </div>
     </div>

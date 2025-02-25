@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         `);
 
         // Encontrar el índice del producto en la lista top
-        const productIndex = topProducts.findIndex((product: { id: string; }) => product.id === gameId);
+        const productIndex = topProducts.findIndex((product: { id: string; }) => product.id.toString() == gameId);
 
         if (productIndex === -1) {
             return res.status(404).json({ error: 'Product not found in top list' });
