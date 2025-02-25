@@ -8,7 +8,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-    const cardStyle = 'bg-gradient-to-br from-[#007373] via-[#007373] to-[#007373] p-6 rounded-lg text-white shadow-[0_0_10px_rgba(0,115,115,0.3)] stars-bg hover:shadow-[0_0_16px_rgba(0,115,115,0.5)] hover:scale-[1.03] transition-shadow transition-transform transition-all duration-300 ease-in-out transform hover:-translate-y-1';
+    const cardStyle = 'bg-gradient-to-br from-[#007373] via-[#007373] to-[#007373] p-6 rounded-lg text-white shadow-[0_0_10px_rgba(0,115,115,0.3)] stars-bg hover:shadow-[0_0_16px_rgba(0,115,115,0.5)] hover:scale-[1.03] transition-shadow transition-transform transition-all duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer';
 
     const imageStyle = 'rounded-lg h-48 w-full object-cover mb-4 opacity-80 ';
     const titleStyle = 'text-lg font-bold mb-2 text-[#007373]';

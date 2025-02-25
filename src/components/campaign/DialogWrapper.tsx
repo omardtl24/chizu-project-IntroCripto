@@ -32,7 +32,7 @@ export const DialogWrapper = ({ tier, user, bannerImageUrl }: DialogWrapperProps
                 <AlertDialogHeader>
                     <AlertDialogTitle>Suscribirse a {tier.title}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Si desea continuar, porfavor seleccione en Aceptar y sera redirigido a la pasarela de pagos.
+                        Si desea continuar, porfavor seleccione en Aceptar para cargar MercadoPago.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
 

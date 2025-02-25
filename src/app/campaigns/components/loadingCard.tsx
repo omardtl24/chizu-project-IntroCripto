@@ -30,7 +30,7 @@ import React from 'react';
 // shimmer + pulse
 
 export const LoadingCard: React.FC = () => {
-    const cardStyle = 'bg-gray-50 border-2 border-gray-200 p-6 rounded-lg animate-pulse';
+    const cardStyle = 'bg-gray-50 border-2 border-gray-200 p-6 rounded-lg animate-pulse cursor-pointer';
     const imageStyle = 'rounded-lg h-48 w-full bg-gray-300 mb-4 shimmer animate-pulse';
     const textStyle = 'h-6 bg-gray-300 rounded mb-2 shimmer animate-pulse';
     const subTextStyle = 'h-4 bg-gray-300 rounded mb-2 shimmer animate-pulse';
