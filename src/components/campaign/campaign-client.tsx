@@ -5,6 +5,7 @@ import { Tier } from "@/payload-types";
 import { AlertDialogAction } from '@radix-ui/react-alert-dialog';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Button, buttonVariants } from "@/components/ui/button";
+import { ButtonPusheable } from '../button_pusheable';
 
 interface ClientComponentProps {
     user: any;
@@ -59,6 +60,7 @@ const CampaignClientComponent: React.FC<ClientComponentProps> = ({ user, bannerI
         if (id) {
             setPreferenceId(id);
         }
+        await new Promise(resolve => setTimeout(resolve, 250));
         setIsLoading(false)
     };
 
@@ -68,15 +70,15 @@ const CampaignClientComponent: React.FC<ClientComponentProps> = ({ user, bannerI
                 <Button 
                     variant="outline" 
                     onClick={onClose}
-                    className="flex-1"
+                    className="w-1/2"
                 >
                     Cancelar
                 </Button>
-                <Button 
-                    variant="default" 
+                <Button
+                    variant={"default"}
                     onClick={() => handleBuy(tier)}
                     isLoading={isLoading}
-                    className="flex-1 flex items-center justify-center"
+                    className="w-1/2"
                 >
                     Aceptar
                 </Button>
