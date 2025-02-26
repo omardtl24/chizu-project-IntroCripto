@@ -25,18 +25,16 @@ export function AboutCard({
             {subTitle}
           </Typography>
         )}
-        <Typography variant="h4" className="text-center text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Typography variant="h4" className="text-center text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} style={{ height: '40px' }}>
           {title}
         </Typography>
         <Typography
           color="white"
-          className="mt-2 mb-10 text-base w-full lg:w-8/12 text-center font-normal text-xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
+          className="mt-2 mb-10 text-base w-full lg:w-8/12 text-center font-normal text-xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        
+          style={{ height: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {description}
         </Typography>
       </CardBody>
     </Card>
   );
 }
-
-
-export default AboutCard;
