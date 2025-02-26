@@ -26,9 +26,14 @@ const Navbar = async () => {
                             <div className='hidden lg:block ml-8 self-stretch'>
                                 <NavItems />
                             </div>
-                                <Link href='/campaigns' className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
+                            <div className='hidden lg:block'>
+                                <Link
+                                    href='/campaigns'
+                                    className={`${buttonVariants({ variant: 'ghost', size: 'sm' })}`}
+                                >
                                     Campañas
                                 </Link>
+                            </div>
                         </div>
 
                         {/* Desktop Navigation */}
