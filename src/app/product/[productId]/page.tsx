@@ -7,6 +7,7 @@ import ProductReel from "@/components/ProductReel";
 import AddCartButton from "@/components/AddToCartButton";
 import { getPayloadClient } from "@/getPayload";
 import { Category, Media, Product, User } from "@/payload-types"
+import { Reviews } from "@/components/Reviews";
 
 
 import {
@@ -17,7 +18,6 @@ import {
   PageProps,
   SystemRequirements
 } from "./product-types";
-import Reviews from "@/components/Reviews";
 
 // const { productId } = params;
 // let productData: ProductLocal;
@@ -401,6 +401,7 @@ const Page = async ({ params }: UrlProps) => {
             />
           </div>
         </div>
+        <Reviews productId={product.id}/>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export const Reviews: CollectionConfig = {
     {
       name: "user",
       type: "text",
-      required: false, // ✅ El usuario ahora es opcional
+      required: false, // El usuario ahora es opcional
       label: "Usuario",
     },
     {
@@ -28,7 +28,7 @@ export const Reviews: CollectionConfig = {
       label: "Producto",
       type: "relationship",
       relationTo: "products",
-      required: true, // ✅ El comentario debe estar vinculado a un producto
+      required: true, // El comentario debe estar vinculado a un producto
     },
     {
       name: "recommend",
