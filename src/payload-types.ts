@@ -276,9 +276,9 @@ export interface Reward {
 export interface Review {
   id: string;
   review: string;
-  rating: '1' | '2' | '3' | '4' | '5';
-  user?: (string | null) | User;
+  user?: string | null;
   product: string | Product;
+  recommend: boolean;
   updatedAt: string;
   createdAt: string;
 }

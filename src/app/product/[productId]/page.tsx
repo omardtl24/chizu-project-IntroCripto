@@ -17,6 +17,7 @@ import {
   PageProps,
   SystemRequirements
 } from "./product-types";
+import Reviews from "@/components/Reviews";
 
 // const { productId } = params;
 // let productData: ProductLocal;
