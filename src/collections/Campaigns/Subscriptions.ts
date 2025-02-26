@@ -16,7 +16,8 @@ export const Subscriptions: CollectionConfig = {
     admin: {
         useAsTitle: 'tier',  
         description: 'Gestión de las suscripciones a tiers de campañas.',
-        hideAPIURL: true
+        hideAPIURL: true,
+        hidden: () => true
     },
 
     access: {

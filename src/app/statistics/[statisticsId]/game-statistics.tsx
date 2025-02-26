@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
-
+import { useSpring, animated } from '@react-spring/web';
 interface DataPoint {
   name: string;
   value: number;
@@ -22,7 +22,7 @@ type ChartType = "bar" | "line";
 
 const processOrderData = (ordersProduct: any[], range: RangeType): DataPoint[] => {
   if (!Array.isArray(ordersProduct) || ordersProduct.length === 0) return [];
-  
+
   const dataMap: Record<string, number> = {};
   ordersProduct.forEach(order => {
     if (!order || !order._isPaid || !order.createdAt) return;
@@ -41,10 +41,19 @@ export default function Statistics({ id_user, statisticsId, searchParams, userPr
   const [chartType, setChartType] = useState<ChartType>("bar");
   const [data, setData] = useState<DataPoint[]>([]);
   const [gamePopularity, setGamePopularity] = useState<number | null>(null);
-  
   const totalSales = Array.isArray(ordersProduct) ? ordersProduct.length : 0;
   const productName = userProduct[0]?.name || "Producto";
 
+  const roundToNearestHundred = (value: number) => {
+    if (value < 50) return 100;
+    return Math.ceil(value / 100) * 100 + 100;
+  };
+  const { value } = useSpring({
+    from: { value: roundToNearestHundred(gamePopularity ?? 0)},
+    value: gamePopularity,
+    delay: 400,
+    config: { tension: 70, friction: 25 } // Tension = que ran rapido baja, Friction = que tan rapido se detiene
+  });
   useEffect(() => {
     setData(processOrderData(ordersProduct, range));
   }, [range, ordersProduct]);
@@ -57,7 +66,7 @@ export default function Statistics({ id_user, statisticsId, searchParams, userPr
         const response = await fetch(url.toString());
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        console.log("Popularity data:", data); 
+        console.log("Popularity data:", data);
         setGamePopularity(data.productPosition);
       } catch (error) {
         console.error("Error fetching popularity data:", error);
@@ -81,7 +90,7 @@ export default function Statistics({ id_user, statisticsId, searchParams, userPr
               <option value="month">Último Mes</option>
               <option value="week">Última Semana</option>
             </select>
-            <Button onClick={() => setChartType(chartType === "bar" ? "line" : "bar")}> 
+            <Button onClick={() => setChartType(chartType === "bar" ? "line" : "bar")}>
               Cambiar a {chartType === "bar" ? "Línea" : "Barras"}
             </Button>
           </div>
@@ -106,24 +115,29 @@ export default function Statistics({ id_user, statisticsId, searchParams, userPr
                   )}
                 </ResponsiveContainer>
               ) : (
-                <p className="text-center text-gray-500">No hay datos de ventas disponibles</p>
+                <div className="flex items-center justify-center h-[300px] w-full">
+                  <p className="text-gray-500 text-center">No hay datos de ventas disponibles</p>
+                </div>
               )}
             </div>
           </div>
         </div>
-        
+
         {/* Popularidad */}
         <div className="flex-1 border rounded-lg shadow-md p-4">
           <h2 className="text-lg font-semibold">Popularidad del Producto</h2>
           {gamePopularity !== null ? (
             <div className="flex flex-col items-center justify-center -mt-4 h-full">
               <p className="text-xl">Ranking:</p>
-              <p className="text-8xl font-bold">#{gamePopularity}</p>
+              <p className="text-8xl font-bold">#<animated.span>{value.to(n => n.toFixed(0))}</animated.span></p>
             </div>
           ) : (
-            <p className="text-xl font-semibold text-center">Cargando...</p>
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-gray-500 text-center">Cargando...</p>
+            </div>
           )}
         </div>
+
       </div>
     </div>
   );
