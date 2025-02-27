@@ -19,6 +19,7 @@ export interface Config {
     subscriptions: Subscription;
     tiers: Tier;
     rewards: Reward;
+    reviews: Review;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -270,6 +271,16 @@ export interface Reward {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+
+export interface Review {
+  id: string;
+  review: string;
+  user?: string | null;
+  product: string | Product;
+  recommend: boolean;
+  updatedAt: string;
+  createdAt: string;
 }
 
 export interface PayloadPreference {

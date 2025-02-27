@@ -24,7 +24,7 @@ const teamMembers: TeamMemberData[] = [
     {
         id: '2',
         name: 'Juan Garavito',
-        role: 'API Junior Breaker',
+        role: 'Product Owner & Developer',
         image: 'https://media.licdn.com/dms/image/v2/D4E03AQG5FwXuwUpkyw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1701311368420?e=1746057600&v=beta&t=qTaMq33es6-EGk5_slhteo2rdhxAvLaL27Jn3upi4z0',
         linkedin: 'https://www.linkedin.com/in/juancarlosgaravito',
         github: 'https://github.com/jgaravitoh',
@@ -33,7 +33,7 @@ const teamMembers: TeamMemberData[] = [
     {
         id: '3',
         name: 'Juan Garcia',
-        role: 'Payload Hater Developer',
+        role: 'Frontend Development Specialist',
         image: 'https://media.licdn.com/dms/image/v2/D4E03AQEodNTaHPhvkA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1691877434271?e=1746057600&v=beta&t=rxxqdPIrnHcqbxCd4pUs1GK-JTKhqTB1MQCLbrrfNEY',
         linkedin: 'https://www.linkedin.com/in/juangarcia264/',
         github: 'https://github.com/JuanNaCl',
@@ -42,7 +42,7 @@ const teamMembers: TeamMemberData[] = [
     {
         id: '4',
         name: 'Julian Osorio',
-        role: 'Payload Development Enthusiast',
+        role: 'Full Stack Developer',
         image: 'https://storage.googleapis.com/chizu-email-artifacts/julian.webp',
         linkedin: 'https://www.linkedin.com/in/julian-david-osorio-789301288/',
         github: 'https://github.com/Juosorioca420',

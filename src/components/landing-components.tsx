@@ -128,7 +128,7 @@ const EVENT_INFO: EventInfo[] = [
     },
     {
         title: "Misión",
-        description: "Visibilizar a los creadores de videojuegos independientes a través de una plataforma para la venta, financiación y refinamiento de sus proyectos gracias a la interacción con jugadores, potenciando la creatividad e innovación de los desarrolladores",
+        description: "Visibilizar a los creadores de videojuegos independientes a través de una plataforma que permite la venta y financiación de sus proyectos, potenciando la creatividad e innovación de los desarrolladores",
     },
 ];
 
@@ -145,9 +145,11 @@ export const AboutEvent: React.FC = () => {
                 <Typography
                     variant="lead"
                     className="mt-2 lg:max-w-4xl mb-8 w-full text-center font-normal !text-black-500" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                    Somos una plataforma que impulsa la creatividad, permite la financiación
-                    colaborativa y ofrece un espacio donde los sueños de los creadores se convierten en
-                    experiencias únicas para los jugadores. Aquí apoyas, descubres y juegas como nunca antes 🎮✨
+                    Chizu es un aplicativo web para la compra, venta y promoción de videojuegos.
+                    Los desarrolladores podrán generar campañas para la recaudación de fondos para la creación de sus juegos,
+                    mediante un sistema de suscripción por tiers o niveles a los que dicho desarrollador puede asociar diversas recompensas.
+                    Chizu busca ser una  plataforma no solo para la compra y venta de videojuegos, sino potenciar la labor de los desarrolladores independientes
+
                 </Typography>
             </ScrollAnimation>
             <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -194,7 +196,7 @@ export const OurStats: React.FC = () => {
                         creados. Nuestra plataforma ofrece beneficios únicos tanto a
                         desarrolladores independientes como a jugadores, creando un
                         ecosistema que fomenta la creatividad, la colaboración y el
-                        crecimiento mutuo 🎮✨
+                        crecimiento mutuo
                     </Typography>
                 </div>
             </ScrollAnimation>
