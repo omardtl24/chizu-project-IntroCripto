@@ -50,15 +50,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             FROM campaigns c
             LEFT JOIN campaigns_rels cr_user ON c.id = cr_user.parent_id AND cr_user.path = 'user'
             LEFT JOIN users u ON cr_user.users_id = u.id
-            LEFT JOIN campaigns_rels cr_tiers ON c.id = cr_tiers.parent_id AND cr_tiers.path = 'tiers'
-            LEFT JOIN tiers t ON cr_tiers.tiers_id = t.id
+            LEFT JOIN tiers_rels tr ON c.id = tr.campaigns_id 
+            LEFT JOIN tiers t ON tr.parent_id = t.id
             LEFT JOIN campaigns_rels cr_category ON c.id = cr_category.parent_id AND cr_category.path = 'category'
             LEFT JOIN categorycampaign cc ON cr_category.categorycampaign_id = cc.id
             LEFT JOIN campaigns_rels cr_banner ON c.id = cr_banner.parent_id AND cr_banner.path = 'bannerImage'
             LEFT JOIN media m ON cr_banner.media_id = m.id
             GROUP BY c.id, c.title, c.status, u.username, cc.name, m.filename
         `);
-
+        console.log(campaigns);
         const result = campaigns.map(campaign => ({
             id: campaign.campaign_id,
             title: campaign.title,
