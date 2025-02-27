@@ -8,6 +8,7 @@ export const Reviews: CollectionConfig = {
     useAsTitle: "id",
     description: "Comentarios de los jugadores en los productos.",
     hideAPIURL: true,
+    hidden: ({ user }) => user?.role !== "admin"
   },
 
   fields: [
