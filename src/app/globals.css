@@ -83,9 +83,7 @@
     var(--c) 100% 0;
   background-size: 8px 8px;
   position: relative;
-  top: 50%; /* Centrar verticalmente */
   transform: translateY(40%); /* Centrar verticalmente */
-  left: 45%; /* Centrar horizontalmente */
   animation: l4-0 1s linear infinite alternate;
 }
 .loader:before {

@@ -62,13 +62,6 @@ const UserNav = ({ user }: { user: User }) => {
               Estadísticas productos
             </Link>
           </DropdownMenuItem>
-          
-          <DropdownMenuItem  
-            onClick={handleDeleteClick} 
-            disabled={isSuccess}
-          >
-            Eliminar cuenta
-          </DropdownMenuItem>
 
           <DropdownMenuItem
             className='cursor-pointer'
@@ -76,6 +69,16 @@ const UserNav = ({ user }: { user: User }) => {
           >
             Cerrar Sesión
           </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className='text-red-600 font-semibold cursor-pointer  '
+            onClick={handleDeleteClick}
+            disabled={isSuccess}
+          >
+            Eliminar cuenta
+          </DropdownMenuItem>
+
+
         </DropdownMenuContent>
       </DropdownMenu>
 

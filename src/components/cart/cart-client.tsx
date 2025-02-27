@@ -13,16 +13,16 @@ import { trpc } from '@/trpc/client'
 import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
-import {User} from '../../payload-types'
+import { User } from '../../payload-types'
 import { set } from "zod"
 
 
 initMercadoPago('APP_USR-93cf7930-b88d-4a34-84c2-760b75083b99');
-const CartClient = ({user} : { user : User}) => {
-    
+const CartClient = ({ user }: { user: User }) => {
 
     const [preferenceId, setPreferenceId] = useState<string | null>(null);
-
+    const [isLoadingMP, setIsLoadingMP] = useState<boolean>(false);
+    const [isMounted, setIsMounted] = useState<boolean>(false)
     interface Product {
         id: string;
         title: string;
@@ -33,8 +33,8 @@ const CartClient = ({user} : { user : User}) => {
     const createPreference = async () => {
         try {
             const products: Product[] = items.map(item => {
-                const imageUrl = typeof item.product.image_logo === 'string' 
-                    ? item.product.image_logo 
+                const imageUrl = typeof item.product.image_logo === 'string'
+                    ? item.product.image_logo
                     : item.product.image_logo.url || '';
                 return {
                     user_id: user.id,
@@ -54,32 +54,41 @@ const CartClient = ({user} : { user : User}) => {
                 },
                 body: JSON.stringify(products),
             });
-    
+
             if (!response.ok) {
                 throw new Error("Error en la respuesta del servidor");
             }
-    
+
             const data = await response.json();
             const { id } = data;
             return id;
         } catch (error) {
             console.log(error);
+            toast.error("Error al crear la preferencia de pago");
+            return null;
         }
     };
-    
+
     useEffect(() => {
-        setPreferenceId(null);
-        handleBuy();
-    }
-    , []);
+        if (isMounted && items.length > 0) {
+            handleBuy();
+        }
+    }, [isMounted]);
 
     const handleBuy = async () => {
+        if (items.length === 0) {
+            return;
+        }
+
+        setIsLoadingMP(true);
         const id = await createPreference();
         if (id) {
             setPreferenceId(id);
         }
-        console.log(preferenceId)
+        await new Promise(resolve => setTimeout(resolve,250)); // para asegurarnos que el preferenceId se setee y no tener un tiempo en el que no hay btn
+        setIsLoadingMP(false);
     }
+
     const router = useRouter()
 
     const { items, removeItem, clearCart } = useCart()
@@ -90,7 +99,7 @@ const CartClient = ({user} : { user : User}) => {
         }
     })
 
-    const [isMounted, setIsMounted] = useState<boolean>(false)
+
 
     useEffect(() => {
         setIsMounted(true)
@@ -297,13 +306,27 @@ const CartClient = ({user} : { user : User}) => {
                                 disabled={items.length === 0 || isLoading}
                             >
                                 {isLoading ? (<Loader2 className='h-4 w-4 animate-spin mr-1.5 ml-1.5' />) : null}
-                                Finalizar Compra
+                                Finalizar Compra con stripe
                             </Button>
 
-                            
-                            {/* <Button className='w-full mt-4' size='lg' onClick={handleBuy}> Comprar con Mercado Pago</Button> */}
-                            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts:{ valueProp: 'smart_option'}}} />}
-                            
+                            {isLoadingMP ? (
+                                <Button className="w-full flex items-center justify-center mt-3" disabled={true}>
+                                    <Loader2 className='h-5 w-5 animate-spin mr-2 text-white' />
+                                    <span className="text-white font-medium">Cargando MercadoPago...</span>
+                                </Button>
+                            ) : preferenceId ? (
+                                <Wallet initialization={{ preferenceId: preferenceId }} customization={{ texts: { valueProp: 'smart_option' } }} />
+                            ) : isMounted && items.length > 0 ? (
+                                <Button
+                                    className='w-full'
+                                    size='lg'
+                                    onClick={handleBuy}
+                                    variant="outline"
+                                >
+                                    Cargar opciones de Mercado Pago
+                                </Button>
+                            ) : null}
+
                         </div>
 
                     </section>
