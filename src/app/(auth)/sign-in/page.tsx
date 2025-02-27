@@ -196,6 +196,9 @@ const Page = () => {
                         </svg>
                         Continuar con Google
                     </Button>
+                    <p className="text-sm text-gray-500 mt-2">
+                        *Requiere registro previo
+                    </p>
                 </div>
             </div>
         </div>

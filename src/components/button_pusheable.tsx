@@ -20,7 +20,7 @@ export const ButtonPusheable = React.forwardRef<HTMLButtonElement, ButtonPusheab
                 <span className="button-82-shadow"></span>
                 <span className="button-82-edge"></span>
                 <span className="button-82-front text ">
-                    {isLoading ? <div className="loader pb-2"></div> : children}
+                    {isLoading ? <div className="loader inline-flex items-center justify-center "></div> : children}
                 </span>
             </button>
         );
