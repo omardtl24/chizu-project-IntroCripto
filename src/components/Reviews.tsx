@@ -7,8 +7,10 @@ interface Review {
     user?: string;
     recommend: boolean;
 }
-
-export const Reviews = async ({ productId }) => {
+interface ReviewsProps {
+  productId: string;
+}
+export const Reviews = async ({ productId }: ReviewsProps) => 
     const response = await payload.find({
         collection: "reviews",
         where: {
