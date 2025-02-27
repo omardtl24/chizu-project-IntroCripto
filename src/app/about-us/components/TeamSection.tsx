@@ -42,7 +42,7 @@ const teamMembers: TeamMemberData[] = [
     {
         id: '4',
         name: 'Julian Osorio',
-        role: 'Full Stack Developer',
+        role: 'Full Stack Developer & QA Specialist',	
         image: 'https://storage.googleapis.com/chizu-email-artifacts/julian.webp',
         linkedin: 'https://www.linkedin.com/in/julian-david-osorio-789301288/',
         github: 'https://github.com/Juosorioca420',
