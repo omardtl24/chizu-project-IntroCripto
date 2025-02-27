@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import CampaignClientComponent from './campaign-client';
 import { Tier } from "@/payload-types";
+import { ButtonPusheable } from '../button_pusheable';
 
 interface DialogWrapperProps {
     tier: Tier;
@@ -23,16 +24,16 @@ export const DialogWrapper = ({ tier, user, bannerImageUrl }: DialogWrapperProps
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
-                <button className="w-full py-3 rounded-xl bg-[#007373] hover:bg-[#009c9c] text-white transition-all">
+                <ButtonPusheable className="w-full py-3 rounded-xl bg-[#007373] hover:bg-[#009c9c] text-white transition-all">
                     Seleccionar Plan
-                </button>
+                </ButtonPusheable>
             </AlertDialogTrigger>
 
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Suscribirse a {tier.title}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Si desea continuar, porfavor seleccione en Aceptar y sera redirigido a la pasarela de pagos.
+                        Si desea continuar, porfavor seleccione en Aceptar para cargar MercadoPago.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
 

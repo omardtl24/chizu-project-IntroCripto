@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
 import { Check, Shield, X } from "lucide-react";
 import Slider from "@/components/Slider";
@@ -7,7 +6,10 @@ import ProductReel from "@/components/ProductReel";
 import AddCartButton from "@/components/AddToCartButton";
 import { getPayloadClient } from "@/getPayload";
 import { Category, Media, Product, User } from "@/payload-types"
-
+import { Reviews } from "@/components/Reviews";
+import { cookies } from 'next/headers';
+import { getServerUser } from '@/lib/payload-utils';
+import { notFound, redirect } from "next/navigation";
 
 import {
   ProductLocal,
@@ -17,6 +19,8 @@ import {
   PageProps,
   SystemRequirements
 } from "./product-types";
+import ReviewForm from "@/components/ReviewForm";
+
 
 // const { productId } = params;
 // let productData: ProductLocal;
@@ -211,9 +215,11 @@ interface UrlProps {
 
 const Page = async ({ params }: UrlProps) => {
   const dummy = DEFAULT_PRODUCT;
-
   const { productId } = params;
   const payload = await getPayloadClient()
+
+  const cookie = cookies();
+  const { user } = await getServerUser(cookie);
 
   const { docs: products } = await payload.find({
     collection: 'products',
@@ -265,12 +271,6 @@ const Page = async ({ params }: UrlProps) => {
         <div className="w-full px-4 py-6">
           <h1 className="text-4xl font-bold">{ String(product.name) }</h1>
           <div className="flex items-center gap-2 mt-2">
-            <div className="flex items-center pr-2 border-r border-gray-600">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-[#30AEB6] text-2xl pb-1">★</span>
-              ))}
-              <span className="ml-1 text-[#30AEB6]">{4}</span>
-            </div>
             {labels_categories.map((category, index) => (
               <Badge key={index} variant="secondary" className="bg-transparent text-gray-400">
                 {category}
@@ -400,6 +400,8 @@ const Page = async ({ params }: UrlProps) => {
             />
           </div>
         </div>
+        {user && <ReviewForm username={user.username} productId={product.id} />}
+        <Reviews productId={product.id}/>
       </div>
     </div>
   );
