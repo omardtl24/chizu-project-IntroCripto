@@ -57,6 +57,7 @@
     "nodemailer": "^6.9.13",
     "payload": "2.30.4",
     "pg-promise": "^11.10.2",
+    "primereact": "^10.9.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.54.2",
