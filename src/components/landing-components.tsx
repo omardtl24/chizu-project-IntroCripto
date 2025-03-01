@@ -93,33 +93,83 @@ export default ScrollAnimation;
 // HERO
 export const Hero: React.FC = () => {
     return (
-        <div className="relative min-h-screen w-full bg-[url('/spartan.jpg')] bg-cover bg-no-repeat">
-            <div className="absolute inset-0 h-full w-full bg-gray-900/60" />
-            <div className="grid min-h-screen px-8">
-                <div className="container relative z-10 my-auto mx-auto grid place-items-center text-center">
-                    <ScrollAnimation animation="zoomIn">
-                        <Typography variant="h1" color="white" className="lg:max-w-3xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            CHIZU
-                        </Typography>
-                    </ScrollAnimation>
-                    <ScrollAnimation animation="fadeIn">
-                        <Typography variant="h3" color="white" className="mb-2" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            Level Up Your Vision
-                        </Typography>
-                    </ScrollAnimation>
-                    <ScrollAnimation animation="fadeIn">
-                        <Typography
-                            variant="lead"
-                            color="white"
-                            className="mt-1 mb-12 w-full md:max-w-full lg:max-w-2xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
-                            Únete a la plataforma que fortalece tus sueños
-                        </Typography>
-                    </ScrollAnimation>
-                </div>
-            </div>
+      <div className="relative min-h-screen w-full bg-[url('/spartan.jpg')] bg-cover bg-center bg-no-repeat">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/30 backdrop-blur-sm md:backdrop-blur-sm lg:backdrop-blur-sm" />
+
+        {/* Contenido principal */}
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center text-white">
+          <ScrollAnimation animation="zoomIn">
+            <Typography
+              variant="h1" color="white" className="lg:max-w-3xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+            >
+              CHIZU
+            </Typography>
+          </ScrollAnimation>
+  
+          {/* Descripción */}
+          <ScrollAnimation animation="fadeIn" delay={300}>
+            <Typography
+              className="mt-4 text-lg md:text-xl max-w-2xl text-gray-300"
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              La plataforma definitiva para desarrolladores y gamers.
+            </Typography>
+          </ScrollAnimation>
+  
+          {/* Tarjetas de información */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+          <ScrollAnimation animation="slideRight">
+                <div className="bg-gray-900/80 p-6 rounded-xl shadow-lg transition-transform hover:bg-gray-800 hover:rounded-xl">
+                <Typography
+                  variant="h4"
+                  color="white"
+                  className="text-xl font-semibold transition-transform hover:scale-105"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Para Desarrolladores
+                </Typography>
+                <Typography
+                  className="mt-2 text-gray-300 transition-transform hover:scale-105"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Venda, financie y potencie sus propios Videojuegos.
+                </Typography>
+              </div>
+            </ScrollAnimation>
+  
+            <ScrollAnimation animation="slideLeft">
+                <div className="bg-gray-900/80 p-6 rounded-xl shadow-lg transition-transform hover:bg-gray-800 hover:rounded-xl">
+                <Typography
+                  variant="h4"
+                  color="white"
+                  className="text-xl font-semibold transition-transform hover:scale-105"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Para Gamers
+                </Typography>
+                <Typography
+                  className="mt-2 text-gray-300 transition-transform hover:scale-105"
+                  placeholder={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  Participe, compre e invierta en el mundo gamer.
+                </Typography>
+              </div>
+            </ScrollAnimation>
+          </div>
         </div>
+      </div>
     );
-};
+  };
 
 const EVENT_INFO: EventInfo[] = [
     {
@@ -138,14 +188,14 @@ export const AboutEvent: React.FC = () => {
         <section id="about-us" className="container mx-auto flex flex-col items-center px-4 py-10 scroll-mt-10">
             <ScrollAnimation animation="fadeIn">
                 <Typography variant="h3" className="text-center" color="blue-gray" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    Sobre Nosotros
+                    CHIZU es:
                 </Typography>
             </ScrollAnimation>
             <ScrollAnimation animation="fadeIn">
                 <Typography
                     variant="lead"
                     className="mt-2 lg:max-w-4xl mb-8 w-full text-center font-normal !text-black-500" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                    Chizu es un aplicativo web para la compra, venta y promoción de videojuegos.
+                    Un aplicativo web para la compra, venta y promoción de videojuegos.
                     Los desarrolladores podrán generar campañas para la recaudación de fondos para la creación de sus juegos,
                     mediante un sistema de suscripción por tiers o niveles a los que dicho desarrollador puede asociar diversas recompensas.
                     Chizu busca ser una  plataforma no solo para la compra y venta de videojuegos, sino potenciar la labor de los desarrolladores independientes
@@ -344,7 +394,7 @@ export const Faq: React.FC = () => {
                         </Typography>
                         <Typography variant="lead" className="mx-auto mb-24 lg:w-3/5 !text-gray-500" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                             Aquí encontrarás respuestas a las preguntas más comunes sobre cómo funciona Chizu,
-                            cómo aprovechar sus herramientas y cómo aseguramos una experiencia confiable para desarrolladores y jugadores.
+                            cómo aprovechar sus herramientas y cómo aseguramos una experiencia confiable para desarrolladores y gamers.
                             ¡Descubre todo lo que necesitas saber aquí! 😊
                         </Typography>
                     </div>
