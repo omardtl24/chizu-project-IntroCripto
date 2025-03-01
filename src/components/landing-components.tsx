@@ -107,7 +107,7 @@ export const Hero: React.FC = () => {
           </ScrollAnimation>
   
           {/* Descripción */}
-          <ScrollAnimation animation="fadeIn" delay={300}>
+          <ScrollAnimation animation="fadeIn">
             <Typography
               className="mt-4 text-lg md:text-xl max-w-2xl text-gray-300"
               placeholder={undefined}
