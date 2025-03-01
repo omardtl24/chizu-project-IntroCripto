@@ -123,7 +123,7 @@ export const Campaigns: CollectionConfig = {
         },
         {
             name: 'bannerImage',
-            label: 'Imagen de Título',
+            label: 'Imagen de Banner',
             type: 'upload',
             relationTo: 'media',
             required: true,
@@ -155,7 +155,7 @@ export const Campaigns: CollectionConfig = {
         },
         {
             name: 'tiers',
-            label: 'Tiers de suscripción',
+            label: 'Tiers de Suscripción',
             type: 'relationship',
             relationTo: 'tiers',
             required: false,

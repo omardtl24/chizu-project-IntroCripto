@@ -4,8 +4,8 @@ export const PRODUCT_CATEGORIES = [
       value: 'select' as const,
       featured: [
           {
-              name: 'Populares',
-              href: `/products?category=Populares`,
+              name: 'Nuestro Catalogo',
+              href: `/products`,
               imageSrc: '/nav/picks/img1.jpg',
           },
           {
