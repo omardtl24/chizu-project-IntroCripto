@@ -16,8 +16,10 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { AuthProvider, useAuth } from '@/LOGIN/context/authContext'
 import { ButtonPusheable } from '@/components/button_pusheable'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const Page = () => {
+    const [recaptchaToken, setRecaptchaToken] = useState<string>('');
     const router = useRouter();
     const searchParams = useSearchParams();
     const isAdmin = searchParams?.get('as') === 'admin';
@@ -83,9 +85,15 @@ const Page = () => {
         logout();
     };
 
-    const onSubmit = ({ email, password, }: TAuthCredentialsValidator) => {
+    const handleRecaptchaChange = (token: string | null) => {
+        if (token) {
+            setRecaptchaToken(token);
+        }
+    };
+
+    const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
         setIsLoading(true);
-        signIn({ email, password });
+        signIn({ email, password , recaptchaToken});
     };
 
     return (
@@ -160,6 +168,13 @@ const Page = () => {
                                         {errors.password.message}
                                     </p>
                                 )}
+                            </div>
+
+                            <div className='my-2'>
+                                <ReCAPTCHA
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                                    onChange={handleRecaptchaChange}
+                                />
                             </div>
 
                             <div className='text-right'>
