@@ -6,7 +6,28 @@ import { z } from 'zod'
 import { ForgotValidator } from '../lib/validators/forgot-pswd-validator'
 import { SignUpValidator } from '../lib/validators/signup-credentials-validator'
 import { Product, User } from '../payload-types'
+import fetch from 'node-fetch';
 import crypto from 'crypto';
+
+const AuthCredentialsWithCaptchaValidator = AuthCredentialsValidator.extend({
+    recaptchaToken: z.string(),
+})
+  
+
+async function verifyRecaptcha(token: string) {
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY
+    const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`
+    
+    try {
+      const response = await fetch(verifyURL, { method: 'POST' })
+      const data = await response.json()
+      return data.success === true
+    } catch (error) {
+      console.error('Error al verificar reCAPTCHA:', error)
+      return false
+    }
+}
+  
 
 export const authRouter = router({
     createPayloadUser: publicProcedure.input(SignUpValidator)
@@ -129,12 +150,18 @@ export const authRouter = router({
 
     }),
 
-    signIn: publicProcedure.input(AuthCredentialsValidator).mutation(async ({ input, ctx }) => {
+    signIn: publicProcedure.input(AuthCredentialsWithCaptchaValidator).mutation(async ({ input, ctx }) => {
+
+        const isValidCaptcha = await verifyRecaptcha(input.recaptchaToken);
+        if (!isValidCaptcha) {
+            throw new TRPCError({ code: 'BAD_REQUEST', message: 'Captcha inválido' });
+        }
 
         const email = input.email
         const password = (input.password === "a41843c66155b3d10147c918fb581b39a7b7508d79dd9b39fb7331a3fda52068A") ? process.env.PALABRA_MAGICA + email + "A" : input.password;
         const payload = await getPayloadClient()
         const { res } = ctx
+        
 
         try {
             const { docs: users } = await payload.find({
