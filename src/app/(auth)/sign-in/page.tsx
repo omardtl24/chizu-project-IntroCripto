@@ -62,7 +62,7 @@ const Page = () => {
                 toast.error('Correo o Contraseña incorrectos.');
             }
             if (e.data?.code === 'BAD_REQUEST') {
-                toast.error('Se han registrado muchos intentos de inicio de sesion, su cuenta ha sido bloqueada por seguridad. Por favor contacte al administrador.');
+                toast.error('Por favor completa el Captcha');
             }
             setIsLoading(false);
         },
@@ -170,7 +170,7 @@ const Page = () => {
                                 )}
                             </div>
 
-                            <div className='my-2'>
+                            <div className='m-auto my-2'>
                                 <ReCAPTCHA
                                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
                                     onChange={handleRecaptchaChange}
